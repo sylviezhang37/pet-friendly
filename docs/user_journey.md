@@ -57,4 +57,5 @@
 
 9. **Continued Engagement**
    - The next day, George returns to NoonSteals to find a new lunch spot
+   - He uses the search bar at the top of the map to find a new restaurant he tried and leaves a review
    - The experience has turned George into a regular user who checks the app daily before lunch
