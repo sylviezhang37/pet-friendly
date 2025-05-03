@@ -1,4 +1,4 @@
-import { GoogleMapsPlacesProvider } from "../src/infrastructure/providers/GoogleMapsPlacesProvider";
+import { GoogleMapsPlacesProvider } from "../../src/providers/GoogleMapsPlacesProvider";
 import dotenv from "dotenv";
 
 dotenv.config();

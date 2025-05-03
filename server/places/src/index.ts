@@ -4,8 +4,8 @@ import helmet from "helmet";
 import { Pool } from "pg";
 
 // infrastructure
-import { PostgresPlaceRepository } from "./infrastructure/database/PostgresPlaceRepository";
-import { GoogleMapsPlacesProvider } from "./infrastructure/providers/GoogleMapsPlacesProvider";
+import { PostgresPlaceRepository } from "./repositories/PostgresPlaceRepository";
+import { GoogleMapsPlacesProvider } from "./providers/GoogleMapsPlacesProvider";
 
 // applications
 import { FindNearbyPlacesUseCase } from "./application/FindNearbyPlacesUseCase";

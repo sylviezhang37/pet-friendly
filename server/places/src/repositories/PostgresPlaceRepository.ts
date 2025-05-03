@@ -1,7 +1,7 @@
 import { Pool } from "pg";
-import { Place } from "../../domain/Place";
-import { PlaceRepository } from "../../repositories/PlaceRepository";
-import { Coordinates } from "../../domain/models";
+import { Place } from "../domain/Place";
+import { PlaceRepository } from "./PlaceRepository";
+import { Coordinates } from "../domain/models";
 
 export class PostgresPlaceRepository implements PlaceRepository {
   constructor(private readonly dbConnection: Pool) {}

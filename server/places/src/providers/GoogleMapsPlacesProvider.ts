@@ -1,7 +1,7 @@
 import { Client } from "@googlemaps/google-maps-services-js";
-import { Place } from "../../domain/Place";
-import { PlacesProvider } from "../../providers/PlacesProvider";
-import { Coordinates } from "../../domain/models";
+import { Place } from "../domain/Place";
+import { PlacesProvider } from "./PlacesProvider";
+import { Coordinates } from "../domain/models";
 
 export class GoogleMapsPlacesProvider implements PlacesProvider {
   private readonly client: Client;
