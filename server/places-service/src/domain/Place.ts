@@ -10,7 +10,11 @@ export class Place {
   public readonly allowsPet?: boolean;
   public readonly createdAt: Date;
   public readonly updatedAt: Date;
-  private petFriendly: PetFriendly;
+  public readonly numConfirm: number;
+  public readonly numDeny: number;
+  public readonly lastContributionType: string | null;
+  public readonly lastContributionDate: Date | null;
+  public readonly petFriendly: boolean;
 
   constructor(data: PlaceData) {
     this.id = data.id;
@@ -22,24 +26,15 @@ export class Place {
     this.allowsPet = data.allowsPet;
     this.createdAt = data.createdAt || new Date();
     this.updatedAt = data.updatedAt || new Date();
-    this.petFriendly = data.petFriendly || {
-      numConfirm: 0,
-      numDeny: 0,
-      lastContributionType: null,
-      lastContributionDate: null,
-    };
+    this.numConfirm = data.numConfirm || 0;
+    this.numDeny = data.numDeny || 0;
+    this.lastContributionType = data.lastContributionType || null;
+    this.lastContributionDate = data.lastContributionDate || null;
+    this.petFriendly = this.isPetFriendly();
   }
 
   public isPetFriendly(): boolean {
-    return this.allowsPet || this.petFriendly.numConfirm > 0;
-  }
-
-  public updatePetFriendlyStatus(confirmed: boolean): void {
-    if (confirmed) {
-      this.petFriendly.numConfirm += 1;
-      this.petFriendly.lastContributionDate = new Date();
-    }
-    (this as any).updatedAt = new Date();
+    return this.allowsPet || this.numConfirm > 0;
   }
 
   public toJSON(): Record<string, any> {
@@ -53,9 +48,11 @@ export class Place {
       allowsPet: this.allowsPet,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
-      // TODO: think about how to handle this petfriendly object
+      numConfirm: this.numConfirm,
+      numDeny: this.numDeny,
+      lastContributionType: this.lastContributionType,
+      lastContributionDate: this.lastContributionDate,
       petFriendly: this.petFriendly,
-      isPetFriendly: this.isPetFriendly(),
     };
   }
 }

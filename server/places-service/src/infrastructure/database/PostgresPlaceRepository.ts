@@ -97,6 +97,10 @@ export class PostgresPlaceRepository implements PlaceRepository {
       allowsPet: data.allows_pet,
       createdAt: data.created_at,
       updatedAt: data.updated_at,
+      numConfirm: data.num_confirm,
+      numDeny: data.num_deny,
+      lastContributionType: data.last_contribution_type,
+      lastContributionDate: data.last_contribution_date,
       petFriendly: data.pet_friendly,
     });
   }

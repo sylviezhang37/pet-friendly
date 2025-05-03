@@ -20,5 +20,9 @@ export interface PlaceData {
   allowsPet?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
-  petFriendly?: PetFriendly;
+  numConfirm?: number;
+  numDeny?: number;
+  lastContributionType?: string | null;
+  lastContributionDate?: Date | null;
+  petFriendly?: boolean;
 }
