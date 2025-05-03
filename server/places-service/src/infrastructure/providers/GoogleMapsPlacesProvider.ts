@@ -37,7 +37,7 @@ export class GoogleMapsPlacesProvider implements PlacesProvider {
           "geometry",
           "type",
           "url",
-          "allowsDogs",
+          // "allowsDogs",
         ],
         key: this.apiKey,
       },
