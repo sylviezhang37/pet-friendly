@@ -82,7 +82,7 @@ Interface definitions create clear boundaries between system components and enab
 // Interface (abstract class or TypeScript interface)
 interface PlacesProvider {
   findNearbyPlaces(coordinates, radius): Promise<Place[]>;
-  getPlaceDetails(placeId): Promise<PlaceDetails>;
+  getPlaceDetails(id): Promise<PlaceDetails>;
   searchPlaces(query, coordinates): Promise<Place[]>;
 }
 

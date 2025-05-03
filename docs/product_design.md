@@ -107,31 +107,35 @@ The Places Service manages all business location data for the application.
 
 **Data Flow:**
 
-1. **Finding Nearby Businesses**
+1. **Finding Nearby Places**
    - Query database using geospatial indexes
    - Return cached business data
-2. **Searching for Businesses**
+2. **Searching for Places**
    - Check database for matches first
    - If no results, call Google Maps Places API
    - Store new results in database
    - Return results to client
-3. **Adding New Businesses**
+3. **Adding New Places**
    - Verify if business exists in database
-   - If not, call Google Maps API for details
    - Store new business information
    - Return confirmation
+4. **Update Place PetFriendly Status**
+   - Update a place's petfriendly status
+5. **Get Place Details**
+   - Return cached business data
 
 **Database Schema:**
 
-- Business ID (primary key)
-- Google Place ID (for reference)
+- ID (primary key = Google Place ID)
 - Business name
 - Address
 - Geographic coordinates (latitude/longitude)
 - Business type/category
+- AllowsPet tag (Google Maps business details)
 - Google Maps URL
 - Creation timestamp
 - Last updated timestamp
+- PetFriendly status
 
 #### 3.2.4 Pet-Friendly Reviews Service
 
@@ -143,11 +147,11 @@ The Places Service manages all business location data for the application.
 **Database Schema:**
 
 - Review ID (primary key)
-- Business ID (foreign key to Places Service)
-- Confirmation status (boolean)
+- Place ID (foreign key to Places Service)
+- User ID (foreign key to User Service)
+- PetFriendly (boolean)
 - Review text (optional)
 - Timestamp
-- User ID (foreign key to User Service)
 
 #### 3.2.5 User Service
 
@@ -189,10 +193,11 @@ We'll use PostgreSQL with PostGIS extension hosted on AWS RDS for all services:
 #### Places Service API
 
 ```
-GET /api/places/nearby?lat={latitude}&lng={longitude}&radius={meters}
 GET /api/places/{id}
+GET /api/places/nearby?lat={latitude}&lng={longitude}&radius={meters}
 GET /api/places/search?query={search_term}&lat={latitude}&lng={longitude}
 POST /api/places/add
+PATCH /api/places/{id}/pet-friendly
 ```
 
 #### Pet-Friendly Reviews Service API
@@ -299,9 +304,7 @@ GET /api/users/session - Get or create user session from cookie
 
 - API response times
 - Google Maps API usage
-- Service availability
-
-## 7. Development Timeline
+- Service availability## 7. Development Timeline
 
 ### 7.1 Phase 1: MVP (V0)
 

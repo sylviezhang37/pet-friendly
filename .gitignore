@@ -50,4 +50,5 @@ debug.log
 # Other
 .env.local
 .env.*.local
-docs/product_design.md
+docs/places_service.md
+docs/notes.md
