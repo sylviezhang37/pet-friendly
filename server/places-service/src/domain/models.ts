@@ -4,12 +4,14 @@ export interface Coordinates {
 }
 
 export interface PetFriendly {
-  confirmationCount: number;
-  lastConfirmationDate: Date | null;
+  numConfirm: number;
+  numDeny: number;
+  lastContributionType: "confirm" | "deny" | null;
+  lastContributionDate: Date | null;
 }
 
 export interface PlaceData {
-  id: number;
+  id: string;
   name: string;
   address: string;
   coordinates: Coordinates;
@@ -18,5 +20,5 @@ export interface PlaceData {
   allowsPet?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
-  petFriendlyStatus?: PetFriendly;
+  petFriendly?: PetFriendly;
 }

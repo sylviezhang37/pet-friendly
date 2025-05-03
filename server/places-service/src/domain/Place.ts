@@ -1,7 +1,7 @@
 import { PlaceData, PetFriendly } from "./models";
 
 export class Place {
-  public readonly id: number;
+  public readonly id: string;
   public readonly name: string;
   public readonly address: string;
   public readonly coordinates: { lat: number; lng: number };
@@ -22,20 +22,22 @@ export class Place {
     this.allowsPet = data.allowsPet;
     this.createdAt = data.createdAt || new Date();
     this.updatedAt = data.updatedAt || new Date();
-    this.petFriendly = data.petFriendlyStatus || {
-      confirmationCount: 0,
-      lastConfirmationDate: null,
+    this.petFriendly = data.petFriendly || {
+      numConfirm: 0,
+      numDeny: 0,
+      lastContributionType: null,
+      lastContributionDate: null,
     };
   }
 
   public isPetFriendly(): boolean {
-    return this.allowsPet || this.petFriendly.confirmationCount > 0;
+    return this.allowsPet || this.petFriendly.numConfirm > 0;
   }
 
   public updatePetFriendlyStatus(confirmed: boolean): void {
     if (confirmed) {
-      this.petFriendly.confirmationCount += 1;
-      this.petFriendly.lastConfirmationDate = new Date();
+      this.petFriendly.numConfirm += 1;
+      this.petFriendly.lastContributionDate = new Date();
     }
     (this as any).updatedAt = new Date();
   }
@@ -51,8 +53,9 @@ export class Place {
       allowsPet: this.allowsPet,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
+      // TODO: think about how to handle this petfriendly object
+      petFriendly: this.petFriendly,
       isPetFriendly: this.isPetFriendly(),
-      confirmationCount: this.petFriendly.confirmationCount,
     };
   }
 }
