@@ -75,7 +75,7 @@ export class PostgresPlaceRepository implements PlaceRepository {
   ): Promise<Place | null> {
     const query = `
       UPDATE places 
-      SET allows_pet = $1, updated_at = NOW()
+      SET pet_friendly = $1, updated_at = NOW()
       WHERE id = $2
       RETURNING *
     `;
