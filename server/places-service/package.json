@@ -8,7 +8,7 @@
     "dev": "nodemon src/index.ts",
     "build": "tsc",
     "test": "jest",
-    "test:get-place-from-maps": "ts-node tests/testGoogleMapsProvider.ts"
+    "test:get-place-from-maps": "ts-node tests/get-place-from-maps.ts"
   },
   "dependencies": {
     "express": "^4.18.2",
