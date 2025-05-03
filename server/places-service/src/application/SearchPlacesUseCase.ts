@@ -38,7 +38,7 @@ export class SearchPlacesUseCase {
 
       // save new places to our database
       for (const place of googlePlaces) {
-        if (!places.some((p) => p.placeId === place.placeId)) {
+        if (!places.some((p) => p.id === place.id)) {
           const savedPlace = await this.placeRepository.save(place);
           places.push(savedPlace);
         }

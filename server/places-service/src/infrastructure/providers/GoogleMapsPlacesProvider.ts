@@ -25,10 +25,10 @@ export class GoogleMapsPlacesProvider implements PlacesProvider {
     return response.data.results.map((place) => this.mapToPlace(place));
   }
 
-  async getPlaceDetails(placeId: string): Promise<Place> {
+  async getPlaceDetails(id: string): Promise<Place> {
     const response = await this.client.placeDetails({
       params: {
-        place_id: placeId,
+        place_id: id,
         fields: [
           "name",
           "formatted_address",
@@ -62,6 +62,7 @@ export class GoogleMapsPlacesProvider implements PlacesProvider {
 
   private mapToPlace(place: any): Place {
     return new Place({
+      id: place.id,
       name: place.name,
       address: place.vicinity,
       coordinates: {
@@ -69,7 +70,6 @@ export class GoogleMapsPlacesProvider implements PlacesProvider {
         lng: place.geometry.location.lng,
       },
       businessType: place.types[0],
-      placeId: place.place_id,
       googleMapsUrl: `https://www.google.com/maps/place/?q=place_id:${place.place_id}`,
     });
   }

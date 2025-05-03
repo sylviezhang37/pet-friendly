@@ -7,7 +7,7 @@ export interface PlaceRepository {
   search(query: string, coordinates: Coordinates): Promise<Place[]>;
   save(place: Place): Promise<Place>;
   updatePetFriendlyStatus(
-    placeId: number,
+    id: string,
     confirmed: boolean
   ): Promise<Place | null>;
 }

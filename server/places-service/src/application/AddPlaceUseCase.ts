@@ -2,12 +2,12 @@ import { Place } from "../domain/Place";
 import { PlaceRepository } from "../repositories/PlaceRepository";
 
 export interface AddPlaceInput {
+  id: string;
   name: string;
   address: string;
   latitude: number;
   longitude: number;
   businessType?: string;
-  placeId?: string;
   googleMapsUrl?: string;
   allowsPet?: boolean;
 }
@@ -17,6 +17,7 @@ export class AddPlaceUseCase {
 
   async execute(input: AddPlaceInput): Promise<Place> {
     const place = new Place({
+      id: input.id,
       name: input.name,
       address: input.address,
       coordinates: {
@@ -24,7 +25,6 @@ export class AddPlaceUseCase {
         lng: input.longitude,
       },
       businessType: input.businessType,
-      placeId: input.placeId,
       googleMapsUrl: input.googleMapsUrl,
       allowsPet: input.allowsPet,
     });

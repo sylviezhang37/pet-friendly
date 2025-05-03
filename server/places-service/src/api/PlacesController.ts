@@ -86,12 +86,12 @@ export class PlacesController {
   public addPlace = async (req: Request, res: Response) => {
     try {
       const {
+        id,
         name,
         address,
         latitude,
         longitude,
         businessType,
-        placeId,
         googleMapsUrl,
         allowsPet,
       } = req.body;
@@ -103,12 +103,12 @@ export class PlacesController {
       }
 
       const place = await this.addPlaceUseCase.execute({
+        id,
         name,
         address,
         latitude,
         longitude,
         businessType,
-        placeId,
         googleMapsUrl,
         allowsPet,
       });
@@ -130,7 +130,7 @@ export class PlacesController {
       }
 
       const place = await this.updatePetFriendlyUseCase.execute({
-        placeId: parseInt(id),
+        id: id,
         confirmed,
       });
 

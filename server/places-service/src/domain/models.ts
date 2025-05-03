@@ -3,21 +3,20 @@ export interface Coordinates {
   lng: number;
 }
 
-export interface PetFriendlyStatus {
+export interface PetFriendly {
   confirmationCount: number;
   lastConfirmationDate: Date | null;
 }
 
 export interface PlaceData {
-  id?: number;
+  id: number;
   name: string;
   address: string;
   coordinates: Coordinates;
   businessType?: string;
-  placeId?: string;
   googleMapsUrl?: string;
   allowsPet?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
-  petFriendlyStatus?: PetFriendlyStatus;
+  petFriendlyStatus?: PetFriendly;
 }
