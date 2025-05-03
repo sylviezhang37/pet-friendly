@@ -2,7 +2,7 @@ import { Place } from "../domain/Place";
 import { PlaceRepository } from "../repositories/PlaceRepository";
 
 export interface GetPlaceDetailsInput {
-  id: number;
+  id: string;
 }
 
 export interface GetPlaceDetailsOutput {

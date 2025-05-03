@@ -6,7 +6,7 @@ import { Coordinates } from "../../domain/models";
 export class PostgresPlaceRepository implements PlaceRepository {
   constructor(private readonly dbConnection: Pool) {}
 
-  async findById(id: number): Promise<Place | null> {
+  async findById(id: string): Promise<Place | null> {
     const query = `SELECT * FROM places WHERE id = $1`;
     const result = await this.dbConnection.query(query, [id]);
     return result.rows.length ? this.mapToEntity(result.rows[0]) : null;
@@ -71,15 +71,28 @@ export class PostgresPlaceRepository implements PlaceRepository {
 
   async updatePetFriendlyStatus(
     id: string,
-    confirmed: boolean
+    pet_friendly: boolean,
+    num_confirm: number,
+    num_deny: number,
+    last_contribution_type: string,
+    last_contribution_date: Date
   ): Promise<Place | null> {
     const query = `
       UPDATE places 
-      SET pet_friendly = $1, updated_at = NOW()
-      WHERE id = $2
+      SET pet_friendly = $1, num_confirm = $2, num_deny = $3, 
+      last_contribution_type = $4, last_contribution_date = $5, 
+      updated_at = NOW()
+      WHERE id = $6
       RETURNING *
     `;
-    const result = await this.dbConnection.query(query, [confirmed, id]);
+    const result = await this.dbConnection.query(query, [
+      pet_friendly,
+      num_confirm,
+      num_deny,
+      last_contribution_type,
+      last_contribution_date,
+      id,
+    ]);
     return result.rows.length ? this.mapToEntity(result.rows[0]) : null;
   }
 

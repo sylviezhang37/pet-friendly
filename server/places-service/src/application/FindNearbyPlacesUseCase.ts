@@ -32,13 +32,11 @@ export class FindNearbyPlacesUseCase {
       input.radius
     );
 
-    const petFriendlyCount = places.filter((place) =>
-      place.isPetFriendly()
-    ).length;
+    const petFriendlyCount = places.filter((place) => place.petFriendly).length;
 
     let filteredPlaces = places;
     if (input.onlyPetFriendly) {
-      filteredPlaces = places.filter((place) => place.isPetFriendly());
+      filteredPlaces = places.filter((place) => place.petFriendly);
     }
 
     if (input.filters?.businessType) {

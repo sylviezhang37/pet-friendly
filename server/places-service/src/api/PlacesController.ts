@@ -14,9 +14,10 @@ export class PlacesController {
     private readonly updatePetFriendlyUseCase: UpdatePetFriendlyUseCase
   ) {}
 
+  // find nearby places in database
   public findNearbyPlaces = async (req: Request, res: Response) => {
     try {
-      const { lat, lng, radius = 1000 } = req.query;
+      const { query, lat, lng, radius = 1000 } = req.query;
 
       if (!lat || !lng) {
         return res
@@ -46,7 +47,7 @@ export class PlacesController {
       }
 
       const result = await this.getPlaceDetailsUseCase.execute({
-        id: parseInt(id),
+        id: id,
       });
 
       if (!result.place) {
@@ -60,6 +61,7 @@ export class PlacesController {
     }
   };
 
+  // search places in database and google maps
   public searchPlaces = async (req: Request, res: Response) => {
     try {
       const { query, lat, lng } = req.query;
@@ -83,6 +85,7 @@ export class PlacesController {
     }
   };
 
+  // add place to database
   public addPlace = async (req: Request, res: Response) => {
     try {
       const {
@@ -120,6 +123,7 @@ export class PlacesController {
     }
   };
 
+  // update pet-friendly status and associated fields of a place in database
   public updatePetFriendlyStatus = async (req: Request, res: Response) => {
     try {
       const { id } = req.params;

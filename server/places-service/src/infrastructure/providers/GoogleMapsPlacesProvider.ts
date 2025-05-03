@@ -12,12 +12,14 @@ export class GoogleMapsPlacesProvider implements PlacesProvider {
 
   async findNearbyPlaces(
     coordinates: Coordinates,
-    radius: number
+    radius: number,
+    keyword: string
   ): Promise<Place[]> {
     const response = await this.client.placesNearby({
       params: {
         location: coordinates,
         radius,
+        keyword: keyword,
         key: this.apiKey,
       },
     });
@@ -69,6 +71,7 @@ export class GoogleMapsPlacesProvider implements PlacesProvider {
         lat: place.geometry.location.lat,
         lng: place.geometry.location.lng,
       },
+      allowsPet: place.allowsDogs,
       businessType: place.types[0],
       googleMapsUrl: `https://www.google.com/maps/place/?q=place_id:${place.place_id}`,
     });

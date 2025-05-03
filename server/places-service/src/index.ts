@@ -7,7 +7,7 @@ import { Pool } from "pg";
 import { PostgresPlaceRepository } from "./infrastructure/database/PostgresPlaceRepository";
 import { GoogleMapsPlacesProvider } from "./infrastructure/providers/GoogleMapsPlacesProvider";
 
-// application
+// applications
 import { FindNearbyPlacesUseCase } from "./application/FindNearbyPlacesUseCase";
 import { GetPlaceDetailsUseCase } from "./application/GetPlaceDetailsUseCase";
 import { AddPlaceUseCase } from "./application/AddPlaceUseCase";
