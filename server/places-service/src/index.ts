@@ -3,9 +3,6 @@ import cors from "cors";
 import helmet from "helmet";
 import { Pool } from "pg";
 
-// domain
-// import { Place } from "./domain/Place";
-
 // infrastructure
 import { PostgresPlaceRepository } from "./infrastructure/database/PostgresPlaceRepository";
 import { GoogleMapsPlacesProvider } from "./infrastructure/providers/GoogleMapsPlacesProvider";
@@ -15,9 +12,9 @@ import { FindNearbyPlacesUseCase } from "./application/FindNearbyPlacesUseCase";
 import { GetPlaceDetailsUseCase } from "./application/GetPlaceDetailsUseCase";
 import { AddPlaceUseCase } from "./application/AddPlaceUseCase";
 import { SearchPlacesUseCase } from "./application/SearchPlacesUseCase";
-import { UpdatePetFriendlyStatusUseCase } from "./application/UpdatePetFriendlyStatusUseCase";
+import { UpdatePetFriendlyUseCase } from "./application/UpdatePetFriendlyUseCase";
 
-// interfaces
+// api interfaces
 import { PlacesController } from "./api/PlacesController";
 
 const pool = new Pool({
@@ -28,13 +25,11 @@ const pool = new Pool({
   port: parseInt(process.env.DB_PORT || "5432"),
 });
 
-// Initialize dependencies
 const placeRepository = new PostgresPlaceRepository(pool);
 const placesProvider = new GoogleMapsPlacesProvider(
   process.env.GOOGLE_MAPS_API_KEY || ""
 );
 
-// initialize use cases
 const findNearbyPlacesUseCase = new FindNearbyPlacesUseCase(placeRepository);
 const getPlaceDetailsUseCase = new GetPlaceDetailsUseCase(placeRepository);
 const addPlaceUseCase = new AddPlaceUseCase(placeRepository);
@@ -42,17 +37,14 @@ const searchPlacesUseCase = new SearchPlacesUseCase(
   placeRepository,
   placesProvider
 );
-const updatePetFriendlyStatusUseCase = new UpdatePetFriendlyStatusUseCase(
-  placeRepository
-);
+const updatePetFriendlyUseCase = new UpdatePetFriendlyUseCase(placeRepository);
 
-// initialize controller
 const placesController = new PlacesController(
   findNearbyPlacesUseCase,
   getPlaceDetailsUseCase,
   addPlaceUseCase,
   searchPlacesUseCase,
-  updatePetFriendlyStatusUseCase
+  updatePetFriendlyUseCase
 );
 
 const app = express();

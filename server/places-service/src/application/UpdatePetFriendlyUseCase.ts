@@ -1,15 +1,15 @@
 import { Place } from "../domain/Place";
 import { PlaceRepository } from "../repositories/PlaceRepository";
 
-export interface UpdatePetFriendlyStatusInput {
+export interface UpdatePetFriendlyInput {
   placeId: number;
   confirmed: boolean;
 }
 
-export class UpdatePetFriendlyStatusUseCase {
+export class UpdatePetFriendlyUseCase {
   constructor(private readonly placeRepository: PlaceRepository) {}
 
-  async execute(input: UpdatePetFriendlyStatusInput): Promise<Place | null> {
+  async execute(input: UpdatePetFriendlyInput): Promise<Place | null> {
     return this.placeRepository.updatePetFriendlyStatus(
       input.placeId,
       input.confirmed

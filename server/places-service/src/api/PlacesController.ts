@@ -3,8 +3,7 @@ import { FindNearbyPlacesUseCase } from "../application/FindNearbyPlacesUseCase"
 import { GetPlaceDetailsUseCase } from "../application/GetPlaceDetailsUseCase";
 import { AddPlaceUseCase } from "../application/AddPlaceUseCase";
 import { SearchPlacesUseCase } from "../application/SearchPlacesUseCase";
-import { UpdatePetFriendlyStatusUseCase } from "../application/UpdatePetFriendlyStatusUseCase";
-import { Place } from "../domain/Place";
+import { UpdatePetFriendlyUseCase } from "../application/UpdatePetFriendlyUseCase";
 
 export class PlacesController {
   constructor(
@@ -12,7 +11,7 @@ export class PlacesController {
     private readonly getPlaceDetailsUseCase: GetPlaceDetailsUseCase,
     private readonly addPlaceUseCase: AddPlaceUseCase,
     private readonly searchPlacesUseCase: SearchPlacesUseCase,
-    private readonly updatePetFriendlyStatusUseCase: UpdatePetFriendlyStatusUseCase
+    private readonly updatePetFriendlyUseCase: UpdatePetFriendlyUseCase
   ) {}
 
   public findNearbyPlaces = async (req: Request, res: Response) => {
@@ -130,7 +129,7 @@ export class PlacesController {
         return res.status(400).json({ error: "Confirmed status is required" });
       }
 
-      const place = await this.updatePetFriendlyStatusUseCase.execute({
+      const place = await this.updatePetFriendlyUseCase.execute({
         placeId: parseInt(id),
         confirmed,
       });
