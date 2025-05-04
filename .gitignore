@@ -40,7 +40,7 @@ build/
 *.temp
 
 # Database files
-*.sql
+# *.sql
 *.sqlite
 
 # Debugging files
