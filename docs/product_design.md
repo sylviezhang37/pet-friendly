@@ -135,22 +135,26 @@ The Places Service manages all business location data for the application.
 - Google Maps URL
 - Creation timestamp
 - Last updated timestamp
-- PetFriendly status
+  (PetFriendly status, denormalized for faster reads)
+- numConfirm
+- numDeny
+- lastContributionType
+- lastContributionDate
+- petFriendly (boolean)
 
 #### 3.2.4 Pet-Friendly Reviews Service
 
-- Stores pet-friendly status confirmations with optional reviews
-- Tracks confirmation count and timestamps
+- Stores pet-friendly confirmations with optional reviews
 - Associates confirmations and reviews with user IDs
-- Provides API for confirming status and adding reviews in a single action
+- Provides API for confirming pet-friendly status and adding reviews
 
 **Database Schema:**
 
-- Review ID (primary key)
+- ID (primary key)
 - Place ID (foreign key to Places Service)
 - User ID (foreign key to User Service)
 - PetFriendly (boolean)
-- Review text (optional)
+- Comment (optional)
 - Timestamp
 
 #### 3.2.5 User Service
@@ -207,9 +211,11 @@ GET /api/reviews/{placeId}
 POST /api/reviews/add
   - Request body includes:
     - placeId
-    - statuse (boolean)
-    - review (optional text)
     - userId
+    - username
+    - petFriendly (boolean)
+    - comment (optional text)
+    - date
 ```
 
 #### User Service API
@@ -226,7 +232,7 @@ GET /api/users/session - Get or create user session from cookie
 
 **Frontend:**
 
-- React.js for UI components
+- React for UI components
 - Google Maps JavaScript API for map integration
 - Tailwind CSS for styling
 - Future consideration: progressive Web App (PWA) capabilities
@@ -235,8 +241,8 @@ GET /api/users/session - Get or create user session from cookie
 
 - Node.js with Express or NestJS for API services
 - PostgreSQL with PostGIS extension on AWS RDS for geospatial data storage
-- Redis for caching frequently accessed data
-- Docker for containerization
+- caching: Redis?
+- Docker for containerization?
 
 **Infrastructure:**
 
