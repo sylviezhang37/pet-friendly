@@ -14,10 +14,10 @@ export class PlacesController {
     private readonly updatePetFriendlyUseCase: UpdatePetFriendlyUseCase
   ) {}
 
-  // find nearby places in database
+  // find nearby places in petfriendly database
   public findNearbyPlaces = async (req: Request, res: Response) => {
     try {
-      const { query, lat, lng, radius = 1000 } = req.query;
+      const { lat, lng, radius = 1000 } = req.query;
 
       if (!lat || !lng) {
         return res

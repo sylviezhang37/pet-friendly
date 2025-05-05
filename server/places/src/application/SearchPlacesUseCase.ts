@@ -9,18 +9,13 @@ export interface SearchPlacesInput {
   longitude: number;
 }
 
-export interface SearchPlacesOutput {
-  places: Place[];
-  total: number;
-}
-
 export class SearchPlacesUseCase {
   constructor(
     private readonly placeRepository: PlaceRepository,
     private readonly placesProvider: PlacesProvider
   ) {}
 
-  async execute(input: SearchPlacesInput): Promise<SearchPlacesOutput> {
+  async execute(input: SearchPlacesInput): Promise<Place[]> {
     const coordinates: Coordinates = {
       lat: input.latitude,
       lng: input.longitude,
@@ -29,7 +24,7 @@ export class SearchPlacesUseCase {
     // first search in our database
     let places = await this.placeRepository.search(input.query, coordinates);
 
-    // search Google Maps
+    // if not in db, search Google Maps
     if (places.length === 0) {
       const googlePlaces = await this.placesProvider.searchPlaces(
         input.query,
@@ -45,9 +40,6 @@ export class SearchPlacesUseCase {
       }
     }
 
-    return {
-      places,
-      total: places.length,
-    };
+    return places;
   }
 }

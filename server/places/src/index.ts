@@ -62,13 +62,6 @@ app.get(
 );
 
 app.get(
-  "/api/places/:id",
-  async (req: express.Request, res: express.Response) => {
-    await placesController.getPlaceDetails(req, res);
-  }
-);
-
-app.get(
   "/api/places/search",
   async (req: express.Request, res: express.Response) => {
     await placesController.searchPlaces(req, res);
@@ -86,6 +79,13 @@ app.patch(
   "/api/places/:id/pet-friendly",
   async (req: express.Request, res: express.Response) => {
     await placesController.updatePetFriendlyStatus(req, res);
+  }
+);
+
+app.get(
+  "/api/places/:id",
+  async (req: express.Request, res: express.Response) => {
+    await placesController.getPlaceDetails(req, res);
   }
 );
 

@@ -38,13 +38,14 @@ export class PostgresPlaceRepository implements PlaceRepository {
         ST_SetSRID(ST_MakePoint($2, $3), 4326),
         5000
       )
-      LIMIT 20
+      LIMIT 5
     `;
     const result = await this.dbConnection.query(searchQuery, [
       `%${query}%`,
       coordinates.lng,
       coordinates.lat,
     ]);
+
     return result.rows.map(this.mapToEntity);
   }
 
