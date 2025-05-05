@@ -136,6 +136,10 @@ export class PlacesController {
       const place = await this.updatePetFriendlyUseCase.execute({
         id: id,
         confirmed,
+        num_confirm: 0,
+        num_deny: 0,
+        last_contribution_type: confirmed ? "confirm" : "deny",
+        last_contribution_date: new Date(),
       });
 
       if (!place) {
