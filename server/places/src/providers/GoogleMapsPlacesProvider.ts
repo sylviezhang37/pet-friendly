@@ -59,14 +59,15 @@ export class GoogleMapsPlacesProvider implements PlacesProvider {
       },
     });
 
+    console.log(response.data.results);
     return response.data.results.map((place) => this.mapToPlace(place));
   }
 
   private mapToPlace(place: any): Place {
     return new Place({
-      id: place.id,
+      id: place.place_id,
       name: place.name,
-      address: place.vicinity,
+      address: place.formatted_address,
       coordinates: {
         lat: place.geometry.location.lat,
         lng: place.geometry.location.lng,
