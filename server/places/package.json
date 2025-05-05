@@ -7,7 +7,7 @@
     "start": "ts-node src/index.ts",
     "dev": "nodemon src/index.ts",
     "build": "tsc",
-    "test": "jest",
+    "test": "jest --detectOpenHandles",
     "test:get-place-from-maps": "ts-node __tests__/manual-tests/get-place-from-maps.ts",
     "test:search-name-in-maps": "ts-node __tests__/manual-tests/search-name-in-maps.ts"
   },
