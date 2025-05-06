@@ -1,5 +1,5 @@
 import { Place } from "../domain/Place";
-import { PlaceRepository } from "../repositories/PlaceRepository";
+import { PlacesRepository } from "../repositories/PlacesRepository";
 import { Coordinates } from "../domain/models";
 
 export interface FindNearbyPlacesInput {
@@ -19,7 +19,7 @@ export interface FindNearbyPlacesOutput {
 }
 
 export class FindNearbyPlaces {
-  constructor(private readonly placeRepository: PlaceRepository) {}
+  constructor(private readonly placeRepository: PlacesRepository) {}
 
   async execute(input: FindNearbyPlacesInput): Promise<FindNearbyPlacesOutput> {
     const coordinates: Coordinates = {

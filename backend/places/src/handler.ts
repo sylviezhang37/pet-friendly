@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
-import { FindNearbyPlaces } from "../application/FindNearbyPlaces";
-import { GetPlaceDetails } from "../application/GetPlaceDetails";
-import { AddPlace } from "../application/AddPlace";
-import { SearchPlaces } from "../application/SearchPlaces";
-import { UpdatePetFriendly } from "../application/UpdatePetFriendly";
+import { FindNearbyPlaces } from "./application/FindNearbyPlaces";
+import { GetPlaceDetails } from "./application/GetPlaceDetails";
+import { AddPlace } from "./application/AddPlace";
+import { SearchPlaces } from "./application/SearchPlaces";
+import { UpdatePetFriendly } from "./application/UpdatePetFriendly";
 
-export class PlacesController {
+export class Handler {
   constructor(
     private readonly findNearbyPlacesUseCase: FindNearbyPlaces,
     private readonly getPlaceDetailsUseCase: GetPlaceDetails,

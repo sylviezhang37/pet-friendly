@@ -1,9 +1,9 @@
 import { Pool } from "pg";
 import { Place } from "../domain/Place";
-import { PlaceRepository } from "./PlaceRepository";
+import { PlacesRepository } from "./PlacesRepository";
 import { Coordinates } from "../domain/models";
 
-export class PostgresPlaceRepository implements PlaceRepository {
+export class PostgresPlacesRepository implements PlacesRepository {
   constructor(private readonly dbConnection: Pool) {}
 
   async findById(id: string): Promise<Place | null> {
@@ -86,7 +86,7 @@ export class PostgresPlaceRepository implements PlaceRepository {
       WHERE id = $6
       RETURNING *
     `;
-    
+
     const result = await this.dbConnection.query(query, [
       pet_friendly,
       num_confirm,

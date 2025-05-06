@@ -1,7 +1,7 @@
 import { Place } from "../domain/Place";
 import { Coordinates } from "../domain/models";
 
-export interface PlaceRepository {
+export interface PlacesRepository {
   findById(id: string): Promise<Place | null>;
   findNearby(coordinates: Coordinates, radius: number): Promise<Place[]>;
   search(query: string, coordinates: Coordinates): Promise<Place[]>;

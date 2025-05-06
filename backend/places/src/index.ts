@@ -4,7 +4,7 @@ import helmet from "helmet";
 import { Pool } from "pg";
 
 // infrastructure
-import { PostgresPlaceRepository } from "./repositories/PostgresPlaceRepository";
+import { PostgresPlacesRepository } from "./repositories/PostgresPlacesRepository";
 import { GoogleMapsPlacesProvider } from "./providers/GoogleMapsPlacesProvider";
 
 // applications
@@ -15,7 +15,7 @@ import { SearchPlaces } from "./application/SearchPlaces";
 import { UpdatePetFriendly } from "./application/UpdatePetFriendly";
 
 // api interfaces
-import { PlacesController } from "./api/PlacesController";
+import { Handler } from "./handler";
 
 const pool = new Pool({
   user: process.env.DB_USER,
@@ -25,18 +25,19 @@ const pool = new Pool({
   port: parseInt(process.env.DB_PORT || "5432"),
 });
 
-const placeRepository = new PostgresPlaceRepository(pool);
+const placesRepository = new PostgresPlacesRepository(pool);
 const placesProvider = new GoogleMapsPlacesProvider(
   process.env.GOOGLE_MAPS_API_KEY || ""
 );
 
-const findNearbyPlaces = new FindNearbyPlaces(placeRepository);
-const getPlaceDetails = new GetPlaceDetails(placeRepository);
-const addPlace = new AddPlace(placeRepository);
-const searchPlaces = new SearchPlaces(placeRepository, placesProvider);
-const updatePetFriendly = new UpdatePetFriendly(placeRepository);
+const findNearbyPlaces = new FindNearbyPlaces(placesRepository);
+const getPlaceDetails = new GetPlaceDetails(placesRepository);
+const addPlace = new AddPlace(placesRepository);
+const searchPlaces = new SearchPlaces(placesRepository, placesProvider);
+const updatePetFriendly = new UpdatePetFriendly(placesRepository);
 
-const placesController = new PlacesController(
+// api handler
+const handler = new Handler(
   findNearbyPlaces,
   getPlaceDetails,
   addPlace,
@@ -54,35 +55,35 @@ app.use(express.json());
 app.get(
   "/api/places/nearby",
   async (req: express.Request, res: express.Response) => {
-    await placesController.findNearbyPlaces(req, res);
+    await handler.findNearbyPlaces(req, res);
   }
 );
 
 app.get(
   "/api/places/search",
   async (req: express.Request, res: express.Response) => {
-    await placesController.searchPlaces(req, res);
+    await handler.searchPlaces(req, res);
   }
 );
 
 app.post(
   "/api/places/add",
   async (req: express.Request, res: express.Response) => {
-    await placesController.addPlace(req, res);
+    await handler.addPlace(req, res);
   }
 );
 
 app.patch(
   "/api/places/:id/pet-friendly",
   async (req: express.Request, res: express.Response) => {
-    await placesController.updatePetFriendlyStatus(req, res);
+    await handler.updatePetFriendlyStatus(req, res);
   }
 );
 
 app.get(
   "/api/places/:id",
   async (req: express.Request, res: express.Response) => {
-    await placesController.getPlaceDetails(req, res);
+    await handler.getPlaceDetails(req, res);
   }
 );
 

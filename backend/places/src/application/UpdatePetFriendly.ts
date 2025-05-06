@@ -1,5 +1,5 @@
 import { Place } from "../domain/Place";
-import { PlaceRepository } from "../repositories/PlaceRepository";
+import { PlacesRepository } from "../repositories/PlacesRepository";
 
 export interface UpdatePetFriendlyInput {
   id: string;
@@ -11,7 +11,7 @@ export interface UpdatePetFriendlyInput {
 }
 
 export class UpdatePetFriendly {
-  constructor(private readonly placeRepository: PlaceRepository) {}
+  constructor(private readonly placeRepository: PlacesRepository) {}
 
   async execute(input: UpdatePetFriendlyInput): Promise<Place | null> {
     return this.placeRepository.updatePetFriendlyStatus(

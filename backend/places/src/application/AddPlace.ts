@@ -1,5 +1,5 @@
 import { Place } from "../domain/Place";
-import { PlaceRepository } from "../repositories/PlaceRepository";
+import { PlacesRepository } from "../repositories/PlacesRepository";
 
 export interface AddPlaceInput {
   id: string;
@@ -13,7 +13,7 @@ export interface AddPlaceInput {
 }
 
 export class AddPlace {
-  constructor(private readonly placeRepository: PlaceRepository) {}
+  constructor(private readonly placeRepository: PlacesRepository) {}
 
   async execute(input: AddPlaceInput): Promise<Place> {
     const place = new Place({
