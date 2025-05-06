@@ -3,13 +3,6 @@ export interface Coordinates {
   lng: number;
 }
 
-export interface PetFriendly {
-  numConfirm: number;
-  numDeny: number;
-  lastContributionType: "confirm" | "deny" | null;
-  lastContributionDate: Date | null;
-}
-
 export interface PlaceData {
   id: string;
   name: string;

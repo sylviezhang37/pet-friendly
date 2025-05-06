@@ -86,6 +86,7 @@ export class PostgresPlaceRepository implements PlaceRepository {
       WHERE id = $6
       RETURNING *
     `;
+    
     const result = await this.dbConnection.query(query, [
       pet_friendly,
       num_confirm,
@@ -94,6 +95,7 @@ export class PostgresPlaceRepository implements PlaceRepository {
       last_contribution_date,
       id,
     ]);
+
     return result.rows.length ? this.mapToEntity(result.rows[0]) : null;
   }
 

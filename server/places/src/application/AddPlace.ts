@@ -12,7 +12,7 @@ export interface AddPlaceInput {
   allowsPet?: boolean;
 }
 
-export class AddPlaceUseCase {
+export class AddPlace {
   constructor(private readonly placeRepository: PlaceRepository) {}
 
   async execute(input: AddPlaceInput): Promise<Place> {

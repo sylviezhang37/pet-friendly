@@ -10,7 +10,7 @@ export interface UpdatePetFriendlyInput {
   last_contribution_date: Date;
 }
 
-export class UpdatePetFriendlyUseCase {
+export class UpdatePetFriendly {
   constructor(private readonly placeRepository: PlaceRepository) {}
 
   async execute(input: UpdatePetFriendlyInput): Promise<Place | null> {

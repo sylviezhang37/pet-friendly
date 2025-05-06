@@ -9,7 +9,7 @@ export interface GetPlaceDetailsOutput {
   place: Place | null;
 }
 
-export class GetPlaceDetailsUseCase {
+export class GetPlaceDetails {
   constructor(private readonly placeRepository: PlaceRepository) {}
 
   async execute(input: GetPlaceDetailsInput): Promise<GetPlaceDetailsOutput> {

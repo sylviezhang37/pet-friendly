@@ -18,7 +18,7 @@ export interface FindNearbyPlacesOutput {
   petFriendlyCount: number;
 }
 
-export class FindNearbyPlacesUseCase {
+export class FindNearbyPlaces {
   constructor(private readonly placeRepository: PlaceRepository) {}
 
   async execute(input: FindNearbyPlacesInput): Promise<FindNearbyPlacesOutput> {

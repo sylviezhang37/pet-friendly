@@ -8,11 +8,11 @@ import { PostgresPlaceRepository } from "./repositories/PostgresPlaceRepository"
 import { GoogleMapsPlacesProvider } from "./providers/GoogleMapsPlacesProvider";
 
 // applications
-import { FindNearbyPlacesUseCase } from "./application/FindNearbyPlacesUseCase";
-import { GetPlaceDetailsUseCase } from "./application/GetPlaceDetailsUseCase";
-import { AddPlaceUseCase } from "./application/AddPlaceUseCase";
-import { SearchPlacesUseCase } from "./application/SearchPlacesUseCase";
-import { UpdatePetFriendlyUseCase } from "./application/UpdatePetFriendlyUseCase";
+import { FindNearbyPlaces } from "./application/FindNearbyPlaces";
+import { GetPlaceDetails } from "./application/GetPlaceDetails";
+import { AddPlace } from "./application/AddPlace";
+import { SearchPlaces } from "./application/SearchPlaces";
+import { UpdatePetFriendly } from "./application/UpdatePetFriendly";
 
 // api interfaces
 import { PlacesController } from "./api/PlacesController";
@@ -30,21 +30,18 @@ const placesProvider = new GoogleMapsPlacesProvider(
   process.env.GOOGLE_MAPS_API_KEY || ""
 );
 
-const findNearbyPlacesUseCase = new FindNearbyPlacesUseCase(placeRepository);
-const getPlaceDetailsUseCase = new GetPlaceDetailsUseCase(placeRepository);
-const addPlaceUseCase = new AddPlaceUseCase(placeRepository);
-const searchPlacesUseCase = new SearchPlacesUseCase(
-  placeRepository,
-  placesProvider
-);
-const updatePetFriendlyUseCase = new UpdatePetFriendlyUseCase(placeRepository);
+const findNearbyPlaces = new FindNearbyPlaces(placeRepository);
+const getPlaceDetails = new GetPlaceDetails(placeRepository);
+const addPlace = new AddPlace(placeRepository);
+const searchPlaces = new SearchPlaces(placeRepository, placesProvider);
+const updatePetFriendly = new UpdatePetFriendly(placeRepository);
 
 const placesController = new PlacesController(
-  findNearbyPlacesUseCase,
-  getPlaceDetailsUseCase,
-  addPlaceUseCase,
-  searchPlacesUseCase,
-  updatePetFriendlyUseCase
+  findNearbyPlaces,
+  getPlaceDetails,
+  addPlace,
+  searchPlaces,
+  updatePetFriendly
 );
 
 const app = express();

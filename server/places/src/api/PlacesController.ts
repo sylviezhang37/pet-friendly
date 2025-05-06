@@ -1,17 +1,17 @@
 import { Request, Response } from "express";
-import { FindNearbyPlacesUseCase } from "../application/FindNearbyPlacesUseCase";
-import { GetPlaceDetailsUseCase } from "../application/GetPlaceDetailsUseCase";
-import { AddPlaceUseCase } from "../application/AddPlaceUseCase";
-import { SearchPlacesUseCase } from "../application/SearchPlacesUseCase";
-import { UpdatePetFriendlyUseCase } from "../application/UpdatePetFriendlyUseCase";
+import { FindNearbyPlaces } from "../application/FindNearbyPlaces";
+import { GetPlaceDetails } from "../application/GetPlaceDetails";
+import { AddPlace } from "../application/AddPlace";
+import { SearchPlaces } from "../application/SearchPlaces";
+import { UpdatePetFriendly } from "../application/UpdatePetFriendly";
 
 export class PlacesController {
   constructor(
-    private readonly findNearbyPlacesUseCase: FindNearbyPlacesUseCase,
-    private readonly getPlaceDetailsUseCase: GetPlaceDetailsUseCase,
-    private readonly addPlaceUseCase: AddPlaceUseCase,
-    private readonly searchPlacesUseCase: SearchPlacesUseCase,
-    private readonly updatePetFriendlyUseCase: UpdatePetFriendlyUseCase
+    private readonly findNearbyPlacesUseCase: FindNearbyPlaces,
+    private readonly getPlaceDetailsUseCase: GetPlaceDetails,
+    private readonly addPlaceUseCase: AddPlace,
+    private readonly searchPlacesUseCase: SearchPlaces,
+    private readonly updatePetFriendlyUseCase: UpdatePetFriendly
   ) {}
 
   // find nearby places in petfriendly database

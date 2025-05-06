@@ -1,4 +1,4 @@
-import { PlaceData, PetFriendly } from "./models";
+import { PlaceData } from "./models";
 
 export class Place {
   public readonly id: string;

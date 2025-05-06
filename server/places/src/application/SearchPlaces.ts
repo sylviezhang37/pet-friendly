@@ -9,7 +9,7 @@ export interface SearchPlacesInput {
   longitude: number;
 }
 
-export class SearchPlacesUseCase {
+export class SearchPlaces {
   constructor(
     private readonly placeRepository: PlaceRepository,
     private readonly placesProvider: PlacesProvider
