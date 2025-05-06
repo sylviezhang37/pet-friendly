@@ -1,5 +1,5 @@
 import { Place } from "../domain/Place";
-import { PlacesRepository } from "../repositories/PlacesRepository";
+import { PlacesRepo } from "../repositories/PlacesRepo";
 
 export interface AddPlaceInput {
   id: string;
@@ -7,13 +7,13 @@ export interface AddPlaceInput {
   address: string;
   latitude: number;
   longitude: number;
-  businessType?: string;
-  googleMapsUrl?: string;
-  allowsPet?: boolean;
+  businessType?: string | null;
+  googleMapsUrl?: string | null;
+  allowsPet?: boolean | null;
 }
 
 export class AddPlace {
-  constructor(private readonly placeRepository: PlacesRepository) {}
+  constructor(private readonly placeRepository: PlacesRepo) {}
 
   async execute(input: AddPlaceInput): Promise<Place> {
     const place = new Place({

@@ -1,5 +1,5 @@
 import { Place } from "../domain/Place";
-import { PlacesRepository } from "../repositories/PlacesRepository";
+import { PlacesRepo } from "../repositories/PlacesRepo";
 import { PlacesProvider } from "../providers/PlacesProvider";
 import { Coordinates } from "../domain/models";
 
@@ -11,7 +11,7 @@ export interface SearchPlacesInput {
 
 export class SearchPlaces {
   constructor(
-    private readonly placeRepository: PlacesRepository,
+    private readonly placeRepository: PlacesRepo,
     private readonly placesProvider: PlacesProvider
   ) {}
 

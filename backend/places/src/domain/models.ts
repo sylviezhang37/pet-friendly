@@ -8,9 +8,9 @@ export interface PlaceData {
   name: string;
   address: string;
   coordinates: Coordinates;
-  businessType?: string;
-  googleMapsUrl?: string;
-  allowsPet?: boolean;
+  businessType?: string | null;
+  googleMapsUrl?: string | null;
+  allowsPet?: boolean | null;
   createdAt?: Date;
   updatedAt?: Date;
   numConfirm?: number;

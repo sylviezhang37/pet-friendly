@@ -1,9 +1,9 @@
 import { Pool } from "pg";
 import { Place } from "../domain/Place";
-import { PlacesRepository } from "./PlacesRepository";
+import { PlacesRepo } from "./PlacesRepo";
 import { Coordinates } from "../domain/models";
 
-export class PostgresPlacesRepository implements PlacesRepository {
+export class PostgresPlacesRepo implements PlacesRepo {
   constructor(private readonly dbConnection: Pool) {}
 
   async findById(id: string): Promise<Place | null> {

@@ -5,9 +5,9 @@ export class Place {
   public readonly name: string;
   public readonly address: string;
   public readonly coordinates: { lat: number; lng: number };
-  public readonly businessType?: string;
-  public readonly googleMapsUrl?: string;
-  public readonly allowsPet?: boolean;
+  public readonly businessType: string | null;
+  public readonly googleMapsUrl: string | null;
+  public readonly allowsPet: boolean | null;
   public readonly createdAt: Date;
   public readonly updatedAt: Date;
   public readonly numConfirm: number;
@@ -21,15 +21,15 @@ export class Place {
     this.name = data.name;
     this.address = data.address;
     this.coordinates = data.coordinates;
-    this.businessType = data.businessType;
-    this.googleMapsUrl = data.googleMapsUrl;
-    this.allowsPet = data.allowsPet;
-    this.createdAt = data.createdAt || new Date();
-    this.updatedAt = data.updatedAt || new Date();
-    this.numConfirm = data.numConfirm || 0;
-    this.numDeny = data.numDeny || 0;
-    this.lastContributionType = data.lastContributionType || null;
-    this.lastContributionDate = data.lastContributionDate || null;
+    this.businessType = data.businessType ?? null;
+    this.googleMapsUrl = data.googleMapsUrl ?? null;
+    this.allowsPet = data.allowsPet ?? null;
+    this.createdAt = data.createdAt ?? new Date();
+    this.updatedAt = data.updatedAt ?? new Date();
+    this.numConfirm = data.numConfirm ?? 0;
+    this.numDeny = data.numDeny ?? 0;
+    this.lastContributionType = data.lastContributionType ?? null;
+    this.lastContributionDate = data.lastContributionDate ?? null;
     this.petFriendly = this.isPetFriendly();
   }
 

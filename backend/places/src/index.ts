@@ -4,7 +4,7 @@ import helmet from "helmet";
 import { Pool } from "pg";
 
 // infrastructure
-import { PostgresPlacesRepository } from "./repositories/PostgresPlacesRepository";
+import { PostgresPlacesRepo } from "./repositories/PostgresPlacesRepo";
 import { GoogleMapsPlacesProvider } from "./providers/GoogleMapsPlacesProvider";
 
 // applications
@@ -25,16 +25,16 @@ const pool = new Pool({
   port: parseInt(process.env.DB_PORT || "5432"),
 });
 
-const placesRepository = new PostgresPlacesRepository(pool);
+const placesRepo = new PostgresPlacesRepo(pool);
 const placesProvider = new GoogleMapsPlacesProvider(
   process.env.GOOGLE_MAPS_API_KEY || ""
 );
 
-const findNearbyPlaces = new FindNearbyPlaces(placesRepository);
-const getPlaceDetails = new GetPlaceDetails(placesRepository);
-const addPlace = new AddPlace(placesRepository);
-const searchPlaces = new SearchPlaces(placesRepository, placesProvider);
-const updatePetFriendly = new UpdatePetFriendly(placesRepository);
+const findNearbyPlaces = new FindNearbyPlaces(placesRepo);
+const getPlaceDetails = new GetPlaceDetails(placesRepo);
+const addPlace = new AddPlace(placesRepo);
+const searchPlaces = new SearchPlaces(placesRepo, placesProvider);
+const updatePetFriendly = new UpdatePetFriendly(placesRepo);
 
 // api handler
 const handler = new Handler(
