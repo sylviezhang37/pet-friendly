@@ -2,7 +2,7 @@ import { Pool } from "pg";
 import { Review } from "./domain";
 
 interface ReviewsRepo {
-  findByPlaceId(placeId: string): Promise<Review[]>;
+  getByPlaceId(placeId: string): Promise<Review[]>;
   create(review: Review): Promise<Review>;
 }
 
@@ -27,7 +27,7 @@ export class PostgresReviewsRepo implements ReviewsRepo {
     return this.mapToEntity(result.rows[0]);
   }
 
-  async findByPlaceId(placeId: string): Promise<Review[]> {
+  async getByPlaceId(placeId: string): Promise<Review[]> {
     // TODO: Implement
     return [];
   }
