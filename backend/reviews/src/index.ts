@@ -25,6 +25,7 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
+// routes
 app.post("/api/reviews", handler.createReview);
 
 app.get("/api/reviews/:placeId", handler.getReviewsByPlaceId);
