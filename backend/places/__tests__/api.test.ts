@@ -23,9 +23,9 @@ jest.mock("../src/providers/GoogleMapsPlacesProvider", () => {
 });
 
 // mock Postgres repository class
-jest.mock("../src/repositories/PostgresPlaceRepository", () => {
+jest.mock("../src/repositories/PostgresPlacesRepo", () => {
   return {
-    PostgresPlaceRepository: jest.fn().mockImplementation(() => ({
+    PostgresPlacesRepo: jest.fn().mockImplementation(() => ({
       findById: jest.fn().mockResolvedValue({
         id: "ChIJP1sRv09awokRDPi8okFBDOM",
         name: "Lemongrass2",

@@ -52,3 +52,4 @@ debug.log
 .env.*.local
 docs/places_service.md
 docs/notes.md
+docs/design_patterns.md
