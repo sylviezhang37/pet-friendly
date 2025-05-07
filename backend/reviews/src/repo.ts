@@ -38,7 +38,7 @@ export class PostgresReviewsRepo implements ReviewsRepo {
     return result.rows.map((row) => this.mapToEntity(row));
   }
 
-  async mapToEntity(data: any): Promise<Review> {
+  private mapToEntity(data: any): Review {
     return new Review({
       id: data.id,
       placeId: data.place_id,
