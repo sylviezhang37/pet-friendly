@@ -52,40 +52,15 @@ app.use(cors());
 app.use(express.json());
 
 // routes
-app.get(
-  "/api/places/nearby",
-  async (req: express.Request, res: express.Response) => {
-    await handler.findNearbyPlaces(req, res);
-  }
-);
+app.post("/api/places", handler.addPlace);
 
-app.get(
-  "/api/places/search",
-  async (req: express.Request, res: express.Response) => {
-    await handler.searchPlaces(req, res);
-  }
-);
+app.get("/api/places/nearby", handler.findNearbyPlaces);
 
-app.post(
-  "/api/places/add",
-  async (req: express.Request, res: express.Response) => {
-    await handler.addPlace(req, res);
-  }
-);
+app.get("/api/places/search", handler.searchPlaces);
 
-app.patch(
-  "/api/places/:id/pet-friendly",
-  async (req: express.Request, res: express.Response) => {
-    await handler.updatePetFriendlyStatus(req, res);
-  }
-);
+app.patch("/api/places/:id/pet-friendly", handler.updatePetFriendlyStatus);
 
-app.get(
-  "/api/places/:id",
-  async (req: express.Request, res: express.Response) => {
-    await handler.getPlaceDetails(req, res);
-  }
-);
+app.get("/api/places/:id", handler.getPlaceDetails);
 
 app.use(
   (

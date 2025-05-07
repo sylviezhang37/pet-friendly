@@ -30,7 +30,7 @@ export class Handler {
     }
   };
 
-  public getReviewsByPlacesId = async (req: Request, res: Response) => {
+  public getReviewsByPlaceId = async (req: Request, res: Response) => {
     try {
       const { placeId } = req.params;
 
