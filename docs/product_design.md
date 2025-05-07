@@ -172,6 +172,7 @@ The Places Service manages all business location data for the application.
 - Anonymous flag (boolean)
 - Created datetime
 - Last active timestamp
+- Session cookie (for persistence)
 
 ### 3.3 Data Storage
 
