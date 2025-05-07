@@ -53,8 +53,8 @@ export class PostgresPlacesRepo implements PlacesRepo {
     const query = `
       INSERT INTO places (
         name, address, latitude, longitude, 
-        business_type, id, google_maps_url, allows_pet
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+        business_type, id, google_maps_url, allows_pet, created_at, updated_at
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
       RETURNING *
     `;
     const result = await this.dbConnection.query(query, [
@@ -65,7 +65,9 @@ export class PostgresPlacesRepo implements PlacesRepo {
       place.businessType,
       place.id,
       place.googleMapsUrl,
-      place.allowsPet || false,
+      place.allowsPet || null,
+      place.createdAt,
+      place.updatedAt,
     ]);
     return this.mapToEntity(result.rows[0]);
   }

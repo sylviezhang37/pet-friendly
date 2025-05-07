@@ -1,8 +1,8 @@
 import { Place } from "../domain/Place";
 import { PlacesRepo } from "../repositories/PlacesRepo";
+import { v4 as uuidv4 } from "uuid";
 
 export interface AddPlaceInput {
-  id: string;
   name: string;
   address: string;
   latitude: number;
@@ -17,7 +17,7 @@ export class AddPlace {
 
   async execute(input: AddPlaceInput): Promise<Place> {
     const place = new Place({
-      id: input.id,
+      id: uuidv4(),
       name: input.name,
       address: input.address,
       coordinates: {
@@ -27,6 +27,8 @@ export class AddPlace {
       businessType: input.businessType,
       googleMapsUrl: input.googleMapsUrl,
       allowsPet: input.allowsPet,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     });
 
     return this.placeRepository.save(place);

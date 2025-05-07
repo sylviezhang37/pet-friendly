@@ -89,7 +89,6 @@ export class Handler {
   public addPlace = async (req: Request, res: Response) => {
     try {
       const {
-        id,
         name,
         address,
         latitude,
@@ -106,7 +105,6 @@ export class Handler {
       }
 
       const place = await this.addPlaceUseCase.execute({
-        id,
         name,
         address,
         latitude,
