@@ -45,6 +45,7 @@ PetFriendly is a web application that helps pet owners discover and contribute t
 - Google Maps integration for business data
 - Persistent user IDs stored in database
 - User preferences and identity maintained between sessions
+- Lambda layer for shared utils
 
 ## 3. System Architecture
 
@@ -236,6 +237,7 @@ GET /api/users/session - Get or create user session from cookie
 - Google Maps JavaScript API for map integration
 - Tailwind CSS for styling
 - Future consideration: progressive Web App (PWA) capabilities
+- Optimistic UI Updates with Backend Processing
 
 **Backend:**
 
