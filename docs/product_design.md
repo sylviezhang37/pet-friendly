@@ -37,7 +37,7 @@ PetFriendly is a web application that helps pet owners discover and contribute t
 - No formal login required for V0
 - First-time users automatically assigned a random username
 - Users can optionally enter a custom username
-- Identity persisted across sessions via browser cookies
+- Identity persisted across sessions via browser local storage
 - Same username used for all contributions
 
 ### 2.4 Technical Note
@@ -163,16 +163,15 @@ The Places Service manages all business location data for the application.
 - Manages user information for both anonymous and registered users
 - Generates and stores persistent anonymous user IDs
 - Stores user-selected or randomly assigned usernames
-- Maintains session persistence via cookies
+- Maintains session persistence via local storage
 
 **Database Schema:**
 
 - User ID (primary key)
 - Username (user-selected or randomly assigned)
 - Anonymous flag (boolean)
-- Creation timestamp
+- Created datetime
 - Last active timestamp
-- Session token (for cookie persistence)
 
 ### 3.3 Data Storage
 
@@ -224,7 +223,6 @@ POST /api/reviews/add
 ```
 GET /api/users/{userId}
 POST /api/users - Create a new user with username
-GET /api/users/session - Get or create user session from cookie
 ```
 
 ## 4. Technical Implementation
@@ -261,9 +259,9 @@ GET /api/users/session - Get or create user session from cookie
 
 **User Identity Management:**
 
-- Generate and persist anonymous user IDs
-- Store usernames (random or user-selected) in User Service database
-- Cookie-based session management for persistent identity
+- Generate and persist user IDs and username
+- Store usernames (random or user-entered) in Users database
+- Session management for persistent identity using local storage
 - Ensure all contributions are associated with a user ID
 
 **Performance Optimization:**
@@ -277,14 +275,12 @@ GET /api/users/session - Get or create user session from cookie
 - Rate limiting to prevent abuse
 - Input validation to prevent injection attacks
 - CORS configuration for frontend access
-- Secure cookie handling for user sessions
 
 ## 5. Future Roadmap (Post V0)
 
 ### 5.1 User Accounts
 
-- Email/social login
-- User profiles
+- Google sign-in integration + cookie for identity persistence
 - Persistent preferences
 
 ### 5.2 Advanced Features
