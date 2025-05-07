@@ -28,8 +28,14 @@ export class PostgresReviewsRepo implements ReviewsRepo {
   }
 
   async getByPlaceId(placeId: string): Promise<Review[]> {
-    // TODO: Implement
-    return [];
+    const query = `
+      SELECT * FROM reviews 
+      WHERE place_id = $1
+    `;
+
+    const result = await this.dbConnection.query(query, [placeId]);
+
+    return result.rows.map((row) => this.mapToEntity(row));
   }
 
   async mapToEntity(data: any): Promise<Review> {
