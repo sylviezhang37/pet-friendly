@@ -27,6 +27,9 @@ export class ReviewsService {
       createdAt: new Date(),
     });
 
+    // TODO: maybe create a user client to get the username from /users/:id
+    // const user = await this.userClient.getUser(input.userId);
+
     return this.reviewsRepo.create(review);
   }
 
