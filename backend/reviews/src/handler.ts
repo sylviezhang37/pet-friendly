@@ -30,5 +30,19 @@ export class Handler {
     }
   };
 
-  public getReviewsByPlacesId = async (req: Request, res: Response) => {};
+  public getReviewsByPlacesId = async (req: Request, res: Response) => {
+    try {
+      const { placeId } = req.params;
+
+      if (!placeId) {
+        return res.status(400).json({ error: "Place ID is required" });
+      }
+
+      const result = await this.reviewsService.getReviewsByPlaceId(placeId);
+      res.json(result);
+    } catch (error) {
+      console.error("Error getting reviews by places id:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  };
 }
