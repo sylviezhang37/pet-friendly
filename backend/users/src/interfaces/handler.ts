@@ -1,5 +1,9 @@
 import { Request, Response } from "express";
-import { UsersService } from "./service";
+import { UsersService } from "../business/service";
+import {
+  UsernameAlreadyExistsError,
+  UsernameInvalidError,
+} from "../utils/errors";
 
 export class Handler {
   constructor(private readonly usersService: UsersService) {}
@@ -15,7 +19,15 @@ export class Handler {
 
       res.json(result);
     } catch (error) {
-      console.error("Error creating user:", error);
+      if (error instanceof UsernameAlreadyExistsError) {
+        res.status(400).json({ error: error.message });
+      }
+
+      if (error instanceof UsernameInvalidError) {
+        res.status(409).json({ error: error.message });
+      }
+
+      console.error("Unexpected error creating user:", error);
       res.status(500).json({ error: "Internal server error" });
     }
   };
@@ -23,7 +35,7 @@ export class Handler {
   public getUser = async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
-      const result = await this.usersService.get(id);
+      const result = await this.usersService.getById(id);
 
       res.json(result);
     } catch (error) {

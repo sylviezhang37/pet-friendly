@@ -4,9 +4,9 @@ import helmet from "helmet";
 import { Pool } from "pg";
 import dotenv from "dotenv";
 
-import { PostgresUsersRepo } from "./repo";
-import { UsersService } from "./service";
-import { Handler } from "./handler";
+import { PostgresUsersRepo } from "./interfaces/repo";
+import { UsersService } from "./business/service";
+import { Handler } from "./interfaces/handler";
 
 dotenv.config();
 

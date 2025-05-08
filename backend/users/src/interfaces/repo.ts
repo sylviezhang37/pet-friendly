@@ -1,9 +1,10 @@
 import { Pool } from "pg";
-import { User } from "./domain";
+import { User } from "../business/domain";
 
 export interface UsersRepo {
   create(user: User): Promise<User>;
-  get(id: string): Promise<User | null>;
+  getById(id: string): Promise<User | null>;
+  getByUsername(username: string): Promise<User | null>;
 }
 
 export class PostgresUsersRepo implements UsersRepo {
@@ -26,9 +27,15 @@ export class PostgresUsersRepo implements UsersRepo {
     return this.mapToDomain(result.rows[0]);
   }
 
-  async get(id: string): Promise<User | null> {
+  async getById(id: string): Promise<User | null> {
     const query = `SELECT * FROM users where id = $1`;
     const result = await this.dbConnection.query(query, [id]);
+    return result.rows.length ? this.mapToDomain(result.rows[0]) : null;
+  }
+
+  async getByUsername(username: string): Promise<User | null> {
+    const query = `SELECT * FROM users where username = $1`;
+    const result = await this.dbConnection.query(query, [username]);
     return result.rows.length ? this.mapToDomain(result.rows[0]) : null;
   }
 
