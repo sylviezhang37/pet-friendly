@@ -1,7 +1,7 @@
 import { Pool } from "pg";
 import { User } from "./domain";
 
-interface UsersRepo {
+export interface UsersRepo {
   create(user: User): Promise<User>;
   getById(id: string): Promise<User | null>;
 }

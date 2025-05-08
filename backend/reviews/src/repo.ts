@@ -1,7 +1,7 @@
 import { Pool } from "pg";
 import { Review } from "./domain";
 
-interface ReviewsRepo {
+export interface ReviewsRepo {
   getByPlaceId(placeId: string): Promise<Review[]>;
   create(review: Review): Promise<Review>;
 }
@@ -24,7 +24,7 @@ export class PostgresReviewsRepo implements ReviewsRepo {
       review.createdAt,
     ]);
 
-    return this.mapToEntity(result.rows[0]);
+    return this.mapToDomain(result.rows[0]);
   }
 
   async getByPlaceId(placeId: string): Promise<Review[]> {
@@ -35,10 +35,10 @@ export class PostgresReviewsRepo implements ReviewsRepo {
 
     const result = await this.dbConnection.query(query, [placeId]);
 
-    return result.rows.map((row) => this.mapToEntity(row));
+    return result.rows.map((row) => this.mapToDomain(row));
   }
 
-  private mapToEntity(data: any): Review {
+  private mapToDomain(data: any): Review {
     return new Review({
       id: data.id,
       placeId: data.place_id,

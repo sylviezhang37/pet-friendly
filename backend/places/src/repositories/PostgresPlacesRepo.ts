@@ -9,7 +9,7 @@ export class PostgresPlacesRepo implements PlacesRepo {
   async findById(id: string): Promise<Place | null> {
     const query = `SELECT * FROM places WHERE id = $1`;
     const result = await this.dbConnection.query(query, [id]);
-    return result.rows.length ? this.mapToEntity(result.rows[0]) : null;
+    return result.rows.length ? this.mapToDomain(result.rows[0]) : null;
   }
 
   async findNearby(coordinates: Coordinates, radius: number): Promise<Place[]> {
@@ -26,7 +26,7 @@ export class PostgresPlacesRepo implements PlacesRepo {
       coordinates.lat,
       radius,
     ]);
-    return result.rows.map(this.mapToEntity);
+    return result.rows.map(this.mapToDomain);
   }
 
   async search(query: string, coordinates: Coordinates): Promise<Place[]> {
@@ -46,7 +46,7 @@ export class PostgresPlacesRepo implements PlacesRepo {
       coordinates.lat,
     ]);
 
-    return result.rows.map(this.mapToEntity);
+    return result.rows.map(this.mapToDomain);
   }
 
   async save(place: Place): Promise<Place> {
@@ -69,7 +69,7 @@ export class PostgresPlacesRepo implements PlacesRepo {
       place.createdAt,
       place.updatedAt,
     ]);
-    return this.mapToEntity(result.rows[0]);
+    return this.mapToDomain(result.rows[0]);
   }
 
   async updatePetFriendlyStatus(
@@ -98,10 +98,10 @@ export class PostgresPlacesRepo implements PlacesRepo {
       id,
     ]);
 
-    return result.rows.length ? this.mapToEntity(result.rows[0]) : null;
+    return result.rows.length ? this.mapToDomain(result.rows[0]) : null;
   }
 
-  private mapToEntity(data: any): Place {
+  private mapToDomain(data: any): Place {
     return new Place({
       id: data.id,
       name: data.name,

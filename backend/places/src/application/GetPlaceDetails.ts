@@ -1,18 +1,18 @@
 import { Place } from "../domain/Place";
 import { PlacesRepo } from "../repositories/PlacesRepo";
 
-export interface GetPlaceDetailsInput {
+export interface PlaceIdInput {
   id: string;
 }
 
-export interface GetPlaceDetailsOutput {
+export interface PlaceDetailsOutput {
   place: Place | null;
 }
 
 export class GetPlaceDetails {
   constructor(private readonly placeRepository: PlacesRepo) {}
 
-  async execute(input: GetPlaceDetailsInput): Promise<GetPlaceDetailsOutput> {
+  async execute(input: PlaceIdInput): Promise<PlaceDetailsOutput> {
     const place = await this.placeRepository.findById(input.id);
 
     return {

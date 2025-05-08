@@ -2,7 +2,7 @@ import { Place } from "../domain/Place";
 import { PlacesRepo } from "../repositories/PlacesRepo";
 import { Coordinates } from "../domain/models";
 
-export interface FindNearbyPlacesInput {
+export interface NearbyPlacesInput {
   latitude: number;
   longitude: number;
   radius: number;
@@ -12,7 +12,7 @@ export interface FindNearbyPlacesInput {
   onlyPetFriendly?: boolean;
 }
 
-export interface FindNearbyPlacesOutput {
+export interface NearbyPlacesOutput {
   places: Place[];
   total: number;
   petFriendlyCount: number;
@@ -21,7 +21,7 @@ export interface FindNearbyPlacesOutput {
 export class FindNearbyPlaces {
   constructor(private readonly placeRepository: PlacesRepo) {}
 
-  async execute(input: FindNearbyPlacesInput): Promise<FindNearbyPlacesOutput> {
+  async execute(input: NearbyPlacesInput): Promise<NearbyPlacesOutput> {
     const coordinates: Coordinates = {
       lat: input.latitude,
       lng: input.longitude,

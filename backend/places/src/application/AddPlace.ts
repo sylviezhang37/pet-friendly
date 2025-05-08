@@ -2,7 +2,7 @@ import { Place } from "../domain/Place";
 import { PlacesRepo } from "../repositories/PlacesRepo";
 import { v4 as uuidv4 } from "uuid";
 
-export interface AddPlaceInput {
+export interface PlaceInput {
   name: string;
   address: string;
   latitude: number;
@@ -15,7 +15,7 @@ export interface AddPlaceInput {
 export class AddPlace {
   constructor(private readonly placeRepository: PlacesRepo) {}
 
-  async execute(input: AddPlaceInput): Promise<Place> {
+  async execute(input: PlaceInput): Promise<Place> {
     const place = new Place({
       id: uuidv4(),
       name: input.name,
