@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 
 export interface UserInput {
   username: string;
-  annoynomous: boolean;
+  anonymous: boolean;
 }
 
 export interface UserOutput {
@@ -19,7 +19,7 @@ export class UsersService {
       new User({
         id: uuidv4(),
         username: input.username,
-        anonymous: input.annoynomous,
+        anonymous: input.anonymous,
         createdAt: new Date(),
       })
     );
@@ -29,8 +29,8 @@ export class UsersService {
     };
   }
 
-  async getById(id: string): Promise<UserOutput> {
-    const user = await this.usersRepo.getById(id);
+  async get(id: string): Promise<UserOutput> {
+    const user = await this.usersRepo.get(id);
 
     return {
       user: user,

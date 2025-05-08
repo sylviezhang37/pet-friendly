@@ -3,7 +3,7 @@ import { User } from "./domain";
 
 export interface UsersRepo {
   create(user: User): Promise<User>;
-  getById(id: string): Promise<User | null>;
+  get(id: string): Promise<User | null>;
 }
 
 export class PostgresUsersRepo implements UsersRepo {
@@ -26,7 +26,7 @@ export class PostgresUsersRepo implements UsersRepo {
     return this.mapToDomain(result.rows[0]);
   }
 
-  async getById(id: string): Promise<User | null> {
+  async get(id: string): Promise<User | null> {
     const query = `SELECT * FROM users where id = $1`;
     const result = await this.dbConnection.query(query, [id]);
     return result.rows.length ? this.mapToDomain(result.rows[0]) : null;

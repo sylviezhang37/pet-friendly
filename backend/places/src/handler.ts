@@ -46,9 +46,7 @@ export class Handler {
         return res.status(400).json({ error: "Place ID is required" });
       }
 
-      const result = await this.getPlaceDetailsUseCase.execute({
-        id: id,
-      });
+      const result = await this.getPlaceDetailsUseCase.execute(id);
 
       if (!result.place) {
         return res.status(404).json({ error: "Place not found" });
