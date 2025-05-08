@@ -11,14 +11,15 @@ export class PostgresReviewsRepo implements ReviewsRepo {
 
   async create(review: Review): Promise<Review> {
     const query = `
-      INSERT INTO reviews (place_id, user_id, pet_friendly, comment, created_at)
-      VALUES ($1, $2, $3, $4, $5)
+      INSERT INTO reviews (place_id, user_id, username, pet_friendly, comment, created_at)
+      VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING *
     `;
 
     const result = await this.dbConnection.query(query, [
       review.placeId,
       review.userId,
+      review.username,
       review.petFriendly,
       review.comment,
       review.createdAt,
@@ -43,6 +44,7 @@ export class PostgresReviewsRepo implements ReviewsRepo {
       id: data.id,
       placeId: data.place_id,
       userId: data.user_id,
+      username: data.ausername,
       petFriendly: data.pet_friendly,
       comment: data.comment,
       createdAt: data.created_at,

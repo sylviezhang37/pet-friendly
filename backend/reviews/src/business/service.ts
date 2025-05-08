@@ -1,10 +1,12 @@
 import { v4 as uuidv4 } from "uuid";
 import { Review } from "./domain";
 import { ReviewsRepo } from "../interfaces/repo";
+import { UsersClient } from "@/integrations/users-client";
 
 export interface ReviewInput {
   placeId: string;
   userId: string;
+  username?: string | null;
   petFriendly: boolean;
   comment?: string | null;
 }
@@ -18,18 +20,24 @@ export interface ReviewsByPlaceIdOutput {
 }
 
 export class ReviewsService {
-  constructor(private readonly reviewsRepo: ReviewsRepo) {}
+  constructor(
+    private readonly reviewsRepo: ReviewsRepo,
+    private readonly usersClient: UsersClient
+  ) {}
 
   async createReview(input: ReviewInput): Promise<ReviewOutput> {
-    // TODO: maybe create a user client to get the username from /users/:id
-    // const user = await this.userClient.getUser(input.userId);
+    if (!input.username) {
+      const username = await this.usersClient.getUsername(input.userId);
+      input.username = username;
+    }
 
-    // generate id and createdAt at server side
+    // generate id and createdAt on the server side
     const review = await this.reviewsRepo.create(
       new Review({
         id: uuidv4(),
         placeId: input.placeId,
         userId: input.userId,
+        username: input.username,
         petFriendly: input.petFriendly,
         comment: input.comment,
         createdAt: new Date(),
