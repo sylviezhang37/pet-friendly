@@ -2,10 +2,13 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import { Pool } from "pg";
+import dotenv from "dotenv";
 
 import { PostgresReviewsRepo } from "./repo";
 import { ReviewsService } from "./service";
 import { Handler } from "./handler";
+
+dotenv.config();
 
 const pool = new Pool({
   user: process.env.DB_USER,

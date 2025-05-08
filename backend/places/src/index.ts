@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import { Pool } from "pg";
+import dotenv from "dotenv";
 
 // infrastructure
 import { PostgresPlacesRepo } from "./repositories/PostgresPlacesRepo";
@@ -16,6 +17,8 @@ import { UpdatePetFriendly } from "./application/UpdatePetFriendly";
 
 // api interfaces
 import { Handler } from "./handler";
+
+dotenv.config();
 
 const pool = new Pool({
   user: process.env.DB_USER,
