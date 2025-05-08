@@ -4,9 +4,9 @@ import helmet from "helmet";
 import { Pool } from "pg";
 import dotenv from "dotenv";
 
-import { PostgresReviewsRepo } from "./repo";
-import { ReviewsService } from "./service";
-import { Handler } from "./handler";
+import { PostgresReviewsRepo } from "./interfaces/repo";
+import { Handler } from "./interfaces/handler";
+import { ReviewsService } from "./business/service";
 
 dotenv.config();
 

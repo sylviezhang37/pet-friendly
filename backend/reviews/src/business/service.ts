@@ -1,6 +1,6 @@
-import { Review } from "./domain";
-import { ReviewsRepo } from "./repo";
 import { v4 as uuidv4 } from "uuid";
+import { Review } from "./domain";
+import { ReviewsRepo } from "../interfaces/repo";
 
 export interface ReviewInput {
   placeId: string;
