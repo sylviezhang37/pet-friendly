@@ -1,21 +1,22 @@
 import { Request, Response } from "express";
 import { ReviewsService } from "../business/service";
+import { UserNotFoundError } from "@/utils/errors";
 
 export class Handler {
   constructor(private readonly reviewsService: ReviewsService) {}
 
   public createReview = async (req: Request, res: Response) => {
+    const { placeId, userId, petFriendly, comment } = req.body;
+
+    if (!userId) {
+      return res.status(400).json({ error: "User ID is required" });
+    }
+
+    if (!placeId) {
+      return res.status(400).json({ error: "Place ID is required" });
+    }
+
     try {
-      const { placeId, userId, petFriendly, comment } = req.body;
-
-      if (!userId) {
-        return res.status(400).json({ error: "User ID is required" });
-      }
-
-      if (!placeId) {
-        return res.status(400).json({ error: "Place ID is required" });
-      }
-
       const review = await this.reviewsService.createReview({
         placeId,
         userId,
@@ -25,6 +26,10 @@ export class Handler {
 
       res.json(review);
     } catch (error) {
+      if (error instanceof UserNotFoundError) {
+        res.status(404).json({ error: error.message });
+      }
+
       console.error("Error creating review:", error);
       res.status(500).json({ error: "Internal server error" });
     }

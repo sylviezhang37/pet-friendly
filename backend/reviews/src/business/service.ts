@@ -2,6 +2,7 @@ import { v4 as uuidv4 } from "uuid";
 import { Review } from "./domain";
 import { ReviewsRepo } from "../interfaces/repo";
 import { UsersClient } from "@/integrations/users-client";
+import { UserNotFoundError } from "@/utils/errors";
 
 export interface ReviewInput {
   placeId: string;
@@ -27,8 +28,12 @@ export class ReviewsService {
 
   async createReview(input: ReviewInput): Promise<ReviewOutput> {
     if (!input.username) {
-      const username = await this.usersClient.getUsername(input.userId);
-      input.username = username;
+      try {
+        const username = await this.usersClient.getUsername(input.userId);
+        input.username = username;
+      } catch (error) {
+        throw new UserNotFoundError(input.userId);
+      }
     }
 
     // generate id and createdAt on the server side

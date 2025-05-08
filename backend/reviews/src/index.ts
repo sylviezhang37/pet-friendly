@@ -7,6 +7,7 @@ import dotenv from "dotenv";
 import { PostgresReviewsRepo } from "./interfaces/repo";
 import { Handler } from "./interfaces/handler";
 import { ReviewsService } from "./business/service";
+import { UsersClient } from "./integrations/users-client";
 
 dotenv.config();
 
@@ -18,8 +19,9 @@ const pool = new Pool({
   port: parseInt(process.env.DB_PORT || "5432"),
 });
 
+const usersClient = new UsersClient();
 const reviewsRepo = new PostgresReviewsRepo(pool);
-const reviewsService = new ReviewsService(reviewsRepo);
+const reviewsService = new ReviewsService(reviewsRepo, usersClient);
 const handler = new Handler(reviewsService);
 
 const app = express();
