@@ -36,7 +36,6 @@ export class UsersService {
     if (!isUnique) {
       return this.generateUsername();
     }
-
     return username;
   }
 

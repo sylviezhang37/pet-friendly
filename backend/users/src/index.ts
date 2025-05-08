@@ -29,8 +29,8 @@ app.use(cors());
 app.use(express.json());
 
 // routes
-app.post("/api/users", handler.createUser);
-app.get("/api/users/:id", handler.getUser);
+app.post("/api/v0/users", handler.createUser);
+app.get("/api/v0/users/:id", handler.getUser);
 
 app.use(
   (

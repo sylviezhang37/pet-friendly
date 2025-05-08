@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { ReviewsService } from "./service";
+import { ReviewsService } from "../business/service";
 
 export class Handler {
   constructor(private readonly reviewsService: ReviewsService) {}

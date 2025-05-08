@@ -197,25 +197,18 @@ We'll use PostgreSQL with PostGIS extension hosted on AWS RDS for all services:
 #### Places Service API
 
 ```
-GET /api/places/{id}
-GET /api/places/nearby?lat={latitude}&lng={longitude}&radius={meters}
-GET /api/places/search?query={search_term}&lat={latitude}&lng={longitude}
-POST /api/places/add
-PATCH /api/places/{id}/pet-friendly
+GET /api/v0/places/{id}
+GET /api/v0/places/nearby?lat={latitude}&lng={longitude}&radius={meters}
+GET /api/v0/places/search?query={search_term}&lat={latitude}&lng={longitude}
+POST /api/v0/places/add
+PATCH /api/v0/places/{id}/pet-friendly
 ```
 
-#### Pet-Friendly Reviews Service API
+#### Reviews Service API
 
 ```
-GET /api/reviews/{placeId}
-POST /api/reviews/add
-  - Request body includes:
-    - placeId
-    - userId
-    - username
-    - petFriendly (boolean)
-    - comment (optional text)
-    - date
+GET /api/v0/reviews/{placeId}
+POST /api/v0/reviews/add
 ```
 
 #### User Service API

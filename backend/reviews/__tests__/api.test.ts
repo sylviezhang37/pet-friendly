@@ -4,7 +4,7 @@ import * as dotenv from "dotenv";
 
 dotenv.config();
 
-jest.mock("../src/repo", () => {
+jest.mock("../src/interfaces/repo", () => {
   const mockReview = {
     id: "1234567890",
     placeId: "ChIJP1sRv09awokRDPi8okFBDOM",
@@ -23,12 +23,12 @@ jest.mock("../src/repo", () => {
 });
 
 // import the mock data from the mock module
-const { __mockReview } = jest.requireMock("../src/repo");
+const { __mockReview } = jest.requireMock("../src/interfaces/repo");
 
-describe("GET /api/reviews/:placeId", () => {
+describe("GET /api/v0/reviews/:placeId", () => {
   it("it should return reviews for a place (mocked)", async () => {
     const res = await request(app).get(
-      "/api/reviews/ChIJP1sRv09awokRDPi8okFBDOM"
+      "/api/v0/reviews/ChIJP1sRv09awokRDPi8okFBDOM"
     );
 
     expect(res.status).toBe(200);
@@ -36,7 +36,7 @@ describe("GET /api/reviews/:placeId", () => {
   });
 });
 
-describe("POST /api/reviews", () => {
+describe("POST /api/v0/reviews", () => {
   it("it should return a new review", async () => {
     const requestBody = {
       placeId: "ChIJhwCMNh5ZwokROomRErlMEpk",
@@ -44,9 +44,9 @@ describe("POST /api/reviews", () => {
       petFriendly: true,
     };
 
-    const res = await request(app).post("/api/reviews").send(requestBody);
+    const res = await request(app).post("/api/v0/reviews").send(requestBody);
 
     expect(res.status).toBe(200);
-    expect(res.body).toEqual(__mockReview);
+    expect(res.body).toEqual({ review: __mockReview });
   });
 });

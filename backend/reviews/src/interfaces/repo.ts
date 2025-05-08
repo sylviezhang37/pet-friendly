@@ -1,5 +1,5 @@
 import { Pool } from "pg";
-import { Review } from "./domain";
+import { Review } from "../business/domain";
 
 export interface ReviewsRepo {
   getByPlaceId(placeId: string): Promise<Review[]>;

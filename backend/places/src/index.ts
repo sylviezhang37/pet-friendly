@@ -55,15 +55,15 @@ app.use(cors());
 app.use(express.json());
 
 // routes
-app.post("/api/places", handler.addPlace);
+app.post("/api/v0/places", handler.addPlace);
 
-app.get("/api/places/nearby", handler.findNearbyPlaces);
+app.get("/api/v0/places/nearby", handler.findNearbyPlaces);
 
-app.get("/api/places/search", handler.searchPlaces);
+app.get("/api/v0/places/search", handler.searchPlaces);
 
-app.patch("/api/places/:id/pet-friendly", handler.updatePetFriendlyStatus);
+app.patch("/api/v0/places/:id/pet-friendly", handler.updatePetFriendlyStatus);
 
-app.get("/api/places/:id", handler.getPlaceDetails);
+app.get("/api/v0/places/:id", handler.getPlaceDetails);
 
 app.use(
   (

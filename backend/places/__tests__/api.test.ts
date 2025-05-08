@@ -39,10 +39,10 @@ jest.mock("../src/repositories/PostgresPlacesRepo", () => {
   };
 });
 
-describe("GET /api/places/:id", () => {
+describe("GET /api/v0/places/:id", () => {
   it("it should return place details (mocked)", async () => {
     const res = await request(app).get(
-      "/api/places/ChIJP1sRv09awokRDPi8okFBDOM"
+      "/api/v0/places/ChIJP1sRv09awokRDPi8okFBDOM"
     );
 
     expect(res.status).toBe(200);
@@ -53,10 +53,10 @@ describe("GET /api/places/:id", () => {
   });
 });
 
-describe("GET /api/places/search", () => {
+describe("GET /api/v0/places/search", () => {
   it("it should return search a place by query", async () => {
     const res = await request(app).get(
-      "/api/places/search?query=chalong&lat=40.7637225&lng=-73.9913011"
+      "/api/v0/places/search?query=chalong&lat=40.7637225&lng=-73.9913011"
     );
 
     expect(res.status).toBe(200);
