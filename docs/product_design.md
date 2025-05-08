@@ -171,7 +171,6 @@ The Places Service manages all business location data for the application.
 - Username (user-selected or randomly assigned)
 - Anonymous flag (boolean)
 - Created datetime
-- Last active timestamp
 - Session cookie (for persistence)
 
 ### 3.3 Data Storage
@@ -222,8 +221,8 @@ POST /api/reviews/add
 #### User Service API
 
 ```
-GET /api/users/{userId}
-POST /api/users - Create a new user with username
+GET /api/v0/users/{userId}
+POST /api/v0/users - Create a new user with username
 ```
 
 ## 4. Technical Implementation
