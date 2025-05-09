@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import { ReviewsService } from "../business/service";
-import { UserNotFoundError } from "@/utils/errors";
+import { UserNotFoundError } from "../utils/errors";
 
 export class Handler {
   constructor(private readonly reviewsService: ReviewsService) {}
 
   public createReview = async (req: Request, res: Response) => {
-    const { placeId, userId, petFriendly, comment } = req.body;
+    const { placeId, userId, username, petFriendly, comment } = req.body;
 
     if (!userId) {
       return res.status(400).json({ error: "User ID is required" });
@@ -20,6 +20,7 @@ export class Handler {
       const review = await this.reviewsService.createReview({
         placeId,
         userId,
+        username,
         petFriendly,
         comment,
       });
