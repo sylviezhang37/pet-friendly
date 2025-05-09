@@ -7,7 +7,7 @@ import dotenv from "dotenv";
 import { PostgresReviewsRepo } from "./interfaces/repo";
 import { Handler } from "./interfaces/handler";
 import { ReviewsService } from "./business/service";
-import { UsersClient } from "./integrations/users-client";
+import { UsersClient } from "./integrations/usersClient";
 
 dotenv.config();
 

@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import { Review } from "./domain";
 import { ReviewsRepo } from "../interfaces/repo";
-import { UsersClient } from "@/integrations/users-client";
+import { UsersClient } from "@/integrations/usersClient";
 import { UserNotFoundError } from "@/utils/errors";
 
 export interface ReviewInput {
