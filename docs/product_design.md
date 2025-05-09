@@ -143,7 +143,7 @@ The Places Service manages all business location data for the application.
 - lastContributionDate
 - petFriendly (boolean)
 
-#### 3.2.4 Pet-Friendly Reviews Service
+#### 3.2.4 Reviews Service
 
 - Stores pet-friendly confirmations with optional reviews
 - Associates confirmations and reviews with user IDs
@@ -154,6 +154,7 @@ The Places Service manages all business location data for the application.
 - ID (primary key)
 - Place ID (foreign key to Places Service)
 - User ID (foreign key to User Service)
+- username
 - PetFriendly (boolean)
 - Comment (optional)
 - Timestamp
@@ -224,7 +225,7 @@ POST /api/v0/users - Create a new user with username
 
 **Frontend:**
 
-- React for UI components
+- React + NextJS
 - Google Maps JavaScript API for map integration
 - Tailwind CSS for styling
 - Future consideration: progressive Web App (PWA) capabilities
