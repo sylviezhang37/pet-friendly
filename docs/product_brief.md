@@ -1,4 +1,4 @@
-# PetFriendly Product Design Document
+# PetFriendly Product Brief
 
 ## 1. Product Overview
 
