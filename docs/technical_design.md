@@ -177,11 +177,19 @@ POST /api/v0/users - Create a new user with username
 
 **Frontend:**
 
-- React + NextJS
+- React + NextJS with TypeScript
 - Google Maps JavaScript API for map integration
-- Tailwind CSS for styling
-- Optimistic UI Updates with Backend Processing
-- Future consideration: progressive Web App (PWA) capabilities
+  - API key management and usage tracking
+  - Fallback UI for API key issues
+- Chakra UI + Tailwind CSS for styling and components
+- Zustand for state management
+  - Optimistic updates support
+  - TypeScript integration
+- Progressive Web App (PWA) capabilities
+- Storybook for component documentation and testing
+- React Query for basic data fetching and caching
+- Responsive design with different layouts for mobile/desktop
+- Loading states with consistent UI components
 
 **Backend:**
 
