@@ -36,6 +36,7 @@ export default function InfoPanel() {
           SEARCH
         </Button>
       </VStack>
+      {/* Support section */}
       <Support />
     </Box>
   );
