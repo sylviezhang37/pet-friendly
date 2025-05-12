@@ -4,7 +4,7 @@ import { Box } from "@chakra-ui/react";
 import { useStore } from "@/hooks/useStore";
 import { useCallback } from "react";
 import Map from "@/components/Map";
-import InfoPanel from "@/components/InfoPanel";
+import InfoPanel from "@/components/Welcome";
 import PlacePanel from "@/components/Place";
 import { Place } from "@/lib/place";
 
@@ -41,9 +41,9 @@ export default function Home() {
         left={{ base: 0, md: "auto" }}
         bottom={{ base: 0, md: 8 }}
         top={{ base: "auto", md: 8 }}
-        width={{ base: "100vw", md: "420px" }}
+        width={{ base: "100vw", md: "450px" }}
         maxWidth="100vw"
-        borderRadius={{ base: "2xl 2xl 0 0", md: "2xl" }}
+        borderRadius={{ base: "2xl", md: "2xl 2xl 0 0" }}
         boxShadow="2xl"
         bg="white"
         overflowY="auto"

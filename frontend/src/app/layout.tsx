@@ -26,6 +26,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      {/* consider adding a link to google font here */}
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
