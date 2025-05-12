@@ -9,10 +9,13 @@ import {
   VStack,
   Icon,
   Divider,
+  Textarea,
+  Fade,
 } from "@chakra-ui/react";
 import { Place } from "@/lib/place";
 import { useStore } from "@/hooks/useStore";
 import { PiThumbsUpBold, PiThumbsDownBold } from "react-icons/pi";
+import { useState } from "react";
 
 const sampleDetails = {
   address: "329 W 49th St, New York, NY 10019",
@@ -48,6 +51,26 @@ const sampleDetails = {
 
 export default function PlacePanel({ place }: { place: Place }) {
   const setSelectedPlaceId = useStore((s) => s.setSelectedPlaceId);
+  const [selected, setSelected] = useState<"confirm" | "deny" | null>(null);
+  const [comment, setComment] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSelect = (type: "confirm" | "deny") => {
+    setSelected(type);
+    setSubmitted(false);
+  };
+
+  const handleCancel = () => {
+    setSelected(null);
+    setComment("");
+    setSubmitted(false);
+  };
+
+  const handlePost = () => {
+    setSubmitted(true);
+    setComment("");
+  };
+
   return (
     <Box p={8}>
       <Button
@@ -89,19 +112,41 @@ export default function PlacePanel({ place }: { place: Place }) {
       <HStack spacing={4} mb={6}>
         <Button
           leftIcon={<PiThumbsUpBold />}
-          colorScheme="yellow"
-          variant="outline"
-        >
-          Confirm
-        </Button>
+          colorScheme={selected === "confirm" ? "yellow" : undefined}
+          variant={selected === "confirm" ? "solid" : "outline"}
+          onClick={() => handleSelect("confirm")}
+        />
         <Button
           leftIcon={<PiThumbsDownBold />}
-          colorScheme="yellow"
-          variant="outline"
-        >
-          Deny
-        </Button>
+          colorScheme={selected === "deny" ? "yellow" : undefined}
+          variant={selected === "deny" ? "solid" : "outline"}
+          onClick={() => handleSelect("deny")}
+        />
       </HStack>
+      <Fade in={!!selected && !submitted} unmountOnExit>
+        <Box mb={6} p={4} bg="yellow.50" borderRadius="md" boxShadow="sm">
+          <Textarea
+            placeholder="Add a comment"
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            mb={3}
+            bg="white"
+          />
+          <HStack justify="flex-end">
+            <Button onClick={handleCancel} variant="ghost">
+              Cancel
+            </Button>
+            <Button onClick={handlePost} colorScheme="yellow" fontWeight="bold">
+              Post
+            </Button>
+          </HStack>
+        </Box>
+      </Fade>
+      <Fade in={submitted} unmountOnExit>
+        <Box mb={6} p={4} bg="green.50" borderRadius="md" textAlign="center">
+          <Text color="green.700">Review submitted</Text>
+        </Box>
+      </Fade>
       <Divider my={4} />
       <Heading size="md" mb={2}>
         Reviews
