@@ -11,10 +11,12 @@ import {
   Divider,
   Textarea,
   Fade,
+  IconButton,
 } from "@chakra-ui/react";
 import { Place } from "@/lib/place";
 import { useStore } from "@/hooks/useStore";
 import { PiThumbsUpBold, PiThumbsDownBold } from "react-icons/pi";
+import { FaArrowLeft } from "react-icons/fa";
 import { useState } from "react";
 
 const sampleDetails = {
@@ -73,14 +75,14 @@ export default function PlacePanel({ place }: { place: Place }) {
 
   return (
     <Box p={8}>
-      <Button
-        size="sm"
+      <IconButton
+        aria-label="Back Arrow"
+        icon={<FaArrowLeft />}
+        colorScheme="gray"
         variant="ghost"
         mb={4}
         onClick={() => setSelectedPlaceId(null)}
-      >
-        ←
-      </Button>
+      />
       <Heading size="xl" mb={1}>
         {place.name}
       </Heading>
@@ -110,14 +112,16 @@ export default function PlacePanel({ place }: { place: Place }) {
         </HStack>
       </HStack>
       <HStack spacing={4} mb={6}>
-        <Button
-          leftIcon={<PiThumbsUpBold />}
+        <IconButton
+          aria-label="Confirm"
+          icon={<PiThumbsUpBold />}
           colorScheme={selected === "confirm" ? "yellow" : undefined}
           variant={selected === "confirm" ? "solid" : "outline"}
           onClick={() => handleSelect("confirm")}
         />
-        <Button
-          leftIcon={<PiThumbsDownBold />}
+        <IconButton
+          aria-label="Deny"
+          icon={<PiThumbsDownBold />}
           colorScheme={selected === "deny" ? "yellow" : undefined}
           variant={selected === "deny" ? "solid" : "outline"}
           onClick={() => handleSelect("deny")}
