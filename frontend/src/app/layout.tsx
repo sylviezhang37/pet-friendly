@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { ChakraProvider } from "@chakra-ui/react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useState } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,12 +25,18 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // React Query client instance (singleton per app)
+  const [queryClient] = useState(() => new QueryClient());
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <ChakraProvider>
+          <QueryClientProvider client={queryClient}>
+            {children}
+          </QueryClientProvider>
+        </ChakraProvider>
       </body>
     </html>
   );
