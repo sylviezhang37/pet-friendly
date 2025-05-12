@@ -101,7 +101,7 @@ export default function PlacePanel({ place }: { place: Place }) {
   return (
     <Box p={10}>
       <IconButton
-        aria-label="Back Arrow"
+        aria-label="Left Arrow"
         icon={<FaArrowLeft />}
         colorScheme="gray"
         variant="ghost"

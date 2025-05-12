@@ -6,19 +6,24 @@ export default function Welcome() {
     <Box
       flex={{ base: "none", md: "0 0 450px" }}
       width={{ base: "100vw", md: "auto" }}
-      height={{ base: "60vh", md: "100vh" }}
+      height="100%"
       maxWidth="100vw"
-      bg="white"
       boxShadow={{ base: "none", md: "xl" }}
       p={8}
-      overflowY="auto"
       display="flex"
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
       position="relative"
     >
-      <VStack spacing={8} width="100%" maxW="350px">
+      <VStack
+        spacing={8}
+        width="100%"
+        maxW="340px"
+        height="100%"
+        justifyContent="center"
+        alignItems="center"
+      >
         <Heading
           as="h1"
           size="2xl"
