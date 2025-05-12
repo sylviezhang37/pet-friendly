@@ -1,5 +1,6 @@
 "use client";
 
+import { Place } from "@/lib/place";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 
 const containerStyle = {
@@ -13,14 +14,12 @@ const center = {
   lng: -73.9855,
 };
 
-export interface Place {
-  id: string;
-  lat: number;
-  lng: number;
-  name: string;
+interface MapProps {
+  places?: Place[];
+  onMarkerClick?: (placeId: string) => void;
 }
 
-export default function Map({ places = [] }: { places?: Place[] }) {
+export default function Map({ places = [], onMarkerClick }: MapProps) {
   return (
     <LoadScript
       googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ""}
@@ -36,6 +35,7 @@ export default function Map({ places = [] }: { places?: Place[] }) {
             key={place.id}
             position={{ lat: place.lat, lng: place.lng }}
             label={place.name[0]}
+            onClick={() => onMarkerClick?.(place.id)}
           />
         ))}
       </GoogleMap>
