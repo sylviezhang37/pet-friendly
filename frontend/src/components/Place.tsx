@@ -12,12 +12,13 @@ import {
   Textarea,
   Fade,
   IconButton,
+  Spinner,
 } from "@chakra-ui/react";
 import { Place } from "@/lib/place";
 import { useStore } from "@/hooks/useStore";
 import { PiThumbsUpBold, PiThumbsDownBold } from "react-icons/pi";
 import { FaArrowLeft } from "react-icons/fa";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const sampleDetails = {
   address: "329 W 49th St, New York, NY 10019",
@@ -56,6 +57,14 @@ export default function PlacePanel({ place }: { place: Place }) {
   const [selected, setSelected] = useState<"confirm" | "deny" | null>(null);
   const [comment, setComment] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // simulate loading for 600ms
+    setLoading(true);
+    const t = setTimeout(() => setLoading(false), 600);
+    return () => clearTimeout(t);
+  }, [place.id]);
 
   const handleSelect = (type: "confirm" | "deny") => {
     setSelected(type);
@@ -73,17 +82,34 @@ export default function PlacePanel({ place }: { place: Place }) {
     setComment("");
   };
 
+  if (loading) {
+    return (
+      <Box
+        p={8}
+        display="flex"
+        flexDir="column"
+        alignItems="center"
+        justifyContent="center"
+        minH="400px"
+      >
+        <Spinner size="xl" color="yellow.500" mb={4} />
+        <Text color="gray.500">Loading place details...</Text>
+      </Box>
+    );
+  }
+
   return (
-    <Box p={8}>
+    <Box p={10}>
       <IconButton
         aria-label="Back Arrow"
         icon={<FaArrowLeft />}
         colorScheme="gray"
         variant="ghost"
+        justifyContent="flex-start"
         mb={4}
         onClick={() => setSelectedPlaceId(null)}
       />
-      <Heading size="xl" mb={1}>
+      <Heading size="xl" mb={2}>
         {place.name}
       </Heading>
       <Text color="gray.600" mb={2}>
@@ -93,7 +119,6 @@ export default function PlacePanel({ place }: { place: Place }) {
         fontSize="sm"
         color="yellow.800"
         bg="yellow.50"
-        px={2}
         py={1}
         borderRadius="md"
         mb={2}
@@ -111,7 +136,7 @@ export default function PlacePanel({ place }: { place: Place }) {
           <Text>{sampleDetails.numDeny} denied</Text>
         </HStack>
       </HStack>
-      <HStack spacing={4} mb={6}>
+      <HStack spacing={4} mb={6} justifyContent="center">
         <IconButton
           aria-label="Confirm"
           icon={<PiThumbsUpBold />}
@@ -128,7 +153,7 @@ export default function PlacePanel({ place }: { place: Place }) {
         />
       </HStack>
       <Fade in={!!selected && !submitted} unmountOnExit>
-        <Box mb={6} p={4} bg="yellow.50" borderRadius="md" boxShadow="sm">
+        <Box mb={6} p={4} borderRadius="md" boxShadow="sm">
           <Textarea
             placeholder="Add a comment"
             value={comment}
@@ -156,18 +181,24 @@ export default function PlacePanel({ place }: { place: Place }) {
         Reviews
       </Heading>
       <VStack align="stretch" spacing={3}>
-        {sampleDetails.reviews.map((review) => (
-          <Box key={review.id} p={3} bg="gray.50" borderRadius="md">
-            <HStack spacing={2} mb={1}>
-              <Icon
-                as={review.confirm ? PiThumbsUpBold : PiThumbsDownBold}
-                color={review.confirm ? "green.500" : "red.400"}
-              />
-              <Text fontWeight="bold">by {review.username}</Text>
-            </HStack>
-            {review.comment && <Text fontSize="sm">{review.comment}</Text>}
-          </Box>
-        ))}
+        {sampleDetails.reviews.length === 0 ? (
+          <Text color="gray.400" textAlign="center">
+            No reviews yet. Be the first to review!
+          </Text>
+        ) : (
+          sampleDetails.reviews.map((review) => (
+            <Box key={review.id} p={3} bg="gray.50" borderRadius="md">
+              <HStack spacing={2} mb={1}>
+                <Icon
+                  as={review.confirm ? PiThumbsUpBold : PiThumbsDownBold}
+                  color={review.confirm ? "green.500" : "red.400"}
+                />
+                <Text fontWeight="bold">by {review.username}</Text>
+              </HStack>
+              {review.comment && <Text fontSize="sm">{review.comment}</Text>}
+            </Box>
+          ))
+        )}
       </VStack>
     </Box>
   );
