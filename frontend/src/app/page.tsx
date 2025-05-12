@@ -1,4 +1,5 @@
 import { Flex, Box } from "@chakra-ui/react";
+import Map from "../components/Map";
 
 export default function Home() {
   return (
@@ -13,13 +14,9 @@ export default function Home() {
         flex={{ base: "none", md: 1 }}
         height={{ base: "40vh", md: "100vh" }}
         width={{ base: "100vw", md: "60vw" }}
-        bg="gray.200"
         position="relative"
       >
-        {/* Map will go here */}
-        <Box position="absolute" top={4} left={4} color="gray.600">
-          Map Placeholder
-        </Box>
+        <Map />
       </Box>
       {/* Info/Search Panel */}
       <Box

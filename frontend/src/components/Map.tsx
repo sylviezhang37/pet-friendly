@@ -1,3 +1,5 @@
+"use client";
+
 import { GoogleMap, LoadScript } from "@react-google-maps/api";
 
 const containerStyle = {
@@ -5,6 +7,7 @@ const containerStyle = {
   height: "100%",
 };
 
+// default to NYC for V0
 const center = {
   lat: 40.758,
   lng: -73.9855,
