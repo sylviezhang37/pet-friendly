@@ -1,4 +1,5 @@
 import { Box, Heading, Text, Input, Button, VStack } from "@chakra-ui/react";
+import Support from "./Support";
 
 export default function InfoPanel() {
   return (
@@ -14,6 +15,7 @@ export default function InfoPanel() {
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
+      position="relative"
     >
       <VStack spacing={8} width="100%" maxW="340px">
         <Heading
@@ -34,6 +36,7 @@ export default function InfoPanel() {
           SEARCH
         </Button>
       </VStack>
+      <Support />
     </Box>
   );
 }
