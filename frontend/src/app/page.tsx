@@ -1,5 +1,6 @@
 import { Flex, Box } from "@chakra-ui/react";
-import Map from "../components/Map";
+import Map from "@/components/Map";
+import InfoPanel from "@/components/InfoPanel";
 
 export default function Home() {
   return (
@@ -19,17 +20,7 @@ export default function Home() {
         <Map />
       </Box>
       {/* Info/Search Panel */}
-      <Box
-        flex={{ base: "none", md: "0 0 480px" }}
-        width={{ base: "100vw", md: "480px" }}
-        height={{ base: "60vh", md: "100vh" }}
-        bg="white"
-        boxShadow={{ base: "none", md: "xl" }}
-        p={8}
-        overflowY="auto"
-      >
-        Info/Search Panel Placeholder
-      </Box>
+      <InfoPanel />
     </Flex>
   );
 }
