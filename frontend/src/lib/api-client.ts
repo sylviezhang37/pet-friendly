@@ -1,4 +1,5 @@
-import { Place, User, Review } from "./domain";
+import { Place, User, Review } from "./models";
+import { BackendPlace, BackendReview, BackendUser } from "./backend-models";
 
 const API_URL = process.env.API_URL || "http://localhost:3000/api";
 
@@ -14,41 +15,41 @@ async function handleResponse<T>(response: Response): Promise<T> {
   return response.json() as Promise<T>;
 }
 
-function mapToPlace(response: any): Place {
+function mapToPlace(data: BackendPlace): Place {
   return {
-    id: response.id,
-    name: response.name,
-    address: response.address,
-    lat: response.lat,
-    lng: response.lng,
-    type: response.type,
-    allowsPet: response.allowsPet,
-    googleMapsUrl: response.googleMapsUrl,
-    createdAt: response.createdAt,
-    updatedAt: response.updatedAt,
-    numConfirm: response.numConfirm,
-    numDeny: response.numDeny,
-    lastContributionType: response.lastContributionType,
-    petFriendly: response.petFriendly,
+    id: data.id,
+    name: data.name,
+    address: data.address,
+    lat: data.lat,
+    lng: data.lng,
+    type: data.type,
+    allowsPet: data.allowsPet,
+    googleMapsUrl: data.googleMapsUrl,
+    createdAt: data.createdAt,
+    updatedAt: data.updatedAt,
+    numConfirm: data.numConfirm,
+    numDeny: data.numDeny,
+    lastContributionType: data.lastContributionType,
+    petFriendly: data.petFriendly,
   };
 }
 
-function mapToReview(response: any): Review {
+function mapToReview(data: BackendReview): Review {
   return {
-    id: response.id,
-    placeId: response.placeId,
-    userId: response.userId,
-    username: response.username,
-    petFriendly: response.petFriendly,
-    comment: response.comment,
-    createdAt: response.createdAt,
+    id: data.id,
+    placeId: data.placeId,
+    userId: data.userId,
+    username: data.username,
+    petFriendly: data.petFriendly,
+    comment: data.comment,
+    createdAt: data.createdAt,
   };
 }
 
-function mapToUser(response: any): User {
+function mapToUser(data: BackendUser): User {
   return {
-    id: response.id,
-    username: response.username,
+    id: data.id,
+    username: data.username,
   };
 }
 

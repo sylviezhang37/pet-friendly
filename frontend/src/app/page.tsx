@@ -6,7 +6,7 @@ import { useCallback } from "react";
 import Map from "@/components/Map";
 import InfoPanel from "@/components/Welcome";
 import PlacePanel from "@/components/Place";
-import { Place } from "@/lib/domain";
+import { Place } from "@/lib/models";
 
 const samplePlaces: Place[] = [
   {
