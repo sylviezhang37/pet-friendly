@@ -12,7 +12,7 @@ export default function Welcome() {
       p={2}
       display="flex"
       flexDirection="column"
-      justifyContent="space-between"
+      justifyContent="center"
       alignItems="center"
       position="relative"
     >
@@ -45,9 +45,9 @@ export default function Welcome() {
         <Input placeholder="Find a place" size="lg" bg="gray.50" mb={2} />
         <Button colorScheme="yellow" width="100%" size="lg" fontWeight="bold">
           SEARCH
-          {/* Support section */}
         </Button>
       </VStack>
+      {/* Support section */}
       <Support />
     </Box>
   );

@@ -44,13 +44,11 @@ export default function Home() {
         top={{ base: "auto", md: 8 }}
         width={{ base: "100vw", md: "450px" }}
         maxWidth="100vw"
-        height={{ base: "40vh", md: "80vh" }}
-        // minHeight="40vh"
-        // maxHeight="60vh"
-        borderRadius={{ base: "2xl", md: "2xl 2xl 0 0" }}
+        borderRadius={{ base: "2xl", md: "2xl" }}
         boxShadow="2xl"
         bg="white"
         overflowY="auto"
+        maxHeight={{ base: "60vh", md: "85vh" }}
         mx={{ base: 0, md: 2 }}
         display="flex"
         flexDirection="column"
