@@ -14,14 +14,14 @@ import {
   IconButton,
   Spinner,
 } from "@chakra-ui/react";
-import { Place, Review } from "@/lib/domain";
+import { User, Place, Review } from "@/lib/domain";
 import { useStore } from "@/hooks/useStore";
 import { PiThumbsUpBold, PiThumbsDownBold } from "react-icons/pi";
 import { FaArrowLeft } from "react-icons/fa";
 import { useState, useEffect } from "react";
 
-const sampleUser = {
-  userId: "12345",
+const sampleUser : User = {
+  id: "12345",
   username: "hungry_beaver",
 };
 
@@ -108,7 +108,7 @@ export default function PlacePanel({ place }: { place: Place }) {
   }, [place.id]);
 
   useEffect(() => {
-    const found = reviews.find((r) => r.userId === currentUser.userId);
+    const found = reviews.find((r) => r.userId === currentUser.id);
     setUserReview(found || null);
   }, [reviews]);
 
@@ -127,7 +127,7 @@ export default function PlacePanel({ place }: { place: Place }) {
     // optimistically add new review
     const newReview = {
       id: reviews.length + 1,
-      userId: currentUser.userId,
+      userId: currentUser.id,
       username: currentUser.username,
       confirm: selected === "confirm",
       createdAt: new Date().toISOString(),
