@@ -9,9 +9,38 @@ import PlacePanel from "@/components/Place";
 import { Place } from "@/lib/domain";
 
 const samplePlaces: Place[] = [
-  { id: "1", lat: 40.758, lng: -73.9855, name: "Barking Dog" },
-  { id: "2", lat: 40.761, lng: -73.982, name: "Happy Feet Pet Shop" },
-  { id: "3", lat: 40.755, lng: -73.99, name: "Spoiled Brats" },
+  {
+    id: "1",
+    lat: 40.758,
+    lng: -73.9855,
+    name: "Barking Dog",
+    address: "123 Main St, New York, NY 10001",
+    createdAt: "2021-01-01",
+    updatedAt: "2021-01-01",
+    numConfirm: 10,
+    numDeny: 5,
+    lastContributionType: "confirm",
+    allowsPet: false,
+    googleMapsUrl: "https://www.google.com/maps/place/Barking+Dog",
+    type: "resturant",
+    petFriendly: true,
+  },
+  {
+    id: "2",
+    lat: 40.761,
+    lng: -73.982,
+    name: "Happy Feet Pet Shop",
+    address: "456 Second Ave, New York, NY 10002",
+    createdAt: "2021-01-01",
+    updatedAt: "2021-01-01",
+    numConfirm: 10,
+    numDeny: 5,
+    lastContributionType: "confirm",
+    allowsPet: true,
+    googleMapsUrl: "https://www.google.com/maps/place/Happy+Feet+Pet+Shop",
+    type: "pet shop",
+    petFriendly: true,
+  },
 ];
 
 export default function Home() {

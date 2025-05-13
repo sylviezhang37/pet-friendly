@@ -3,13 +3,24 @@ export interface Place {
   lat: number;
   lng: number;
   name: string;
+  type: string;
+  allowsPet: boolean;
+  googleMapsUrl: string;
+  address: string;
+  createdAt: string;
+  updatedAt: string;
+  numConfirm: number;
+  numDeny: number;
+  lastContributionType: string;
+  petFriendly: boolean;
 }
 
 export interface Review {
-  id: number;
+  id?: number;
+  placeId: string;
   userId: string;
   username: string;
-  confirm: boolean;
+  petFriendly: boolean;
   comment: string;
   createdAt: string;
 }
