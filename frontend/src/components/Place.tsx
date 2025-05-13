@@ -10,7 +10,7 @@ import {
   Icon,
   Divider,
   Textarea,
-  Fade,
+  Collapse,
   IconButton,
   Spinner,
 } from "@chakra-ui/react";
@@ -213,59 +213,55 @@ export default function PlacePanel({ place }: { place: Place }) {
       )}
 
       {/* case 2: user has not submitted a review yet */}
-      {!userReview && (
-        <>
-          <HStack spacing={4} mb={6} justifyContent="center">
-            <IconButton
-              aria-label="Confirm"
-              icon={<PiThumbsUpBold />}
-              colorScheme={selected === "confirm" ? "yellow" : undefined}
-              variant={selected === "confirm" ? "solid" : "outline"}
-              onClick={() => handleSelect("confirm")}
-              isDisabled={!!userReview}
+      <Collapse in={!userReview} unmountOnExit>
+        <HStack spacing={4} mb={6} justifyContent="center">
+          <IconButton
+            aria-label="Confirm"
+            icon={<PiThumbsUpBold />}
+            colorScheme={selected === "confirm" ? "yellow" : undefined}
+            variant={selected === "confirm" ? "solid" : "outline"}
+            onClick={() => handleSelect("confirm")}
+          />
+          <IconButton
+            aria-label="Deny"
+            icon={<PiThumbsDownBold />}
+            colorScheme={selected === "deny" ? "yellow" : undefined}
+            variant={selected === "deny" ? "solid" : "outline"}
+            onClick={() => handleSelect("deny")}
+          />
+        </HStack>
+        <Collapse in={!!selected} animateOpacity>
+          <Box mb={6} p={3} borderRadius="md" boxShadow="sm">
+            <Textarea
+              placeholder="Add a comment"
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              mb={3}
+              bg="white"
             />
-            <IconButton
-              aria-label="Deny"
-              icon={<PiThumbsDownBold />}
-              colorScheme={selected === "deny" ? "yellow" : undefined}
-              variant={selected === "deny" ? "solid" : "outline"}
-              onClick={() => handleSelect("deny")}
-              isDisabled={!!userReview}
-            />
-          </HStack>
-          <Fade in={!!selected && !submitted} unmountOnExit>
-            <Box mb={6} p={4} borderRadius="md" boxShadow="sm">
-              <Textarea
-                placeholder="Add a comment"
-                value={comment}
-                onChange={(e) => setComment(e.target.value)}
-                mb={3}
-                bg="white"
-              />
-              <HStack justify="flex-end">
-                <Button onClick={handleCancel} variant="ghost">
-                  Cancel
-                </Button>
-                <Button
-                  onClick={handlePost}
-                  colorScheme="yellow"
-                  fontWeight="bold"
-                >
-                  Post
-                </Button>
-              </HStack>
-            </Box>
-          </Fade>
-        </>
-      )}
+            <HStack justify="flex-end">
+              <Button onClick={handleCancel} variant="ghost">
+                Cancel
+              </Button>
+              <Button
+                onClick={handlePost}
+                colorScheme="yellow"
+                fontWeight="bold"
+              >
+                Post
+              </Button>
+            </HStack>
+          </Box>
+        </Collapse>
+      </Collapse>
 
       {/* case 3: user submits a review in current session*/}
       {userReview && submitted && (
-        <Fade in={submitted} unmountOnExit>
+        <Collapse in={submitted} unmountOnExit>
           <Box mb={6} p={4} bg="green.50" borderRadius="md" textAlign="center">
             <Text color="green.700">Review submitted</Text>
           </Box>
-        </Fade>
+        </Collapse>
       )}
 
       {/* Reviews Section */}
