@@ -1,7 +1,10 @@
 import { Box, Heading, Text, Input, Button, VStack } from "@chakra-ui/react";
 import Support from "./Support";
+// import { useStore } from "@/hooks/useStore";
 
 export default function Welcome() {
+  // const username = useStore((s) => s.username);
+
   return (
     <Box
       flex={{ base: "none", md: "0 0 450px" }}
@@ -33,6 +36,18 @@ export default function Welcome() {
         >
           Pet Friendly
         </Heading>
+        {/* only display greeting if a user is set */}
+        {/* {!!username && (
+          <Text
+            fontSize="md"
+            color="orange.600"
+            textAlign="left"
+            width="100%"
+            mb={0}
+          >
+            Hi, {username} :)
+          </Text>
+        )} */}
         <Text
           fontSize="md"
           color="gray.600"
