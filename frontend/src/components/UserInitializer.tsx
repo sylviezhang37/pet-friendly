@@ -1,6 +1,6 @@
 "use client";
 import { useEffect } from "react";
-import { getOrCreateUser } from "@/lib/user";
+import { getOrCreateUser } from "@/hooks/getUser";
 import { useStore } from "@/hooks/useStore";
 
 // sets up the user in the global state
