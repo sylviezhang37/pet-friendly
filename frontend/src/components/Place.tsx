@@ -110,7 +110,7 @@ export default function PlacePanel({ place }: { place: Place }) {
   useEffect(() => {
     const found = reviews.find((r) => r.userId === currentUser.id);
     setUserReview(found || null);
-  }, [reviews]);
+  }, [reviews, currentUser.id]);
 
   const handleSelect = (type: "confirm" | "deny") => {
     setSelected(type);
@@ -135,9 +135,8 @@ export default function PlacePanel({ place }: { place: Place }) {
     };
 
     // TODO: can i add to list without mutating the original?
-    setReviews([newReview, ...reviews]);
     // update numConfirm and numDeny
-
+    setReviews([newReview, ...reviews]);
     setSubmitted(true);
     setComment("");
     setSelected(null);
@@ -215,12 +214,14 @@ export default function PlacePanel({ place }: { place: Place }) {
       {/* case 2: user has not submitted a review yet */}
       <Collapse in={!userReview} unmountOnExit>
         <HStack spacing={4} mb={6} justifyContent="center">
+          {/* TODO: add accessibility attributes */}
           <IconButton
             aria-label="Confirm"
             icon={<PiThumbsUpBold />}
             colorScheme={selected === "confirm" ? "yellow" : undefined}
             variant={selected === "confirm" ? "solid" : "outline"}
             onClick={() => handleSelect("confirm")}
+            isDisabled={!!userReview}
           />
           <IconButton
             aria-label="Deny"
@@ -228,6 +229,7 @@ export default function PlacePanel({ place }: { place: Place }) {
             colorScheme={selected === "deny" ? "yellow" : undefined}
             variant={selected === "deny" ? "solid" : "outline"}
             onClick={() => handleSelect("deny")}
+            isDisabled={!!userReview}
           />
         </HStack>
         <Collapse in={!!selected} animateOpacity>
@@ -277,7 +279,12 @@ export default function PlacePanel({ place }: { place: Place }) {
         ) : (
           // TODO: ping current user's review at top
           reviews.map((review) => (
-            <Box key={review.id} p={3} bg="gray.50" borderRadius="md">
+            <Box
+              key={review.id}
+              p={3}
+              bg={review.userId === currentUser.id ? "green.50" : "gray.50"}
+              borderRadius="md"
+            >
               <HStack spacing={2} mb={1}>
                 <Icon
                   as={review.confirm ? PiThumbsUpBold : PiThumbsDownBold}
