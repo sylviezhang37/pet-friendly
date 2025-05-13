@@ -6,7 +6,7 @@ import { useCallback } from "react";
 import Map from "@/components/Map";
 import InfoPanel from "@/components/Welcome";
 import PlacePanel from "@/components/Place";
-import { Place } from "@/lib/place";
+import { Place } from "@/lib/domain";
 
 const samplePlaces: Place[] = [
   { id: "1", lat: 40.758, lng: -73.9855, name: "Barking Dog" },
@@ -48,7 +48,7 @@ export default function Home() {
         boxShadow="2xl"
         bg="white"
         overflowY="auto"
-        maxHeight={{ base: "60vh", md: "85vh" }}
+        maxHeight={{ base: "40vh", md: "85vh" }}
         mx={{ base: 0, md: 2 }}
         display="flex"
         flexDirection="column"

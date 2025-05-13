@@ -1,6 +1,6 @@
 "use client";
 
-import { Place } from "@/lib/place";
+import { Place } from "@/lib/domain";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 
 const containerStyle = {

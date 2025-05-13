@@ -14,40 +14,72 @@ import {
   IconButton,
   Spinner,
 } from "@chakra-ui/react";
-import { Place } from "@/lib/place";
+import { Place, Review } from "@/lib/domain";
 import { useStore } from "@/hooks/useStore";
 import { PiThumbsUpBold, PiThumbsDownBold } from "react-icons/pi";
 import { FaArrowLeft } from "react-icons/fa";
 import { useState, useEffect } from "react";
 
+const sampleUser = {
+  userId: "12345",
+  username: "hungry_beaver",
+};
+
 const sampleDetails = {
   address: "329 W 49th St, New York, NY 10019",
   lastConfirmed: "2025-05-10",
   numConfirm: 5,
-  numDeny: 0,
+  numDeny: 1,
   reviews: [
     {
       id: 1,
+      userId: "12345",
       username: "hungry_beaver",
       confirm: true,
       comment:
         "Such a lovely spot! There's an outdoor area where your dog can hang out at.",
+      createdAt: "2025-05-10",
     },
-    { id: 2, username: "short_giraffe", confirm: true, comment: "" },
+    {
+      id: 2,
+      userId: "12346",
+      username: "short_giraffe",
+      confirm: true,
+      comment: "",
+      createdAt: "2025-05-10",
+    },
     {
       id: 3,
+      userId: "12347",
       username: "fluffy_otter",
       confirm: true,
       comment: "Nice place to work at during the day with my pup.",
+      createdAt: "2025-05-10",
     },
-    { id: 4, username: "fantastic_wombat", confirm: true, comment: "" },
-    { id: 5, username: "extroverted_parrot", confirm: true, comment: "" },
+    {
+      id: 4,
+      userId: "12348",
+      username: "fantastic_wombat",
+      confirm: true,
+      comment: "",
+      createdAt: "2025-05-10",
+    },
+    {
+      id: 5,
+      userId: "12349",
+      username: "extroverted_parrot",
+      confirm: true,
+      comment: "",
+      createdAt: "2025-05-10",
+    },
     {
       id: 6,
+      userId: "12340",
       username: "smol_rabbit",
       confirm: false,
       comment:
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      createdAt: "2025-05-10",
     },
   ],
 };
@@ -58,13 +90,27 @@ export default function PlacePanel({ place }: { place: Place }) {
   const [comment, setComment] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [reviews, setReviews] = useState<Review[]>(sampleDetails.reviews);
+  const [userReview, setUserReview] = useState<Review | null>(null);
+  const currentUser = sampleUser;
 
   useEffect(() => {
-    // simulate loading for 600ms
     setLoading(true);
-    const t = setTimeout(() => setLoading(false), 600);
-    return () => clearTimeout(t);
+    setSelected(null);
+    setComment("");
+    setSubmitted(false);
+
+    // simulate loading for 400ms
+    setTimeout(() => {
+      setReviews(sampleDetails.reviews);
+      setLoading(false);
+    }, 400);
   }, [place.id]);
+
+  useEffect(() => {
+    const found = reviews.find((r) => r.userId === currentUser.userId);
+    setUserReview(found || null);
+  }, [reviews]);
 
   const handleSelect = (type: "confirm" | "deny") => {
     setSelected(type);
@@ -78,8 +124,24 @@ export default function PlacePanel({ place }: { place: Place }) {
   };
 
   const handlePost = () => {
+    // optimistically add new review
+    const newReview = {
+      id: reviews.length + 1,
+      userId: currentUser.userId,
+      username: currentUser.username,
+      confirm: selected === "confirm",
+      createdAt: new Date().toISOString(),
+      comment: comment,
+    };
+
+    // TODO: can i add to list without mutating the original?
+    setReviews([newReview, ...reviews]);
+    setUserReview(newReview);
+    // update numConfirm and numDeny
+
     setSubmitted(true);
     setComment("");
+    setSelected(null);
   };
 
   if (loading) {
@@ -101,7 +163,7 @@ export default function PlacePanel({ place }: { place: Place }) {
   return (
     <Box p={10}>
       <IconButton
-        aria-label="Left Arrow"
+        aria-label="Back Arrow"
         icon={<FaArrowLeft />}
         colorScheme="gray"
         variant="ghost"
@@ -124,16 +186,19 @@ export default function PlacePanel({ place }: { place: Place }) {
         mb={2}
         display="inline-block"
       >
-        Last confirmed on {sampleDetails.lastConfirmed}
+        Last confirmed on{" "}
+        {userReview
+          ? new Date(userReview.createdAt).toLocaleDateString()
+          : sampleDetails.lastConfirmed}
       </Text>
       <HStack spacing={6} mb={4} mt={2}>
         <HStack>
           <Icon as={PiThumbsUpBold} color="green.500" />
-          <Text>{sampleDetails.numConfirm} confirmed</Text>
+          <Text>{reviews.filter((r) => r.confirm).length} confirmed</Text>
         </HStack>
         <HStack>
           <Icon as={PiThumbsDownBold} color="red.400" />
-          <Text>{sampleDetails.numDeny} denied</Text>
+          <Text>{reviews.filter((r) => !r.confirm).length} denied</Text>
         </HStack>
       </HStack>
       <HStack spacing={4} mb={6} justifyContent="center">
@@ -181,12 +246,12 @@ export default function PlacePanel({ place }: { place: Place }) {
         Reviews
       </Heading>
       <VStack align="stretch" spacing={3}>
-        {sampleDetails.reviews.length === 0 ? (
+        {reviews.length === 0 ? (
           <Text color="gray.400" textAlign="center">
             No reviews yet. Be the first to review!
           </Text>
         ) : (
-          sampleDetails.reviews.map((review) => (
+          reviews.map((review) => (
             <Box key={review.id} p={3} bg="gray.50" borderRadius="md">
               <HStack spacing={2} mb={1}>
                 <Icon
