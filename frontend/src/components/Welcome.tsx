@@ -9,15 +9,15 @@ export default function Welcome() {
       height="100%"
       maxWidth="100vw"
       boxShadow={{ base: "none", md: "xl" }}
-      p={8}
+      p={2}
       display="flex"
       flexDirection="column"
-      justifyContent="center"
+      justifyContent="space-between"
       alignItems="center"
       position="relative"
     >
       <VStack
-        spacing={8}
+        spacing={4}
         width="100%"
         maxW="340px"
         height="100%"
@@ -33,15 +33,21 @@ export default function Welcome() {
         >
           Pet Friendly
         </Heading>
-        <Text fontSize="md" color="gray.600" textAlign="left" width="100%">
+        <Text
+          fontSize="md"
+          color="gray.600"
+          textAlign="left"
+          width="100%"
+          mb={2}
+        >
           Discover and contribute to a database of pet friendly places.
         </Text>
-        <Input placeholder="Find a place" size="lg" bg="gray.50" />
+        <Input placeholder="Find a place" size="lg" bg="gray.50" mb={2} />
         <Button colorScheme="yellow" width="100%" size="lg" fontWeight="bold">
           SEARCH
+          {/* Support section */}
         </Button>
       </VStack>
-      {/* Support section */}
       <Support />
     </Box>
   );

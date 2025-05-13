@@ -1,6 +1,6 @@
 "use client";
 
-import { Box } from "@chakra-ui/react";
+import { Box, useBreakpointValue } from "@chakra-ui/react";
 import { useStore } from "@/hooks/useStore";
 import { useCallback } from "react";
 import Map from "@/components/Map";
@@ -17,6 +17,7 @@ const samplePlaces: Place[] = [
 export default function Home() {
   const selectedPlaceId = useStore((s) => s.selectedPlaceId);
   const setSelectedPlaceId = useStore((s) => s.setSelectedPlaceId);
+  const isMobile = useBreakpointValue({ base: true, md: false });
 
   const handleMarkerClick = useCallback(
     (placeId: string) => {
@@ -43,14 +44,32 @@ export default function Home() {
         top={{ base: "auto", md: 8 }}
         width={{ base: "100vw", md: "450px" }}
         maxWidth="100vw"
+        height={{ base: "40vh", md: "80vh" }}
+        // minHeight="40vh"
+        // maxHeight="60vh"
         borderRadius={{ base: "2xl", md: "2xl 2xl 0 0" }}
         boxShadow="2xl"
         bg="white"
         overflowY="auto"
-        maxHeight={{ base: "60vh", md: "calc(100vh - 4rem)" }}
-        mx={{ base: 0, md: 4 }}
+        mx={{ base: 0, md: 2 }}
+        display="flex"
+        flexDirection="column"
       >
-        {selectedPlace ? <PlacePanel place={selectedPlace} /> : <InfoPanel />}
+        {/* Drag handle for mobile */}
+        {isMobile && (
+          <Box
+            w="40px"
+            h="4px"
+            bg="gray.300"
+            borderRadius="full"
+            mx="auto"
+            mt={2}
+            mb={4}
+          />
+        )}
+        <Box flex={1} overflowY="auto">
+          {selectedPlace ? <PlacePanel place={selectedPlace} /> : <InfoPanel />}
+        </Box>
       </Box>
     </Box>
   );

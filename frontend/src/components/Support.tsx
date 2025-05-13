@@ -2,8 +2,8 @@ import { Box, Text, HStack } from "@chakra-ui/react";
 
 export default function Support() {
   return (
-    <Box position="absolute" left={8} bottom={8} width="calc(100% - 32px)">
-      <HStack spacing={2} align="center">
+    <Box width="calc(100% - 32px)" margin={6}>
+      <HStack spacing={2} align="center" justify="center">
         <Box as="span" display="inline-block" boxSize={5} color="gray.500">
           <svg
             width="20"
