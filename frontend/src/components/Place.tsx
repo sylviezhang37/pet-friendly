@@ -14,7 +14,7 @@ import {
   IconButton,
   Spinner,
 } from "@chakra-ui/react";
-import { User, Place, Review } from "@/lib/models";
+import { User, Place, Review } from "@/models/models";
 import { useStore } from "@/hooks/useStore";
 import { PiThumbsUpBold, PiThumbsDownBold } from "react-icons/pi";
 import { FaArrowLeft } from "react-icons/fa";
@@ -25,64 +25,71 @@ const sampleUser: User = {
   username: "hungry!",
 };
 
-const sampleDetails = {
+const placeDetails: Place = {
+  id: "12345",
   address: "329 W 49th St, New York, NY 10019",
-  lastConfirmed: "2025-05-10",
+  lat: 40.768731,
+  lng: -73.985709,
+  name: "The Standard, High Line",
+  type: "restaurant",
+  allowsPet: true,
+  googleMapsUrl: "https://www.google.com/maps/place/?cid=12345",
+  createdAt: "2025-05-10",
+  updatedAt: "2025-05-10",
   numConfirm: 5,
   numDeny: 1,
-  reviews: [
-    {
-      id: 1,
-      userId: "12345",
-      username: "hungry_beaver",
-      confirm: true,
-      comment:
-        "Such a lovely spot! There's an outdoor area where your dog can hang out at.",
-      createdAt: "2025-05-10",
-    },
-    {
-      id: 2,
-      userId: "12346",
-      username: "short_giraffe",
-      confirm: true,
-      comment: "",
-      createdAt: "2025-05-10",
-    },
-    {
-      id: 3,
-      userId: "12347",
-      username: "fluffy_otter",
-      confirm: true,
-      comment: "Nice place to work at during the day with my pup.",
-      createdAt: "2025-05-10",
-    },
-    {
-      id: 4,
-      userId: "12348",
-      username: "fantastic_wombat",
-      confirm: true,
-      comment: "",
-      createdAt: "2025-05-10",
-    },
-    {
-      id: 5,
-      userId: "12349",
-      username: "extroverted_parrot",
-      confirm: true,
-      comment: "",
-      createdAt: "2025-05-10",
-    },
-    {
-      id: 6,
-      userId: "12340",
-      username: "smol_rabbit",
-      confirm: false,
-      comment:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-      createdAt: "2025-05-10",
-    },
-  ],
+  lastContributionType: "confirm",
+  petFriendly: true,
 };
+
+const sampleReviews: Review[] = [
+  {
+    id: 1,
+    placeId: "12345",
+    userId: "12345",
+    username: "hungry_beaver",
+    petFriendly: true,
+    comment:
+      "Such a lovely spot! There's an outdoor area where your dog can hang out at.",
+    createdAt: "2025-05-10",
+  },
+  {
+    id: 2,
+    placeId: "12345",
+    userId: "12346",
+    username: "short_giraffe",
+    petFriendly: true,
+    comment: "",
+    createdAt: "2025-05-10",
+  },
+  {
+    id: 3,
+    placeId: "12345",
+    userId: "12347",
+    username: "fluffy_otter",
+    petFriendly: true,
+    comment: "Nice place to work at during the day with my pup.",
+    createdAt: "2025-05-10",
+  },
+  {
+    id: 4,
+    placeId: "12345",
+    userId: "12348",
+    username: "fantastic_wombat",
+    petFriendly: true,
+    comment: "",
+    createdAt: "2025-05-10",
+  },
+  {
+    id: 5,
+    placeId: "12345",
+    userId: "12349",
+    username: "extroverted_parrot",
+    petFriendly: true,
+    comment: "",
+    createdAt: "2025-05-10",
+  },
+];
 
 export default function PlacePanel({ place }: { place: Place }) {
   const setSelectedPlaceId = useStore((s) => s.setSelectedPlaceId);
@@ -90,7 +97,7 @@ export default function PlacePanel({ place }: { place: Place }) {
   const [comment, setComment] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [reviews, setReviews] = useState<Review[]>(sampleDetails.reviews);
+  const [reviews, setReviews] = useState<Review[]>(sampleReviews);
   const [userReview, setUserReview] = useState<Review | null>(null);
   const currentUser = sampleUser;
 
@@ -102,7 +109,7 @@ export default function PlacePanel({ place }: { place: Place }) {
 
     // simulate loading for 400ms
     setTimeout(() => {
-      setReviews(sampleDetails.reviews);
+      setReviews(sampleReviews);
       setLoading(false);
     }, 400);
   }, [place.id]);
@@ -127,9 +134,10 @@ export default function PlacePanel({ place }: { place: Place }) {
     // optimistically add new review
     const newReview = {
       id: reviews.length + 1,
+      placeId: place.id,
       userId: currentUser.id,
       username: currentUser.username,
-      confirm: selected === "confirm",
+      petFriendly: selected === "confirm",
       createdAt: new Date().toISOString(),
       comment: comment,
     };
@@ -173,7 +181,7 @@ export default function PlacePanel({ place }: { place: Place }) {
         {place.name}
       </Heading>
       <Text color="gray.600" mb={2}>
-        {sampleDetails.address}
+        {placeDetails.address}
       </Text>
       <Text
         fontSize="sm"
@@ -187,16 +195,16 @@ export default function PlacePanel({ place }: { place: Place }) {
         Last confirmed on{" "}
         {userReview
           ? new Date(userReview.createdAt).toLocaleDateString()
-          : sampleDetails.lastConfirmed}
+          : placeDetails.updatedAt}
       </Text>
       <HStack spacing={6} mb={4} mt={2}>
         <HStack>
           <Icon as={PiThumbsUpBold} color="green.500" />
-          <Text>{reviews.filter((r) => r.confirm).length} confirmed</Text>
+          <Text>{reviews.filter((r) => r.petFriendly).length} confirmed</Text>
         </HStack>
         <HStack>
           <Icon as={PiThumbsDownBold} color="red.400" />
-          <Text>{reviews.filter((r) => !r.confirm).length} denied</Text>
+          <Text>{reviews.filter((r) => !r.petFriendly).length} denied</Text>
         </HStack>
       </HStack>
 
@@ -287,8 +295,8 @@ export default function PlacePanel({ place }: { place: Place }) {
             >
               <HStack spacing={2} mb={1}>
                 <Icon
-                  as={review.confirm ? PiThumbsUpBold : PiThumbsDownBold}
-                  color={review.confirm ? "green.500" : "red.400"}
+                  as={review.petFriendly ? PiThumbsUpBold : PiThumbsDownBold}
+                  color={review.petFriendly ? "green.500" : "red.400"}
                 />
                 <Text fontWeight="bold">by {review.username}</Text>
               </HStack>
