@@ -20,9 +20,9 @@ import { PiThumbsUpBold, PiThumbsDownBold } from "react-icons/pi";
 import { FaArrowLeft } from "react-icons/fa";
 import { useState, useEffect } from "react";
 
-const sampleUser : User = {
-  id: "12345",
-  username: "hungry_beaver",
+const sampleUser: User = {
+  id: "1",
+  username: "hungry!",
 };
 
 const sampleDetails = {
@@ -136,7 +136,6 @@ export default function PlacePanel({ place }: { place: Place }) {
 
     // TODO: can i add to list without mutating the original?
     setReviews([newReview, ...reviews]);
-    setUserReview(newReview);
     // update numConfirm and numDeny
 
     setSubmitted(true);
@@ -201,46 +200,75 @@ export default function PlacePanel({ place }: { place: Place }) {
           <Text>{reviews.filter((r) => !r.confirm).length} denied</Text>
         </HStack>
       </HStack>
-      <HStack spacing={4} mb={6} justifyContent="center">
-        <IconButton
-          aria-label="Confirm"
-          icon={<PiThumbsUpBold />}
-          colorScheme={selected === "confirm" ? "yellow" : undefined}
-          variant={selected === "confirm" ? "solid" : "outline"}
-          onClick={() => handleSelect("confirm")}
-        />
-        <IconButton
-          aria-label="Deny"
-          icon={<PiThumbsDownBold />}
-          colorScheme={selected === "deny" ? "yellow" : undefined}
-          variant={selected === "deny" ? "solid" : "outline"}
-          onClick={() => handleSelect("deny")}
-        />
-      </HStack>
-      <Fade in={!!selected && !submitted} unmountOnExit>
-        <Box mb={6} p={4} borderRadius="md" boxShadow="sm">
-          <Textarea
-            placeholder="Add a comment"
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-            mb={3}
-            bg="white"
-          />
-          <HStack justify="flex-end">
-            <Button onClick={handleCancel} variant="ghost">
-              Cancel
-            </Button>
-            <Button onClick={handlePost} colorScheme="yellow" fontWeight="bold">
-              Post
-            </Button>
-          </HStack>
-        </Box>
-      </Fade>
-      <Fade in={submitted} unmountOnExit>
+
+      {/* User Review Section */}
+
+      {/* case 1: user has submitted a review in a previous session */}
+      {userReview && !submitted && (
         <Box mb={6} p={4} bg="green.50" borderRadius="md" textAlign="center">
-          <Text color="green.700">Review submitted</Text>
+          <Text color="green.700">
+            You&apos;ve submitted a review for this place.
+          </Text>
         </Box>
-      </Fade>
+      )}
+
+      {/* case 2: user has not submitted a review yet */}
+      {!userReview && (
+        <>
+          <HStack spacing={4} mb={6} justifyContent="center">
+            <IconButton
+              aria-label="Confirm"
+              icon={<PiThumbsUpBold />}
+              colorScheme={selected === "confirm" ? "yellow" : undefined}
+              variant={selected === "confirm" ? "solid" : "outline"}
+              onClick={() => handleSelect("confirm")}
+              isDisabled={!!userReview}
+            />
+            <IconButton
+              aria-label="Deny"
+              icon={<PiThumbsDownBold />}
+              colorScheme={selected === "deny" ? "yellow" : undefined}
+              variant={selected === "deny" ? "solid" : "outline"}
+              onClick={() => handleSelect("deny")}
+              isDisabled={!!userReview}
+            />
+          </HStack>
+          <Fade in={!!selected && !submitted} unmountOnExit>
+            <Box mb={6} p={4} borderRadius="md" boxShadow="sm">
+              <Textarea
+                placeholder="Add a comment"
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                mb={3}
+                bg="white"
+              />
+              <HStack justify="flex-end">
+                <Button onClick={handleCancel} variant="ghost">
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handlePost}
+                  colorScheme="yellow"
+                  fontWeight="bold"
+                >
+                  Post
+                </Button>
+              </HStack>
+            </Box>
+          </Fade>
+        </>
+      )}
+
+      {/* case 3: user submits a review in current session*/}
+      {userReview && submitted && (
+        <Fade in={submitted} unmountOnExit>
+          <Box mb={6} p={4} bg="green.50" borderRadius="md" textAlign="center">
+            <Text color="green.700">Review submitted</Text>
+          </Box>
+        </Fade>
+      )}
+
+      {/* Reviews Section */}
       <Divider my={4} />
       <Heading size="md" mb={2}>
         Reviews
@@ -251,6 +279,7 @@ export default function PlacePanel({ place }: { place: Place }) {
             No reviews yet. Be the first to review!
           </Text>
         ) : (
+          // TODO: ping current user's review at top
           reviews.map((review) => (
             <Box key={review.id} p={3} bg="gray.50" borderRadius="md">
               <HStack spacing={2} mb={1}>
