@@ -13,6 +13,8 @@ interface PlaceState {
 
 interface AppState extends UserState, PlaceState {}
 
+// zustand holds user info globally (a state manager)
+// useStore then "reads" user info from zustand
 export const useStore = create<AppState>((set) => ({
   userId: null,
   username: null,
