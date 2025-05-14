@@ -18,6 +18,7 @@ export default function Welcome() {
       justifyContent="center"
       alignItems="center"
       position="relative"
+      overflow="auto"
     >
       <VStack
         spacing={4}

@@ -1,6 +1,6 @@
 "use client";
 
-import { Place } from "@/models/models";
+import { Place } from "@/lib/models";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 
 const containerStyle = {

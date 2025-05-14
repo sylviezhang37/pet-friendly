@@ -1,4 +1,4 @@
-import { Place, User, Review } from "../models/models";
+import { Place, User, Review } from "./models";
 import { BackendPlace, BackendReview, BackendUser } from "./backend-models";
 
 const API_URL = process.env.API_URL || "http://localhost:3000/api";

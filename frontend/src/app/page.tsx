@@ -6,7 +6,7 @@ import { useCallback } from "react";
 import Map from "@/components/Map";
 import InfoPanel from "@/components/Welcome";
 import PlacePanel from "@/components/Place";
-import { Place } from "@/models/models";
+import { Place } from "@/lib/models";
 
 const samplePlaces: Place[] = [
   {
@@ -58,7 +58,13 @@ export default function Home() {
   const selectedPlace = samplePlaces.find((p) => p.id === selectedPlaceId);
 
   return (
-    <Box position="relative" width="100vw" height="100vh" overflow="hidden">
+    // TODO: calculate this maxheight dynamically
+    <Box
+      maxHeight={{ base: "88vh", md: "100vh" }}
+      height="100vh"
+      overflow="hidden"
+      position="relative"
+    >
       {/* Map fills the background */}
       <Box position="absolute" inset={0} zIndex={0}>
         <Map places={samplePlaces} onMarkerClick={handleMarkerClick} />
@@ -73,11 +79,13 @@ export default function Home() {
         top={{ base: "auto", md: 8 }}
         width={{ base: "100vw", md: "450px" }}
         maxWidth="100vw"
-        borderRadius={{ base: "2xl", md: "2xl" }}
+        maxHeight={{ base: "40vh", md: "85vh" }}
+        borderTopRadius="2xl"
+        // bottom border radius is 0 on mobile
+        borderBottomRadius={{ base: "0", md: "2xl" }}
         boxShadow="2xl"
         bg="white"
         overflowY="auto"
-        maxHeight={{ base: "40vh", md: "85vh" }}
         mx={{ base: 0, md: 2 }}
         display="flex"
         flexDirection="column"
@@ -91,9 +99,10 @@ export default function Home() {
             borderRadius="full"
             mx="auto"
             mt={2}
-            mb={4}
+            mb={2}
           />
         )}
+        {/* overflow auto makes panel scrollable */}
         <Box flex={1} overflowY="auto">
           {selectedPlace ? <PlacePanel place={selectedPlace} /> : <InfoPanel />}
         </Box>
