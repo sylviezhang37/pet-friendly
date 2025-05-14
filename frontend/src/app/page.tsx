@@ -2,7 +2,7 @@
 
 import { Box, useBreakpointValue } from "@chakra-ui/react";
 import { useStore } from "@/hooks/useStore";
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Map from "@/components/Map";
 import InfoPanel from "@/components/Welcome";
 import PlacePanel from "@/components/Place";
@@ -47,6 +47,7 @@ export default function Home() {
   const selectedPlaceId = useStore((s) => s.selectedPlaceId);
   const setSelectedPlaceId = useStore((s) => s.setSelectedPlaceId);
   const isMobile = useBreakpointValue({ base: true, md: false });
+  const [dynamicMaxHeight, setDynamicMaxHeight] = useState("100vh");
 
   const handleMarkerClick = useCallback(
     (placeId: string) => {
@@ -55,12 +56,21 @@ export default function Home() {
     [setSelectedPlaceId]
   );
 
+  // calculate viewport height on mount
+  useEffect(() => {
+    if (isMobile) {
+      setDynamicMaxHeight(`${window.innerHeight}px`);
+      console.log("heights : ", dynamicMaxHeight, window.innerHeight);
+    } else {
+      setDynamicMaxHeight("100vh");
+    }
+  }, [isMobile]);
+
   const selectedPlace = samplePlaces.find((p) => p.id === selectedPlaceId);
 
   return (
-    // TODO: calculate this maxheight dynamically
     <Box
-      maxHeight={{ base: "88vh", md: "100vh" }}
+      maxHeight={dynamicMaxHeight}
       height="100vh"
       overflow="hidden"
       position="relative"
