@@ -54,11 +54,11 @@ export default function Welcome() {
           color="gray.600"
           textAlign="left"
           width="100%"
-          mb={2}
+          // mb={2}
         >
           Discover and contribute to a database of pet friendly places.
         </Text>
-        <Input placeholder="Find a place" size="lg" bg="gray.50" mb={2} />
+        <Input placeholder="Find a place" size="lg" bg="gray.50" />
         <Button colorScheme="yellow" width="100%" size="lg" fontWeight="bold">
           SEARCH
         </Button>
