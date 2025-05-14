@@ -31,3 +31,15 @@ export interface BackendUser {
   anonymous: boolean;
   createdAt: string;
 }
+
+export interface SearchPlaceParams {
+  query: string;
+  lat: number;
+  lng: number;
+  radius?: number;
+}
+
+export interface NewUserRequest {
+  username?: string;
+  anonymous?: boolean;
+}

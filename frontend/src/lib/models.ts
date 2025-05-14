@@ -16,7 +16,7 @@ export interface Place {
 }
 
 export interface Review {
-  id?: number;
+  id?: string;
   placeId: string;
   userId: string;
   username: string;
