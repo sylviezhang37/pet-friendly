@@ -110,14 +110,14 @@ export default function PlacePanel({ id }: { id: string }) {
     );
   } else {
     return (
-      <Box p={10}>
+      <Box mx={10} my={6}>
         <IconButton
           aria-label="Back Arrow"
           icon={<FaArrowLeft />}
           colorScheme="gray"
           variant="ghost"
           justifyContent="flex-start"
-          mb={4}
+          mb={2}
           onClick={() => setSelectedPlaceId(null)}
         />
         <Heading size="xl" mb={2}>

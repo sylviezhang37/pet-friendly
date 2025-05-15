@@ -85,7 +85,7 @@ export default function Home() {
         left={{ base: 0, md: "auto" }}
         bottom={{ base: 0, md: 8 }}
         top={{ base: "auto", md: 8 }}
-        width={{ base: "100vw", md: "450px" }}
+        width={{ base: "100vw", md: "430px" }}
         maxWidth="100vw"
         maxHeight={{ base: "40vh", md: "85vh" }}
         borderTopRadius="2xl"
