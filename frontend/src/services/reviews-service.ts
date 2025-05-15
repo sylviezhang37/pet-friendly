@@ -12,7 +12,7 @@ const mapToReview = (data: BackendReview): Review => ({
   createdAt: data.createdAt,
 });
 
-export const reviewService = {
+export const reviewsService = {
   createReview: async (review: Review): Promise<Review> => {
     const createdReview = await apiClient.post<BackendReview>(
       "/api/v0/reviews",
@@ -29,4 +29,4 @@ export const reviewService = {
   },
 };
 
-export default reviewService;
+export default reviewsService;

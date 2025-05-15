@@ -19,7 +19,7 @@ const mapToPlace = (data: BackendPlace): Place => ({
   petFriendly: data.petFriendly,
 });
 
-export const placeService = {
+export const placesService = {
   getNearbyPlaces: async (params: SearchPlaceParams): Promise<Place[]> => {
     const places = await apiClient.get<BackendPlace[]>(
       "/api/v0/places/nearby",
@@ -64,4 +64,4 @@ export const placeService = {
   },
 };
 
-export default placeService;
+export default placesService;

@@ -14,37 +14,21 @@ import {
   IconButton,
   Spinner,
 } from "@chakra-ui/react";
-import { User, Place, Review } from "@/lib/models";
+import { User, Review } from "@/lib/models";
 import { useStore } from "@/hooks/useStore";
 import { PiThumbsUpBold, PiThumbsDownBold } from "react-icons/pi";
 import { FaArrowLeft } from "react-icons/fa";
 import { useState, useEffect } from "react";
+import { usePlaceDetails } from "@/hooks/usePlaceDetails";
 
 const sampleUser: User = {
   id: "1",
   username: "hungry!",
 };
 
-const placeDetails: Place = {
-  id: "12345",
-  address: "329 W 49th St, New York, NY 10019",
-  lat: 40.768731,
-  lng: -73.985709,
-  name: "The Standard, High Line",
-  type: "restaurant",
-  allowsPet: true,
-  googleMapsUrl: "https://www.google.com/maps/place/?cid=12345",
-  createdAt: "2025-05-10",
-  updatedAt: "2025-05-10",
-  numConfirm: 5,
-  numDeny: 1,
-  lastContributionType: "confirm",
-  petFriendly: true,
-};
-
 const sampleReviews: Review[] = [
   {
-    id: 1,
+    id: "1",
     placeId: "12345",
     userId: "12345",
     username: "hungry_beaver",
@@ -54,7 +38,7 @@ const sampleReviews: Review[] = [
     createdAt: "2025-05-10",
   },
   {
-    id: 2,
+    id: "2",
     placeId: "12345",
     userId: "12346",
     username: "short_giraffe",
@@ -63,7 +47,7 @@ const sampleReviews: Review[] = [
     createdAt: "2025-05-10",
   },
   {
-    id: 3,
+    id: "3",
     placeId: "12345",
     userId: "12347",
     username: "fluffy_otter",
@@ -72,7 +56,7 @@ const sampleReviews: Review[] = [
     createdAt: "2025-05-10",
   },
   {
-    id: 4,
+    id: "4",
     placeId: "12345",
     userId: "12348",
     username: "fantastic_wombat",
@@ -81,7 +65,7 @@ const sampleReviews: Review[] = [
     createdAt: "2025-05-10",
   },
   {
-    id: 5,
+    id: "5",
     placeId: "12345",
     userId: "12349",
     username: "extroverted_parrot",
@@ -91,8 +75,13 @@ const sampleReviews: Review[] = [
   },
 ];
 
-export default function PlacePanel({ place }: { place: Place }) {
+export default function PlacePanel({ id }: { id: string }) {
   const setSelectedPlaceId = useStore((s) => s.setSelectedPlaceId);
+  const {
+    place,
+    isLoading: placeLoading,
+    error: placeError,
+  } = usePlaceDetails(id);
   const [selected, setSelected] = useState<"confirm" | "deny" | null>(null);
   const [comment, setComment] = useState("");
   const [submitted, setSubmitted] = useState(false);
@@ -112,7 +101,7 @@ export default function PlacePanel({ place }: { place: Place }) {
       setReviews(sampleReviews);
       setLoading(false);
     }, 400);
-  }, [place.id]);
+  }, [id]);
 
   useEffect(() => {
     const found = reviews.find((r) => r.userId === currentUser.id);
@@ -132,9 +121,9 @@ export default function PlacePanel({ place }: { place: Place }) {
 
   const handlePost = () => {
     // optimistically add new review
-    const newReview = {
-      id: reviews.length + 1,
-      placeId: place.id,
+    const newReview: Review = {
+      id: (reviews.length + 1).toString(),
+      placeId: id,
       userId: currentUser.id,
       username: currentUser.username,
       petFriendly: selected === "confirm",
@@ -150,7 +139,8 @@ export default function PlacePanel({ place }: { place: Place }) {
     setSelected(null);
   };
 
-  if (loading) {
+  // TODO: if place / reviews are loading, show a spinner
+  if (placeLoading || loading) {
     return (
       <Box
         p={8}
@@ -162,6 +152,14 @@ export default function PlacePanel({ place }: { place: Place }) {
       >
         <Spinner size="xl" color="yellow.500" mb={4} />
         <Text color="gray.500">Loading place details...</Text>
+      </Box>
+    );
+  }
+
+  if (placeError || !place) {
+    return (
+      <Box p={8} textAlign="center">
+        <Text color="red.500">Place not found</Text>
       </Box>
     );
   }
@@ -181,7 +179,7 @@ export default function PlacePanel({ place }: { place: Place }) {
         {place.name}
       </Heading>
       <Text color="gray.600" mb={2}>
-        {placeDetails.address}
+        {place.address}
       </Text>
       <Text
         fontSize="sm"
@@ -195,7 +193,7 @@ export default function PlacePanel({ place }: { place: Place }) {
         Last confirmed on{" "}
         {userReview
           ? new Date(userReview.createdAt).toLocaleDateString()
-          : placeDetails.updatedAt}
+          : place.updatedAt}
       </Text>
       <HStack spacing={6} mb={4} mt={2}>
         <HStack>

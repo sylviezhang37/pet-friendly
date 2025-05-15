@@ -66,8 +66,6 @@ export default function Home() {
     }
   }, [isMobile]);
 
-  const selectedPlace = samplePlaces.find((p) => p.id === selectedPlaceId);
-
   return (
     <Box
       maxHeight={dynamicMaxHeight}
@@ -114,7 +112,11 @@ export default function Home() {
         )}
         {/* overflow auto makes panel scrollable */}
         <Box flex={1} overflowY="auto">
-          {selectedPlace ? <PlacePanel place={selectedPlace} /> : <InfoPanel />}
+          {selectedPlaceId ? (
+            <PlacePanel id={selectedPlaceId} />
+          ) : (
+            <InfoPanel />
+          )}
         </Box>
       </Box>
     </Box>
