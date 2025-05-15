@@ -14,12 +14,11 @@ import {
   IconButton,
   Spinner,
 } from "@chakra-ui/react";
-import { User, Review } from "@/lib/models";
+import { User, Review, Place } from "@/lib/models";
 import { useStore } from "@/hooks/useStore";
 import { PiThumbsUpBold, PiThumbsDownBold } from "react-icons/pi";
 import { FaArrowLeft } from "react-icons/fa";
 import { useState, useEffect } from "react";
-import { usePlaceDetails } from "@/hooks/usePlaceDetails";
 import { usePlaceReviews } from "@/hooks/usePlaceReviews";
 
 const sampleUser: User = {
@@ -27,30 +26,28 @@ const sampleUser: User = {
   username: "noodle_doodle",
 };
 
-export default function PlacePanel({ id }: { id: string }) {
+// TODO: handle adding a new review to db
+// TODO: handle updating pet friendly state of a palce
+export default function PlacePanel({ place }: { place: Place }) {
   const setSelectedPlaceId = useStore((s) => s.setSelectedPlaceId);
-  const {
-    place,
-    isLoading: placeLoading,
-    error: placeError,
-  } = usePlaceDetails(id);
-  const {
-    reviews,
-    isLoading: reviewsLoading,
-    error: reviewsError,
-    addReview, // updates the State in usePlaceReviews hook
-  } = usePlaceReviews(id);
   const [selected, setSelected] = useState<"confirm" | "deny" | null>(null);
   const [comment, setComment] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [userReview, setUserReview] = useState<Review | null>(null);
   const currentUser = sampleUser;
 
+  const {
+    reviews,
+    isLoading: reviewsLoading,
+    error: reviewsError,
+    addReview, // updates the State in usePlaceReviews hook
+  } = usePlaceReviews(place.id);
+
   useEffect(() => {
     setSelected(null);
     setComment("");
     setSubmitted(false);
-  }, [id, reviews]);
+  }, [place.id, reviews]);
 
   useEffect(() => {
     const found = reviews.find((r) => r.userId === currentUser.id);
@@ -72,7 +69,7 @@ export default function PlacePanel({ id }: { id: string }) {
     // optimistically add new review
     const newReview: Review = {
       id: (reviews.length + 1).toString(),
-      placeId: id,
+      placeId: place.id,
       userId: currentUser.id,
       username: currentUser.username,
       petFriendly: selected === "confirm",
@@ -88,7 +85,7 @@ export default function PlacePanel({ id }: { id: string }) {
   };
 
   // TODO: if place / reviews are loading, show a spinner
-  if (placeLoading || reviewsLoading) {
+  if (reviewsLoading) {
     return (
       <Box
         p={8}
@@ -102,7 +99,7 @@ export default function PlacePanel({ id }: { id: string }) {
         <Text color="gray.500">Loading place details...</Text>
       </Box>
     );
-  } else if (placeError || reviewsError || !place) {
+  } else if (reviewsError || !place) {
     return (
       <Box p={8} textAlign="center">
         <Text color="red.500">Place not found</Text>

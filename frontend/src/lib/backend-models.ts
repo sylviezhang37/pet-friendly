@@ -33,7 +33,7 @@ export interface BackendUser {
 }
 
 export interface SearchPlaceParams {
-  query: string;
+  query?: string;
   lat: number;
   lng: number;
   radius?: number;

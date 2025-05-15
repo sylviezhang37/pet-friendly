@@ -1,53 +1,26 @@
 "use client";
 
-import { Box, useBreakpointValue } from "@chakra-ui/react";
+import { Box, Text, Spinner, useBreakpointValue } from "@chakra-ui/react";
 import { useStore } from "@/hooks/useStore";
 import { useCallback, useEffect, useState } from "react";
 import Map from "@/components/Map";
-import InfoPanel from "@/components/Welcome";
+import WelcomePanel from "@/components/Welcome";
 import PlacePanel from "@/components/Place";
-import { Place } from "@/lib/models";
+import { useNearbyPlaces } from "@/hooks/useNearbyPlaces";
 
-const samplePlaces: Place[] = [
-  {
-    id: "1",
-    lat: 40.758,
-    lng: -73.9855,
-    name: "Barking Dog",
-    address: "123 Main St, New York, NY 10001",
-    createdAt: "2021-01-01",
-    updatedAt: "2021-01-01",
-    numConfirm: 10,
-    numDeny: 5,
-    lastContributionType: "confirm",
-    allowsPet: false,
-    googleMapsUrl: "https://www.google.com/maps/place/Barking+Dog",
-    type: "resturant",
-    petFriendly: true,
-  },
-  {
-    id: "2",
-    lat: 40.761,
-    lng: -73.982,
-    name: "Happy Feet Pet Shop",
-    address: "456 Second Ave, New York, NY 10002",
-    createdAt: "2021-01-01",
-    updatedAt: "2021-01-01",
-    numConfirm: 10,
-    numDeny: 5,
-    lastContributionType: "confirm",
-    allowsPet: true,
-    googleMapsUrl: "https://www.google.com/maps/place/Happy+Feet+Pet+Shop",
-    type: "pet shop",
-    petFriendly: true,
-  },
-];
+// default to NYC for V0
+const center = {
+  lat: 40.758,
+  lng: -73.9855,
+};
 
 export default function Home() {
   const selectedPlaceId = useStore((s) => s.selectedPlaceId);
   const setSelectedPlaceId = useStore((s) => s.setSelectedPlaceId);
   const isMobile = useBreakpointValue({ base: true, md: false });
   const [dynamicMaxHeight, setDynamicMaxHeight] = useState("100vh");
+
+  const { places, isLoading, error } = useNearbyPlaces(center.lat, center.lng);
 
   const handleMarkerClick = useCallback(
     (placeId: string) => {
@@ -66,6 +39,30 @@ export default function Home() {
     }
   }, [isMobile]);
 
+  if (isLoading) {
+    return (
+      <Box
+        p={8}
+        display="flex"
+        flexDir="column"
+        alignItems="center"
+        justifyContent="center"
+        minH="400px"
+      >
+        <Spinner size="xl" color="yellow.500" mb={4} />
+        <Text color="gray.500">Loading map...</Text>
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Box p={8} textAlign="center">
+        <Text color="red.500">Error loading map :(</Text>
+      </Box>
+    );
+  }
+
   return (
     <Box
       maxHeight={dynamicMaxHeight}
@@ -75,7 +72,7 @@ export default function Home() {
     >
       {/* Map fills the background */}
       <Box position="absolute" inset={0} zIndex={0}>
-        <Map places={samplePlaces} onMarkerClick={handleMarkerClick} />
+        <Map places={places} onMarkerClick={handleMarkerClick} />
       </Box>
       {/* Info/Place Panel overlays the map */}
       <Box
@@ -113,9 +110,9 @@ export default function Home() {
         {/* overflow auto makes panel scrollable */}
         <Box flex={1} overflowY="auto">
           {selectedPlaceId ? (
-            <PlacePanel id={selectedPlaceId} />
+            <PlacePanel place={places.find((p) => p.id === selectedPlaceId)!} />
           ) : (
-            <InfoPanel />
+            <WelcomePanel />
           )}
         </Box>
       </Box>
