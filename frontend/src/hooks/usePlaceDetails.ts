@@ -24,7 +24,9 @@ export function usePlaceDetails(placeId: string) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // let useEffect handle set up & tear down side effects
   useEffect(() => {
+    // encapsulate the fetching action
     async function fetchPlace() {
       try {
         // const placeData = await placesService.getPlaceById(placeId);
