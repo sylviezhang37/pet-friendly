@@ -37,7 +37,7 @@ export default function Home() {
     } else {
       setDynamicMaxHeight("100vh");
     }
-  }, [isMobile]);
+  }, [isMobile, dynamicMaxHeight]);
 
   if (isLoading) {
     return (
