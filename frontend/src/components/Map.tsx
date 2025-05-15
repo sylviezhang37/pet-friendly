@@ -3,11 +3,6 @@
 import { Place } from "@/lib/models";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 
-const containerStyle = {
-  width: "100%",
-  height: "100%",
-};
-
 // default to NYC for V0
 const center = {
   lat: 40.758,
@@ -25,7 +20,10 @@ export default function Map({ places = [], onMarkerClick }: MapProps) {
       googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ""}
     >
       <GoogleMap
-        mapContainerStyle={containerStyle}
+        mapContainerStyle={{
+          width: "100%",
+          height: "100%",
+        }}
         center={center}
         zoom={14}
         options={{ streetViewControl: false, mapTypeControl: false }}
