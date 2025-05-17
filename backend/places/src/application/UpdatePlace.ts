@@ -1,26 +1,26 @@
 import { Place } from "../domain/Place";
 import { PlacesRepo } from "../repositories/PlacesRepo";
 
-export interface UpdatePetFriendlyInput {
+export interface UpdatePlaceInput {
   id: string;
-  confirmed: boolean;
+  address: string;
   num_confirm: number;
   num_deny: number;
   last_contribution_type: string;
-  last_contribution_date: Date;
+  pet_friendly: boolean;
 }
 
-export class UpdatePetFriendly {
+export class UpdatePlace {
   constructor(private readonly placeRepository: PlacesRepo) {}
 
-  async execute(input: UpdatePetFriendlyInput): Promise<Place | null> {
-    return this.placeRepository.updatePetFriendlyStatus(
+  async execute(input: UpdatePlaceInput): Promise<Place | null> {
+    return this.placeRepository.updatePlace(
       input.id,
-      input.confirmed,
+      input.address,
       input.num_confirm,
       input.num_deny,
       input.last_contribution_type,
-      input.last_contribution_date
+      input.pet_friendly
     );
   }
 }

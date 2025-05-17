@@ -13,7 +13,7 @@ import { FindNearbyPlaces } from "./application/FindNearbyPlaces";
 import { GetPlaceDetails } from "./application/GetPlaceDetails";
 import { AddPlace } from "./application/AddPlace";
 import { SearchPlaces } from "./application/SearchPlaces";
-import { UpdatePetFriendly } from "./application/UpdatePetFriendly";
+import { UpdatePlace } from "./application/UpdatePlace";
 
 // api interfaces
 import { Handler } from "./handler";
@@ -37,7 +37,7 @@ const findNearbyPlaces = new FindNearbyPlaces(placesRepo);
 const getPlaceDetails = new GetPlaceDetails(placesRepo);
 const addPlace = new AddPlace(placesRepo);
 const searchPlaces = new SearchPlaces(placesRepo, placesProvider);
-const updatePetFriendly = new UpdatePetFriendly(placesRepo);
+const updatePetFriendly = new UpdatePlace(placesRepo);
 
 // api handler
 const handler = new Handler(
@@ -61,9 +61,11 @@ app.get("/api/v0/places/nearby", handler.findNearbyPlaces);
 
 app.get("/api/v0/places/search", handler.searchPlaces);
 
-app.patch("/api/v0/places/:id/pet-friendly", handler.updatePetFriendlyStatus);
-
 app.get("/api/v0/places/:id", handler.getPlaceDetails);
+
+app.patch("/api/v0/places/:id", handler.updatePlace);
+// or use custom method, see [https://google.aip.dev/136]
+// app.patch("/api/v0/places/:id:confirm", handler.updatePetFriendlyStatus);
 
 app.use(
   (

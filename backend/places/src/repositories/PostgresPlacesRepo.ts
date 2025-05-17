@@ -72,30 +72,34 @@ export class PostgresPlacesRepo implements PlacesRepo {
     return this.mapToDomain(result.rows[0]);
   }
 
-  async updatePetFriendlyStatus(
+  async updatePlace(
     id: string,
-    pet_friendly: boolean,
+    address: string,
     num_confirm: number,
     num_deny: number,
     last_contribution_type: string,
-    last_contribution_date: Date
+    pet_friendly: boolean
   ): Promise<Place | null> {
     const query = `
       UPDATE places 
-      SET pet_friendly = $1, num_confirm = $2, num_deny = $3, 
-      last_contribution_type = $4, last_contribution_date = $5, 
-      updated_at = NOW()
-      WHERE id = $6
+      SET 
+        address = COALESCE($2, address),
+        num_confirm = $3,
+        num_deny = $4,
+        last_contribution_type = $5, 
+        pet_friendly = $6,
+        updated_at = NOW()
+      WHERE id = $1
       RETURNING *
     `;
 
     const result = await this.dbConnection.query(query, [
-      pet_friendly,
+      id,
+      address,
       num_confirm,
       num_deny,
       last_contribution_type,
-      last_contribution_date,
-      id,
+      pet_friendly,
     ]);
 
     return result.rows.length ? this.mapToDomain(result.rows[0]) : null;

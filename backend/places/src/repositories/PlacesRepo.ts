@@ -6,12 +6,12 @@ export interface PlacesRepo {
   findNearby(coordinates: Coordinates, radius: number): Promise<Place[]>;
   search(query: string, coordinates: Coordinates): Promise<Place[]>;
   save(place: Place): Promise<Place>;
-  updatePetFriendlyStatus(
+  updatePlace(
     id: string,
-    pet_friendly: boolean,
+    address: string,
     num_confirm: number,
     num_deny: number,
     last_contribution_type: string,
-    last_contribution_date: Date
+    pet_friendly: boolean
   ): Promise<Place | null>;
 }

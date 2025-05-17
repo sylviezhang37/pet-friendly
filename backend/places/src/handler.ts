@@ -3,7 +3,7 @@ import { FindNearbyPlaces } from "./application/FindNearbyPlaces";
 import { GetPlaceDetails } from "./application/GetPlaceDetails";
 import { AddPlace } from "./application/AddPlace";
 import { SearchPlaces } from "./application/SearchPlaces";
-import { UpdatePetFriendly } from "./application/UpdatePetFriendly";
+import { UpdatePlace } from "./application/UpdatePlace";
 
 export class Handler {
   constructor(
@@ -11,7 +11,7 @@ export class Handler {
     private readonly getPlaceDetailsUseCase: GetPlaceDetails,
     private readonly addPlaceUseCase: AddPlace,
     private readonly searchPlacesUseCase: SearchPlaces,
-    private readonly updatePetFriendlyUseCase: UpdatePetFriendly
+    private readonly updatePlaceUseCase: UpdatePlace
   ) {}
 
   // find nearby places in petfriendly database
@@ -89,24 +89,42 @@ export class Handler {
       const {
         name,
         address,
-        latitude,
-        longitude,
+        lat,
+        lng,
         businessType,
         googleMapsUrl,
         allowsPet,
       } = req.body;
 
-      if (!name || !address || !latitude || !longitude) {
+      if (!name) {
         return res.status(400).json({
-          error: "Name, address, latitude, and longitude are required",
+          error: "Name is required",
+        });
+      }
+
+      if (!address) {
+        return res.status(400).json({
+          error: "Address is required",
+        });
+      }
+
+      if (!lat) {
+        return res.status(400).json({
+          error: "Latitude is required",
+        });
+      }
+
+      if (!lng) {
+        return res.status(400).json({
+          error: "Longitude is required",
         });
       }
 
       const place = await this.addPlaceUseCase.execute({
         name,
         address,
-        latitude,
-        longitude,
+        lat,
+        lng,
         businessType,
         googleMapsUrl,
         allowsPet,
@@ -119,23 +137,35 @@ export class Handler {
     }
   };
 
-  // update pet-friendly status and associated fields of a place in database
-  public updatePetFriendlyStatus = async (req: Request, res: Response) => {
+  // update place in database
+  public updatePlace = async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
-      const { confirmed } = req.body;
+      const { address, last_contribution_type, num_confirm, num_deny } =
+        req.body;
 
-      if (typeof confirmed !== "boolean") {
-        return res.status(400).json({ error: "Confirmed status is required" });
+      if (
+        last_contribution_type != "confirm" &&
+        last_contribution_type != "deny"
+      ) {
+        return res.status(400).json({
+          error: "Last contribution type must be 'confirm' or 'deny'",
+        });
       }
 
-      const place = await this.updatePetFriendlyUseCase.execute({
+      if (num_confirm < 0 || num_deny < 0) {
+        return res.status(400).json({
+          error: "Num confirm or num deny must be >= 0",
+        });
+      }
+
+      const place = await this.updatePlaceUseCase.execute({
         id: id,
-        confirmed,
-        num_confirm: 0,
-        num_deny: 0,
-        last_contribution_type: confirmed ? "confirm" : "deny",
-        last_contribution_date: new Date(),
+        address,
+        num_confirm,
+        num_deny,
+        last_contribution_type,
+        pet_friendly: last_contribution_type === "confirm",
       });
 
       if (!place) {

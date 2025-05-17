@@ -5,8 +5,8 @@ import { v4 as uuidv4 } from "uuid";
 export interface PlaceInput {
   name: string;
   address: string;
-  latitude: number;
-  longitude: number;
+  lat: number;
+  lng: number;
   businessType?: string | null;
   googleMapsUrl?: string | null;
   allowsPet?: boolean | null;
@@ -21,8 +21,8 @@ export class AddPlace {
       name: input.name,
       address: input.address,
       coordinates: {
-        lat: input.latitude,
-        lng: input.longitude,
+        lat: input.lat,
+        lng: input.lng,
       },
       businessType: input.businessType,
       googleMapsUrl: input.googleMapsUrl,
