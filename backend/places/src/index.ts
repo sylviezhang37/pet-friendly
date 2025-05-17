@@ -21,10 +21,10 @@ import { Handler } from "./handler";
 dotenv.config();
 
 const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
+  user: process.env.DB_USER || "sylvie",
+  host: process.env.DB_HOST || "localhost",
+  database: process.env.DB_NAME || "pf_test_db",
+  password: process.env.DB_PASSWORD || "",
   port: parseInt(process.env.DB_PORT || "5432"),
 });
 
