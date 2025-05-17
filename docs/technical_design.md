@@ -161,7 +161,7 @@ PATCH /api/v0/places/{id}/pet-friendly
 
 ```
 GET /api/v0/reviews/{placeId}
-POST /api/v0/reviews/add
+POST /api/v0/reviews
 ```
 
 #### User Service API

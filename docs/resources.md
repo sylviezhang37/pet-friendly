@@ -9,3 +9,5 @@
 #### UI
 
 [[Add Map to React App]](https://developers.google.com/codelabs/maps-platform/maps-platform-101-react-js#2)
+[[Mockup (Desktop)]](https://www.figma.com/slides/WnjHZoGEebPtKcexvDNayT/pet-friendly?node-id=4-536&t=zBfdWv0j7vUKiAf5-0)
+[[Mockup (Mobile)]](https://www.figma.com/design/lQ1u9AuTJ6dGYT5DsTiRvF/pet-friendly-mobile?node-id=0-1&p=f&t=2U2pxv3KccEMygID-0)
