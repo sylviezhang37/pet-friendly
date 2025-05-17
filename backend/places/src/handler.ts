@@ -1,17 +1,17 @@
 import { Request, Response } from "express";
 import { FindNearbyPlaces } from "./application/FindNearbyPlaces";
-import { GetPlaceDetails } from "./application/GetPlaceDetails";
+import { GetPlace } from "./application/GetPlace";
 import { AddPlace } from "./application/AddPlace";
 import { SearchPlaces } from "./application/SearchPlaces";
 import { UpdatePlace } from "./application/UpdatePlace";
 
 export class Handler {
   constructor(
-    private readonly findNearbyPlacesUseCase: FindNearbyPlaces,
-    private readonly getPlaceDetailsUseCase: GetPlaceDetails,
+    private readonly getPlaceUseCase: GetPlace,
     private readonly addPlaceUseCase: AddPlace,
-    private readonly searchPlacesUseCase: SearchPlaces,
-    private readonly updatePlaceUseCase: UpdatePlace
+    private readonly updatePlaceUseCase: UpdatePlace,
+    private readonly findNearbyPlacesUseCase: FindNearbyPlaces,
+    private readonly searchPlacesUseCase: SearchPlaces
   ) {}
 
   // find nearby places in petfriendly database
@@ -38,7 +38,7 @@ export class Handler {
     }
   };
 
-  public getPlaceDetails = async (req: Request, res: Response) => {
+  public getPlace = async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
 
@@ -46,7 +46,7 @@ export class Handler {
         return res.status(400).json({ error: "Place ID is required" });
       }
 
-      const result = await this.getPlaceDetailsUseCase.execute(id);
+      const result = await this.getPlaceUseCase.execute(id);
 
       if (!result.place) {
         return res.status(404).json({ error: "Place not found" });

@@ -10,7 +10,7 @@ import { GoogleMapsPlacesProvider } from "./providers/GoogleMapsPlacesProvider";
 
 // applications
 import { FindNearbyPlaces } from "./application/FindNearbyPlaces";
-import { GetPlaceDetails } from "./application/GetPlaceDetails";
+import { GetPlace } from "./application/GetPlace";
 import { AddPlace } from "./application/AddPlace";
 import { SearchPlaces } from "./application/SearchPlaces";
 import { UpdatePlace } from "./application/UpdatePlace";
@@ -33,19 +33,19 @@ const placesProvider = new GoogleMapsPlacesProvider(
   process.env.GOOGLE_MAPS_API_KEY || ""
 );
 
-const findNearbyPlaces = new FindNearbyPlaces(placesRepo);
-const getPlaceDetails = new GetPlaceDetails(placesRepo);
+const getPlace = new GetPlace(placesRepo);
 const addPlace = new AddPlace(placesRepo);
+const updatePlace = new UpdatePlace(placesRepo);
+const findNearbyPlaces = new FindNearbyPlaces(placesRepo);
 const searchPlaces = new SearchPlaces(placesRepo, placesProvider);
-const updatePetFriendly = new UpdatePlace(placesRepo);
 
 // api handler
 const handler = new Handler(
-  findNearbyPlaces,
-  getPlaceDetails,
+  getPlace,
   addPlace,
-  searchPlaces,
-  updatePetFriendly
+  updatePlace,
+  findNearbyPlaces,
+  searchPlaces
 );
 
 const app = express();
@@ -61,7 +61,7 @@ app.get("/api/v0/places/nearby", handler.findNearbyPlaces);
 
 app.get("/api/v0/places/search", handler.searchPlaces);
 
-app.get("/api/v0/places/:id", handler.getPlaceDetails);
+app.get("/api/v0/places/:id", handler.getPlace);
 
 app.patch("/api/v0/places/:id", handler.updatePlace);
 // or use custom method, see [https://google.aip.dev/136]
