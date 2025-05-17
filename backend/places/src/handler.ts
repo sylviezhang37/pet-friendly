@@ -1,21 +1,15 @@
 import { Request, Response } from "express";
-import { FindNearbyPlaces } from "./application/FindNearbyPlaces";
-import { GetPlace } from "./application/GetPlace";
-import { AddPlace } from "./application/AddPlace";
-import { SearchPlaces } from "./application/SearchPlaces";
-import { UpdatePlace } from "./application/UpdatePlace";
+import { SearchService } from "./application/SearchService";
+import { PlaceService } from "./application/PlaceService";
 
 export class Handler {
   constructor(
-    private readonly getPlaceUseCase: GetPlace,
-    private readonly addPlaceUseCase: AddPlace,
-    private readonly updatePlaceUseCase: UpdatePlace,
-    private readonly findNearbyPlacesUseCase: FindNearbyPlaces,
-    private readonly searchPlacesUseCase: SearchPlaces
+    private readonly placeService: PlaceService,
+    private readonly searchService: SearchService
   ) {}
 
   // find nearby places in petfriendly database
-  public findNearbyPlaces = async (req: Request, res: Response) => {
+  public getNearbyPlaces = async (req: Request, res: Response) => {
     try {
       const { lat, lng, radius = 1000 } = req.query;
 
@@ -25,7 +19,7 @@ export class Handler {
           .json({ error: "Latitude and longitude are required" });
       }
 
-      const places = await this.findNearbyPlacesUseCase.execute({
+      const places = await this.placeService.getNearbyPlaces({
         latitude: parseFloat(lat as string),
         longitude: parseFloat(lng as string),
         radius: parseInt(radius as string),
@@ -46,7 +40,7 @@ export class Handler {
         return res.status(400).json({ error: "Place ID is required" });
       }
 
-      const result = await this.getPlaceUseCase.execute(id);
+      const result = await this.placeService.getPlace(id);
 
       if (!result.place) {
         return res.status(404).json({ error: "Place not found" });
@@ -70,10 +64,10 @@ export class Handler {
         });
       }
 
-      const result = await this.searchPlacesUseCase.execute({
+      const result = await this.searchService.execute({
         query: query as string,
-        latitude: parseFloat(lat as string),
-        longitude: parseFloat(lng as string),
+        lat: parseFloat(lat as string),
+        lng: parseFloat(lng as string),
       });
 
       res.json(result);
@@ -120,7 +114,7 @@ export class Handler {
         });
       }
 
-      const place = await this.addPlaceUseCase.execute({
+      const place = await this.placeService.createPlace({
         name,
         address,
         lat,
@@ -159,7 +153,7 @@ export class Handler {
         });
       }
 
-      const place = await this.updatePlaceUseCase.execute({
+      const place = await this.placeService.updatePlace({
         id: id,
         address,
         num_confirm,

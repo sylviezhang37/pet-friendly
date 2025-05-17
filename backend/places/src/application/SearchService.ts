@@ -3,22 +3,22 @@ import { PlacesRepo } from "../repositories/PlacesRepo";
 import { PlacesProvider } from "../providers/PlacesProvider";
 import { Coordinates } from "../domain/models";
 
-export interface SearchPlacesInput {
+export interface SearchInput {
   query: string;
-  latitude: number;
-  longitude: number;
+  lat: number;
+  lng: number;
 }
 
-export class SearchPlaces {
+export class SearchService {
   constructor(
     private readonly placeRepository: PlacesRepo,
     private readonly placesProvider: PlacesProvider
   ) {}
 
-  async execute(input: SearchPlacesInput): Promise<Place[]> {
+  async execute(input: SearchInput): Promise<Place[]> {
     const coordinates: Coordinates = {
-      lat: input.latitude,
-      lng: input.longitude,
+      lat: input.lat,
+      lng: input.lng,
     };
 
     // first search in our database

@@ -9,11 +9,8 @@ import { PostgresPlacesRepo } from "./repositories/PostgresPlacesRepo";
 import { GoogleMapsPlacesProvider } from "./providers/GoogleMapsPlacesProvider";
 
 // applications
-import { FindNearbyPlaces } from "./application/FindNearbyPlaces";
-import { GetPlace } from "./application/GetPlace";
-import { AddPlace } from "./application/AddPlace";
-import { SearchPlaces } from "./application/SearchPlaces";
-import { UpdatePlace } from "./application/UpdatePlace";
+import { PlaceService } from "./application/PlaceService";
+import { SearchService } from "./application/SearchService";
 
 // api interfaces
 import { Handler } from "./handler";
@@ -33,20 +30,11 @@ const placesProvider = new GoogleMapsPlacesProvider(
   process.env.GOOGLE_MAPS_API_KEY || ""
 );
 
-const getPlace = new GetPlace(placesRepo);
-const addPlace = new AddPlace(placesRepo);
-const updatePlace = new UpdatePlace(placesRepo);
-const findNearbyPlaces = new FindNearbyPlaces(placesRepo);
-const searchPlaces = new SearchPlaces(placesRepo, placesProvider);
+const placeService = new PlaceService(placesRepo);
+const searchService = new SearchService(placesRepo, placesProvider);
 
 // api handler
-const handler = new Handler(
-  getPlace,
-  addPlace,
-  updatePlace,
-  findNearbyPlaces,
-  searchPlaces
-);
+const handler = new Handler(placeService, searchService);
 
 const app = express();
 
@@ -57,7 +45,7 @@ app.use(express.json());
 // routes
 app.post("/api/v0/places", handler.addPlace);
 
-app.get("/api/v0/places/nearby", handler.findNearbyPlaces);
+app.get("/api/v0/places/nearby", handler.getNearbyPlaces);
 
 app.get("/api/v0/places/search", handler.searchPlaces);
 
