@@ -84,147 +84,136 @@ export default function PlacePanel({ place }: { place: Place }) {
     setSelected(null);
   };
 
-  // TODO: if place / reviews are loading, show a spinner
-  if (reviewsLoading) {
-    return (
-      <Box
-        p={8}
-        display="flex"
-        flexDir="column"
-        alignItems="center"
-        justifyContent="center"
-        minH="400px"
+  return (
+    <Box mx={10} my={6}>
+      <IconButton
+        aria-label="Back Arrow"
+        icon={<FaArrowLeft />}
+        colorScheme="gray"
+        variant="ghost"
+        justifyContent="flex-start"
+        mb={2}
+        onClick={() => setSelectedPlaceId(null)}
+      />
+      <Heading size="xl" mb={2}>
+        {place.name}
+      </Heading>
+      <Text color="gray.600" mb={2}>
+        {place.address}
+      </Text>
+      <Text
+        fontSize="sm"
+        color="yellow.800"
+        bg="yellow.50"
+        py={1}
+        borderRadius="md"
+        mb={2}
+        display="inline-block"
       >
-        <Spinner size="xl" color="yellow.500" mb={4} />
-        <Text color="gray.500">Loading place details...</Text>
-      </Box>
-    );
-  } else if (reviewsError || !place) {
-    return (
-      <Box p={8} textAlign="center">
-        <Text color="red.500">Place not found</Text>
-      </Box>
-    );
-  } else {
-    return (
-      <Box mx={10} my={6}>
-        <IconButton
-          aria-label="Back Arrow"
-          icon={<FaArrowLeft />}
-          colorScheme="gray"
-          variant="ghost"
-          justifyContent="flex-start"
-          mb={2}
-          onClick={() => setSelectedPlaceId(null)}
-        />
-        <Heading size="xl" mb={2}>
-          {place.name}
-        </Heading>
-        <Text color="gray.600" mb={2}>
-          {place.address}
-        </Text>
-        <Text
-          fontSize="sm"
-          color="yellow.800"
-          bg="yellow.50"
-          py={1}
-          borderRadius="md"
-          mb={2}
-          display="inline-block"
-        >
-          Last confirmed on{" "}
-          {userReview
-            ? new Date(userReview.createdAt).toLocaleDateString()
-            : place.updatedAt}
-        </Text>
-        <HStack spacing={6} mb={4} mt={2}>
-          <HStack>
-            <Icon as={PiThumbsUpBold} color="green.500" />
-            <Text>{reviews.filter((r) => r.petFriendly).length} confirmed</Text>
-          </HStack>
-          <HStack>
-            <Icon as={PiThumbsDownBold} color="red.400" />
-            <Text>{reviews.filter((r) => !r.petFriendly).length} denied</Text>
-          </HStack>
+        Last confirmed on{" "}
+        {userReview
+          ? new Date(userReview.createdAt).toLocaleDateString()
+          : place.updatedAt}
+      </Text>
+      <HStack spacing={6} mb={4} mt={2}>
+        <HStack>
+          <Icon as={PiThumbsUpBold} color="green.500" />
+          <Text>{reviews.filter((r) => r.petFriendly).length} confirmed</Text>
         </HStack>
-
-        {/* User Review Section */}
-
-        {/* case 1: user has submitted a review in a previous session */}
-        {userReview && !submitted && (
-          <Box mb={6} p={4} bg="green.50" borderRadius="md" textAlign="center">
-            <Text color="green.700">
-              You&apos;ve submitted a review for this place.
-            </Text>
+        <HStack>
+          <Icon as={PiThumbsDownBold} color="red.400" />
+          <Text>{reviews.filter((r) => !r.petFriendly).length} denied</Text>
+        </HStack>
+      </HStack>
+      {/* User Review Section */}
+      {/* case 1: user has submitted a review in a previous session */}
+      {userReview && !submitted && (
+        <Box mb={6} p={4} bg="green.50" borderRadius="md" textAlign="center">
+          <Text color="green.700">
+            You&apos;ve submitted a review for this place.
+          </Text>
+        </Box>
+      )}
+      {/* case 2: user has not submitted a review yet */}
+      <Collapse in={!userReview} unmountOnExit>
+        <HStack spacing={4} mb={6} justifyContent="center">
+          {/* TODO: add accessibility attributes */}
+          <IconButton
+            aria-label="Confirm"
+            icon={<PiThumbsUpBold />}
+            colorScheme={selected === "confirm" ? "yellow" : undefined}
+            variant={selected === "confirm" ? "solid" : "outline"}
+            onClick={() => handleSelect("confirm")}
+            isDisabled={!!userReview}
+          />
+          <IconButton
+            aria-label="Deny"
+            icon={<PiThumbsDownBold />}
+            colorScheme={selected === "deny" ? "yellow" : undefined}
+            variant={selected === "deny" ? "solid" : "outline"}
+            onClick={() => handleSelect("deny")}
+            isDisabled={!!userReview}
+          />
+        </HStack>
+        <Collapse in={!!selected} animateOpacity>
+          <Box mb={6} p={3} borderRadius="md" boxShadow="sm">
+            <Textarea
+              placeholder="Add a comment"
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              mb={3}
+              bg="white"
+            />
+            <HStack justify="flex-end">
+              <Button onClick={handleCancel} variant="ghost">
+                Cancel
+              </Button>
+              <Button
+                onClick={handlePost}
+                colorScheme="yellow"
+                fontWeight="bold"
+              >
+                Post
+              </Button>
+            </HStack>
           </Box>
-        )}
-
-        {/* case 2: user has not submitted a review yet */}
-        <Collapse in={!userReview} unmountOnExit>
-          <HStack spacing={4} mb={6} justifyContent="center">
-            {/* TODO: add accessibility attributes */}
-            <IconButton
-              aria-label="Confirm"
-              icon={<PiThumbsUpBold />}
-              colorScheme={selected === "confirm" ? "yellow" : undefined}
-              variant={selected === "confirm" ? "solid" : "outline"}
-              onClick={() => handleSelect("confirm")}
-              isDisabled={!!userReview}
-            />
-            <IconButton
-              aria-label="Deny"
-              icon={<PiThumbsDownBold />}
-              colorScheme={selected === "deny" ? "yellow" : undefined}
-              variant={selected === "deny" ? "solid" : "outline"}
-              onClick={() => handleSelect("deny")}
-              isDisabled={!!userReview}
-            />
-          </HStack>
-          <Collapse in={!!selected} animateOpacity>
-            <Box mb={6} p={3} borderRadius="md" boxShadow="sm">
-              <Textarea
-                placeholder="Add a comment"
-                value={comment}
-                onChange={(e) => setComment(e.target.value)}
-                mb={3}
-                bg="white"
-              />
-              <HStack justify="flex-end">
-                <Button onClick={handleCancel} variant="ghost">
-                  Cancel
-                </Button>
-                <Button
-                  onClick={handlePost}
-                  colorScheme="yellow"
-                  fontWeight="bold"
-                >
-                  Post
-                </Button>
-              </HStack>
-            </Box>
-          </Collapse>
         </Collapse>
+      </Collapse>
+      {/* case 3: user submits a review in current session*/}
+      {userReview && submitted && (
+        <Collapse in={submitted} unmountOnExit>
+          <Box mb={6} p={4} bg="green.50" borderRadius="md" textAlign="center">
+            <Text color="green.700">Review submitted</Text>
+          </Box>
+        </Collapse>
+      )}
+      {/* Reviews Section */}
+      <Divider my={4} />
+      <Heading size="md" mb={2}>
+        Reviews
+      </Heading>
 
-        {/* case 3: user submits a review in current session*/}
-        {userReview && submitted && (
-          <Collapse in={submitted} unmountOnExit>
-            <Box
-              mb={6}
-              p={4}
-              bg="green.50"
-              borderRadius="md"
-              textAlign="center"
-            >
-              <Text color="green.700">Review submitted</Text>
-            </Box>
-          </Collapse>
-        )}
+      {reviewsLoading && (
+        <Box
+          p={8}
+          display="flex"
+          flexDir="column"
+          alignItems="center"
+          justifyContent="center"
+          minH="400px"
+        >
+          <Spinner size="xl" color="yellow.500" mb={4} />
+          <Text color="gray.500">Loading reviews...</Text>
+        </Box>
+      )}
 
-        {/* Reviews Section */}
-        <Divider my={4} />
-        <Heading size="md" mb={2}>
-          Reviews
-        </Heading>
+      {reviewsError && (
+        <Box p={8} textAlign="center">
+          <Text color="red.500">Error loading reviews :(</Text>
+        </Box>
+      )}
+
+      {!reviewsLoading && !reviewsError && (
         <VStack align="stretch" spacing={3}>
           {/* If no reviews, show a CTA to submit a review */}
           {reviews.length === 0 ? (
@@ -252,7 +241,7 @@ export default function PlacePanel({ place }: { place: Place }) {
             ))
           )}
         </VStack>
-      </Box>
-    );
-  }
+      )}
+    </Box>
+  );
 }
