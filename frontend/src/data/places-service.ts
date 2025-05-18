@@ -1,10 +1,10 @@
-import { apiClient } from "@/lib/api-client";
-import { Place } from "@/lib/models";
+import { apiClient } from "@/data/api-client";
+import { Place } from "@/models/models";
 import {
   BackendPlace,
   NearbyPlacesParams,
   SearchPlaceParams,
-} from "@/lib/backend-models";
+} from "@/models/backend-models";
 
 const mapToPlace = (data: BackendPlace): Place => ({
   id: data.id,

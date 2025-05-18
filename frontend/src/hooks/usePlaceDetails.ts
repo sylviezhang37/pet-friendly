@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Place } from "@/lib/models";
+import { Place } from "@/models/models";
 // import placesService from "@/services/places-service";
 
 const placeDetails: Place = {

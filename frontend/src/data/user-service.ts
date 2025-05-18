@@ -1,6 +1,6 @@
-import { apiClient } from "@/lib/api-client";
-import { User } from "@/lib/models";
-import { BackendUser, NewUserRequest } from "@/lib/backend-models";
+import { apiClient } from "@/data/api-client";
+import { User } from "@/models/models";
+import { BackendUser, NewUserRequest } from "@/models/backend-models";
 
 const mapToUser = (data: BackendUser): User => ({
   id: data.id,

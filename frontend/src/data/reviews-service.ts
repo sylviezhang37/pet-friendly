@@ -1,6 +1,6 @@
-import { apiClient } from "@/lib/api-client";
-import { Review } from "@/lib/models";
-import { BackendReview } from "@/lib/backend-models";
+import { apiClient } from "@/data/api-client";
+import { Review } from "@/models/models";
+import { BackendReview } from "@/models/backend-models";
 
 const mapToReview = (data: BackendReview): Review => ({
   id: data.id,

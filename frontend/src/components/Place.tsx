@@ -14,7 +14,7 @@ import {
   IconButton,
   Spinner,
 } from "@chakra-ui/react";
-import { User, Review, Place } from "@/lib/models";
+import { User, Review, Place } from "@/models/models";
 import { useStore } from "@/hooks/useStore";
 import { PiThumbsUpBold, PiThumbsDownBold } from "react-icons/pi";
 import { FaArrowLeft } from "react-icons/fa";
