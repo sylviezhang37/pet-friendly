@@ -1,7 +1,8 @@
+import { Coordinates } from "./backend-models";
+
 export interface Place {
   id: string;
-  lat: number;
-  lng: number;
+  coordinates: Coordinates;
   name: string;
   type: string;
   allowsPet: boolean;

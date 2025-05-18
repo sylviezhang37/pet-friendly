@@ -1,13 +1,20 @@
 import { apiClient } from "@/lib/api-client";
+import axios from "axios";
 import { Place } from "@/lib/models";
-import { BackendPlace, SearchPlaceParams } from "@/lib/backend-models";
+import {
+  BackendPlace,
+  NearbyPlacesParams,
+  SearchPlaceParams,
+} from "@/lib/backend-models";
 
 const mapToPlace = (data: BackendPlace): Place => ({
   id: data.id,
   name: data.name,
   address: data.address,
-  lat: data.lat,
-  lng: data.lng,
+  coordinates: {
+    lat: data.coordinates.lat,
+    lng: data.coordinates.lng,
+  },
   type: data.type,
   allowsPet: data.allowsPet,
   googleMapsUrl: data.googleMapsUrl,
@@ -20,12 +27,16 @@ const mapToPlace = (data: BackendPlace): Place => ({
 });
 
 export const placesService = {
-  getNearbyPlaces: async (params: SearchPlaceParams): Promise<Place[]> => {
-    const places = await apiClient.get<BackendPlace[]>(
-      "/api/v0/places/nearby",
-      params
+  getNearbyPlaces: async (params: NearbyPlacesParams): Promise<Place[]> => {
+    console.log("placeService got params: ", params);
+
+    const { data: places } = await axios.get(
+      `http://localhost:3000/api/v0/places/nearby`,
+      { params }
     );
-    return places.map(mapToPlace);
+
+    console.log("frontend got places: ", places);
+    return places.places.map((place: BackendPlace) => mapToPlace(place));
   },
 
   getPlaceById: async (id: string): Promise<Place> => {

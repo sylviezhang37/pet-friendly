@@ -36,7 +36,10 @@ export default function Map({
         {places.map((place) => (
           <Marker
             key={place.id}
-            position={{ lat: place.lat, lng: place.lng }}
+            position={{
+              lat: place.coordinates.lat,
+              lng: place.coordinates.lng,
+            }}
             label={place.name[0]}
             onClick={() => onMarkerClick?.(place.id)}
           />

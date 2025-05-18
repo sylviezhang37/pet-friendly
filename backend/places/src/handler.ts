@@ -20,8 +20,8 @@ export class Handler {
       }
 
       const places = await this.placeService.getNearbyPlaces({
-        latitude: parseFloat(lat as string),
-        longitude: parseFloat(lng as string),
+        lat: parseFloat(lat as string),
+        lng: parseFloat(lng as string),
         radius: parseInt(radius as string),
       });
 

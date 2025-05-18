@@ -1,9 +1,13 @@
+export interface Coordinates {
+  lat: number;
+  lng: number;
+}
+
 export interface BackendPlace {
   id: string;
   name: string;
   address: string;
-  lat: number;
-  lng: number;
+  coordinates: Coordinates;
   type: string;
   allowsPet: boolean;
   googleMapsUrl: string;
@@ -34,6 +38,11 @@ export interface BackendUser {
 
 export interface SearchPlaceParams {
   query?: string;
+  lat: number;
+  lng: number;
+}
+
+export interface NearbyPlacesParams {
   lat: number;
   lng: number;
   radius?: number;

@@ -1,6 +1,8 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
 
-const API_URL = process.env.API_URL || "http://localhost:3000/api";
+const API_URL = process.env.PLACES_API_URL || "http://localhost:3000/api/v0";
+
+console.log("API_URL: ", API_URL);
 
 if (!API_URL) {
   throw new Error("API_URL environment variable is not defined.");
@@ -16,6 +18,8 @@ const axiosInstance: AxiosInstance = axios.create({
 
 export const apiClient = {
   async get<T>(url: string, params?: object): Promise<T> {
+    console.log("apiClient got url: ", url);
+    console.log("apiClient got params: ", { params });
     const response: AxiosResponse<T> = await axiosInstance.get(url, { params });
     return response.data;
   },

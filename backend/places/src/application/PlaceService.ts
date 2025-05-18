@@ -27,8 +27,8 @@ export interface PlaceOutput {
 }
 
 export interface NearbyPlacesInput {
-  latitude: number;
-  longitude: number;
+  lat: number;
+  lng: number;
   radius: number;
   filters?: {
     businessType?: string;
@@ -87,21 +87,25 @@ export class PlaceService {
 
   async getNearbyPlaces(input: NearbyPlacesInput): Promise<NearbyPlacesOutput> {
     const coordinates: Coordinates = {
-      lat: input.latitude,
-      lng: input.longitude,
+      lat: input.lat,
+      lng: input.lng,
     };
+
+    console.log("placeService got coordinates: ", coordinates);
 
     const places = await this.placeRepository.findNearby(
       coordinates,
       input.radius
     );
 
+    console.log("placeService retrieved places: ", places);
+
     const petFriendlyCount = places.filter((place) => place.petFriendly).length;
 
     let filteredPlaces = places;
-    if (input.onlyPetFriendly) {
-      filteredPlaces = places.filter((place) => place.petFriendly);
-    }
+    // if (input.onlyPetFriendly) {
+    //   filteredPlaces = places.filter((place) => place.petFriendly);
+    // }
 
     if (input.filters?.businessType) {
       filteredPlaces = filteredPlaces.filter(
