@@ -154,7 +154,7 @@ GET /api/v0/places/{id}
 GET /api/v0/places/nearby?lat={latitude}&lng={longitude}&radius={meters}
 GET /api/v0/places/search?query={search_term}&lat={latitude}&lng={longitude}
 POST /api/v0/places/add
-PATCH /api/v0/places/{id}/pet-friendly
+PATCH /api/v0/places/{id}
 ```
 
 #### Reviews Service API
