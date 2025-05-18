@@ -1,5 +1,4 @@
 import { apiClient } from "@/lib/api-client";
-import axios from "axios";
 import { Place } from "@/lib/models";
 import {
   BackendPlace,
@@ -28,15 +27,18 @@ const mapToPlace = (data: BackendPlace): Place => ({
 
 export const placesService = {
   getNearbyPlaces: async (params: NearbyPlacesParams): Promise<Place[]> => {
-    console.log("placeService got params: ", params);
+    const data = await apiClient.get<{
+      places: BackendPlace[];
+      total: number;
+      petFriendlyCount: number;
+    }>("/api/v0/places/nearby", {
+      params,
+    });
 
-    const { data: places } = await axios.get(
-      `http://localhost:3000/api/v0/places/nearby`,
-      { params }
-    );
+    const { places, total, petFriendlyCount } = data;
+    console.log(`Received ${total} places (${petFriendlyCount} pet friendly)`);
 
-    console.log("frontend got places: ", places);
-    return places.places.map((place: BackendPlace) => mapToPlace(place));
+    return places.map((place: BackendPlace) => mapToPlace(place));
   },
 
   getPlaceById: async (id: string): Promise<Place> => {
