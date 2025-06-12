@@ -6,6 +6,12 @@ import {
   SearchPlaceParams,
 } from "@/models/backend-models";
 
+type PlacesResponse = {
+  places: BackendPlace[];
+  total: number;
+  petFriendlyCount: number;
+};
+
 const mapToPlace = (data: BackendPlace): Place => ({
   id: data.id,
   name: data.name,
@@ -27,11 +33,7 @@ const mapToPlace = (data: BackendPlace): Place => ({
 
 export const placesService = {
   getNearbyPlaces: async (params: NearbyPlacesParams): Promise<Place[]> => {
-    const data = await apiClient.get<{
-      places: BackendPlace[];
-      total: number;
-      petFriendlyCount: number;
-    }>("/api/v0/places/nearby", {
+    const data = await apiClient.get<PlacesResponse>("/api/v0/places/nearby", {
       params,
     });
 
@@ -59,7 +61,7 @@ export const placesService = {
       "/api/v0/places/search",
       params
     );
-    return places.map(mapToPlace);
+    return places.map((place: BackendPlace) => mapToPlace(place));
   },
 
   //   TODO: update req body

@@ -10,7 +10,7 @@ import usersApp from "./users/src";
 
 dotenv.config();
 
-// Create a shared database connection pool
+// TODO: Create a shared database connection pool
 // const pool = new Pool({
 //   user: process.env.DB_USER ?? process.env.TEST_DB_USER,
 //   host: process.env.DB_HOST ?? process.env.TEST_DB_HOST,
@@ -21,7 +21,6 @@ dotenv.config();
 
 const app = express();
 
-// Middleware
 app.use(helmet());
 app.use(cors());
 app.use(express.json());

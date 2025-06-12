@@ -2,8 +2,6 @@ import { Review } from "@/models/models";
 import { useState, useEffect } from "react";
 import { reviewsService } from "@/data/reviews-service";
 
-// const sampleReviews: Review[] = [];
-
 export function usePlaceReviews(placeId: string) {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -11,6 +9,7 @@ export function usePlaceReviews(placeId: string) {
 
   useEffect(() => {
     async function fetchReviews() {
+      console.log("usePlaceReviews fetching reviews for placeId: ", placeId);
       try {
         const reviews = await reviewsService.getReviewsByPlaceId(placeId);
         setReviews(reviews);
