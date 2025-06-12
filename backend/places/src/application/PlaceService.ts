@@ -1,4 +1,4 @@
-import { Coordinates } from "@/domain/models";
+import { Coordinates } from "../domain/models";
 import { Place } from "../domain/Place";
 import { PlacesRepo } from "../repositories/PlacesRepo";
 import { v4 as uuidv4 } from "uuid";
@@ -98,7 +98,7 @@ export class PlaceService {
       input.radius
     );
 
-    console.log("placeService retrieved places: ", places);
+    console.log("placeService retrieved places. ");
 
     const petFriendlyCount = places.filter((place) => place.petFriendly).length;
 

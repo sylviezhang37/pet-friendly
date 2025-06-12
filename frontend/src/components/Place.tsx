@@ -27,7 +27,7 @@ const sampleUser: User = {
 };
 
 // TODO: handle adding a new review to db
-// TODO: handle updating pet friendly state of a palce
+// TODO: handle updating pet friendly state of a place
 export default function PlacePanel({ place }: { place: Place }) {
   const setSelectedPlaceId = useStore((s) => s.setSelectedPlaceId);
   const [selected, setSelected] = useState<"confirm" | "deny" | null>(null);
@@ -134,6 +134,7 @@ export default function PlacePanel({ place }: { place: Place }) {
           </Text>
         </Box>
       )}
+
       {/* case 2: user has not submitted a review yet */}
       <Collapse in={!userReview} unmountOnExit>
         <HStack spacing={4} mb={6} justifyContent="center">
@@ -179,6 +180,7 @@ export default function PlacePanel({ place }: { place: Place }) {
           </Box>
         </Collapse>
       </Collapse>
+
       {/* case 3: user submits a review in current session*/}
       {userReview && submitted && (
         <Collapse in={submitted} unmountOnExit>
@@ -187,6 +189,7 @@ export default function PlacePanel({ place }: { place: Place }) {
           </Box>
         </Collapse>
       )}
+
       {/* Reviews Section */}
       <Divider my={4} />
       <Heading size="md" mb={2}>
