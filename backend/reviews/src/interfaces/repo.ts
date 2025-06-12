@@ -44,7 +44,7 @@ export class PostgresReviewsRepo implements ReviewsRepo {
       id: data.id,
       placeId: data.place_id,
       userId: data.user_id,
-      username: data.ausername,
+      username: data.username,
       petFriendly: data.pet_friendly,
       comment: data.comment,
       createdAt: data.created_at,

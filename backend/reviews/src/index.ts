@@ -12,11 +12,11 @@ import { UsersClient } from "./integrations/usersClient";
 dotenv.config();
 
 const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: parseInt(process.env.DB_PORT || "5432"),
+  user: process.env.DB_USER ?? process.env.TEST_DB_USER,
+  host: process.env.DB_HOST ?? process.env.TEST_DB_HOST,
+  database: process.env.DB_NAME ?? process.env.TEST_DB_NAME,
+  password: process.env.DB_PASSWORD ?? process.env.TEST_DB_PASSWORD,
+  port: parseInt(process.env.DB_PORT ?? process.env.TEST_DB_PORT ?? "5432"),
 });
 
 const usersClient = new UsersClient();
@@ -31,8 +31,8 @@ app.use(cors());
 app.use(express.json());
 
 // routes
-app.post("/api/v0/reviews", handler.createReview);
-app.get("/api/v0/reviews/:placeId", handler.getReviewsByPlaceId);
+app.post("/reviews", handler.createReview);
+app.get("/reviews/:placeId", handler.getReviewsByPlaceId);
 
 app.use(
   (

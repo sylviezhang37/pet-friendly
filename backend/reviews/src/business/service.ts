@@ -55,9 +55,8 @@ export class ReviewsService {
   }
 
   async getReviewsByPlaceId(placeId: string): Promise<ReviewsByPlaceIdOutput> {
-    console.log("reviewsService getting reviews for placeId: ", placeId);
     const reviews = await this.reviewsRepo.getByPlaceId(placeId);
-    console.log("reviewsService retrieved reviews: ", reviews);
+    console.log(`reviewsService retrieved ${reviews.length} reviews`);
     return {
       reviews: reviews,
     };
