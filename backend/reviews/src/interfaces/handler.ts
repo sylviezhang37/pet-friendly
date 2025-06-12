@@ -44,6 +44,8 @@ export class Handler {
         return res.status(400).json({ error: "Place ID is required" });
       }
 
+      console.log("handler getting reviews for placeId: ", placeId);
+
       const result = await this.reviewsService.getReviewsByPlaceId(placeId);
       res.json(result);
     } catch (error) {

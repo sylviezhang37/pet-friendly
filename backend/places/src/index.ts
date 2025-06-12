@@ -43,15 +43,15 @@ app.use(cors());
 app.use(express.json());
 
 // routes
-app.post("/api/v0/places", handler.addPlace);
+app.post("/places", handler.addPlace);
 
-app.get("/api/v0/places/nearby", handler.getNearbyPlaces);
+app.get("/places/nearby", handler.getNearbyPlaces);
 
-app.get("/api/v0/places/search", handler.searchPlaces);
+app.get("/places/search", handler.searchPlaces);
 
-app.get("/api/v0/places/:id", handler.getPlace);
+app.get("/places/:id", handler.getPlace);
 
-app.patch("/api/v0/places/:id", handler.updatePlace);
+app.patch("/places/:id", handler.updatePlace);
 // or use custom method, see [https://google.aip.dev/136]
 // app.patch("/api/v0/places/:id:confirm", handler.updatePetFriendlyStatus);
 

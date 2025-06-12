@@ -1,12 +1,13 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
 
-const API_URL = process.env.PLACES_API_URL || "http://localhost:3000";
+// const API_URL = process.env.PLACES_API_URL || "http://localhost:3000";
+
+const API_URL = "http://localhost:3000";
 
 if (!API_URL) {
   throw new Error("API_URL environment variable is not defined.");
 }
 
-// create a configured axios instance
 const axiosInstance: AxiosInstance = axios.create({
   baseURL: API_URL,
   headers: {
