@@ -47,7 +47,7 @@ export default function PlacePanel({ place }: { place: Place }) {
     setSelected(null);
     setComment("");
     setSubmitted(false);
-  }, [place.id, reviews]);
+  }, [place.id]);
 
   useEffect(() => {
     const found = reviews.find((r) => r.userId === currentUser.id);
@@ -56,7 +56,7 @@ export default function PlacePanel({ place }: { place: Place }) {
 
   const handleSelect = (type: "confirm" | "deny") => {
     setSelected(type);
-    setSubmitted(false);
+    // setSubmitted(false);
   };
 
   const handleCancel = () => {
@@ -65,7 +65,7 @@ export default function PlacePanel({ place }: { place: Place }) {
     setSubmitted(false);
   };
 
-  const handlePost = () => {
+  const handlePostReview = () => {
     // optimistically add new review
     const newReview: Review = {
       id: (reviews.length + 1).toString(),
@@ -73,11 +73,11 @@ export default function PlacePanel({ place }: { place: Place }) {
       userId: currentUser.id,
       username: currentUser.username,
       petFriendly: selected === "confirm",
-      createdAt: new Date().toISOString(),
+      createdAt: new Date(),
       comment: comment,
     };
 
-    // TODO: can i add to list without mutating the original?
+    // TODO: handle update place.updatedAt
     addReview(newReview);
     setSubmitted(true);
     setComment("");
@@ -101,6 +101,7 @@ export default function PlacePanel({ place }: { place: Place }) {
       <Text color="gray.600" mb={2}>
         {place.address}
       </Text>
+
       <Text
         fontSize="sm"
         color="yellow.800"
@@ -111,10 +112,12 @@ export default function PlacePanel({ place }: { place: Place }) {
         display="inline-block"
       >
         Last confirmed on{" "}
-        {userReview
-          ? new Date(userReview.createdAt).toLocaleDateString()
-          : place.updatedAt}
+        {(submitted && userReview
+          ? new Date()
+          : place.updatedAt
+        ).toLocaleDateString()}
       </Text>
+
       <HStack spacing={6} mb={4} mt={2}>
         <HStack>
           <Icon as={PiThumbsUpBold} color="green.500" />
@@ -170,7 +173,7 @@ export default function PlacePanel({ place }: { place: Place }) {
                 Cancel
               </Button>
               <Button
-                onClick={handlePost}
+                onClick={handlePostReview}
                 colorScheme="yellow"
                 fontWeight="bold"
               >

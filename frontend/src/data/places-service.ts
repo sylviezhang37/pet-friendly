@@ -23,8 +23,8 @@ const mapToPlace = (data: BackendPlace): Place => ({
   type: data.type,
   allowsPet: data.allowsPet,
   googleMapsUrl: data.googleMapsUrl,
-  createdAt: data.createdAt,
-  updatedAt: data.updatedAt,
+  createdAt: new Date(data.createdAt),
+  updatedAt: new Date(data.updatedAt),
   numConfirm: data.numConfirm,
   numDeny: data.numDeny,
   lastContributionType: data.lastContributionType,
@@ -39,6 +39,7 @@ export const placesService = {
 
     const { places, total, petFriendlyCount } = data;
     console.log(`Received ${total} places (${petFriendlyCount} pet friendly)`);
+    console.log(places);
 
     return places.map((place: BackendPlace) => mapToPlace(place));
   },

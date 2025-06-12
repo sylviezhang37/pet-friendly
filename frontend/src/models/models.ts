@@ -8,8 +8,8 @@ export interface Place {
   allowsPet: boolean;
   googleMapsUrl: string;
   address: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
   numConfirm: number;
   numDeny: number;
   lastContributionType: string;
@@ -23,7 +23,7 @@ export interface Review {
   username: string;
   petFriendly: boolean;
   comment: string;
-  createdAt: string;
+  createdAt: Date;
 }
 
 export interface User {
