@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Place } from "@/models/models";
-import placesService from "@/data/places-service";
+import placesService from "@/api/places-service";
 
 export function usePlaceDetails(placeId: string) {
   const [place, setPlace] = useState<Place | null>(null);

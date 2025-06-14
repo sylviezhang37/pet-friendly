@@ -1,11 +1,6 @@
-import { apiClient } from "@/data/api-client";
+import { apiClient } from "@/api/client";
 import { Place } from "@/models/models";
-import {
-  BackendPlace,
-  NearbyPlacesParams,
-  SearchPlaceParams,
-  UpdatePlaceRequest,
-} from "@/models/backend-models";
+import { BackendPlace } from "@/models/backend-models";
 
 type PlacesResponse = {
   places: BackendPlace[];
@@ -15,6 +10,25 @@ type PlacesResponse = {
 
 type PlaceResponse = {
   place: BackendPlace;
+};
+
+type SearchPlaceParams = {
+  query?: string;
+  lat: number;
+  lng: number;
+};
+
+type NearbyPlacesParams = {
+  lat: number;
+  lng: number;
+  radius?: number;
+};
+
+type UpdatePlaceRequest = {
+  address?: string;
+  last_contribution_type: string;
+  num_confirm: number;
+  num_deny: number;
 };
 
 const mapToPlace = (data: BackendPlace): Place => ({

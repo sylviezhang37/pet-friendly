@@ -1,4 +1,4 @@
-import { apiClient } from "@/data/api-client";
+import { apiClient } from "@/api/client";
 import { Review } from "@/models/models";
 import { BackendReview } from "@/models/backend-models";
 

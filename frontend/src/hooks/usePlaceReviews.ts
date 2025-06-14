@@ -1,6 +1,6 @@
 import { Review } from "@/models/models";
 import { useState, useEffect } from "react";
-import { reviewsService } from "@/data/reviews-service";
+import { reviewsService } from "@/api/reviews-service";
 
 export function usePlaceReviews(placeId: string) {
   const [reviews, setReviews] = useState<Review[]>([]);
@@ -25,7 +25,6 @@ export function usePlaceReviews(placeId: string) {
   }, [placeId]);
 
   const addReview = async (newReview: Review) => {
-    // console.log("addReview called with newReview: ", newReview);
     // optimistically update the UI
     setReviews((prevReviews) =>
       prevReviews ? [newReview, ...prevReviews] : [newReview]

@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
 
-const API_URL = process.env.PLACES_API_URL || "http://localhost:3000";
+const API_URL = process.env.API_URL || "http://localhost:3000";
 
 if (!API_URL) {
   throw new Error("API_URL environment variable is not defined.");
@@ -25,9 +25,7 @@ export const apiClient = {
   },
 
   async patch<T>(url: string, data?: object): Promise<T> {
-    // console.log("\npatch req body: ", data);
     const response: AxiosResponse<T> = await axiosInstance.patch(url, data);
-    // console.log("\npatch response: ", response);
     return response.data;
   },
 

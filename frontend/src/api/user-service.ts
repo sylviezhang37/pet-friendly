@@ -1,9 +1,14 @@
-import { apiClient } from "@/data/api-client";
+import { apiClient } from "@/api/client";
 import { User } from "@/models/models";
-import { BackendUser, NewUserRequest } from "@/models/backend-models";
+import { BackendUser } from "@/models/backend-models";
 
 type UserResponse = {
   user: BackendUser;
+};
+
+type NewUserRequest = {
+  username?: string;
+  anonymous?: boolean;
 };
 
 const mapToUser = (data: BackendUser): User => ({

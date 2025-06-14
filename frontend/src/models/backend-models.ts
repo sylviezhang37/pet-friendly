@@ -35,27 +35,3 @@ export interface BackendUser {
   anonymous: boolean;
   createdAt: string;
 }
-
-export interface SearchPlaceParams {
-  query?: string;
-  lat: number;
-  lng: number;
-}
-
-export interface NearbyPlacesParams {
-  lat: number;
-  lng: number;
-  radius?: number;
-}
-
-export interface NewUserRequest {
-  username?: string;
-  anonymous?: boolean;
-}
-
-export interface UpdatePlaceRequest {
-  address?: string;
-  last_contribution_type: string;
-  num_confirm: number;
-  num_deny: number;
-}

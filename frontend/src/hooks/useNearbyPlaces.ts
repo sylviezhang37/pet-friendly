@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Place } from "@/models/models";
-import { placesService } from "@/data/places-service";
+import { placesService } from "@/api/places-service";
 
 // TODO: cache
 export function useNearbyPlaces(lat: number, lng: number) {
