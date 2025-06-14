@@ -26,6 +26,7 @@ export class Handler {
       });
 
       res.json(places);
+      console.log("places: ", places);
     } catch (error) {
       console.error("Error finding nearby places:", error);
       res.status(500).json({ error: "Internal server error" });
@@ -46,7 +47,7 @@ export class Handler {
         return res.status(404).json({ error: "Place not found" });
       }
 
-      res.json(result.place);
+      res.json(result);
     } catch (error) {
       console.error("Error getting place details:", error);
       res.status(500).json({ error: "Internal server error" });
@@ -77,7 +78,6 @@ export class Handler {
     }
   };
 
-  // add place to database
   public addPlace = async (req: Request, res: Response) => {
     try {
       const {
@@ -131,13 +131,13 @@ export class Handler {
     }
   };
 
-  // update place in database
   public updatePlace = async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
       const { address, last_contribution_type, num_confirm, num_deny } =
         req.body;
 
+      // TODO: clean up validation logic
       if (
         last_contribution_type != "confirm" &&
         last_contribution_type != "deny"
@@ -167,6 +167,7 @@ export class Handler {
       }
 
       res.json(place);
+      console.log("updated place response: ", place);
     } catch (error) {
       console.error("Error updating pet-friendly status:", error);
       res.status(500).json({ error: "Internal server error" });

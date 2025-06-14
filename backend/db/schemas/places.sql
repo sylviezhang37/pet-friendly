@@ -13,7 +13,6 @@ CREATE TABLE IF NOT EXISTS places (
     num_confirm INTEGER DEFAULT 0,
     num_deny INTEGER DEFAULT 0,
     last_contribution_type VARCHAR(50),
-    last_contribution_date TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

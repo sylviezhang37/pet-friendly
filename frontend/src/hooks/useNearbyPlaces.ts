@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Place } from "@/models/models";
 import { placesService } from "@/data/places-service";
 
-// TODO: cache result
+// TODO: cache
 export function useNearbyPlaces(lat: number, lng: number) {
   const [places, setPlaces] = useState<Place[]>([]);
   const [isLoading, setIsLoading] = useState(true);

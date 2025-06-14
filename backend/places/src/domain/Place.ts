@@ -13,7 +13,6 @@ export class Place {
   public readonly numConfirm: number;
   public readonly numDeny: number;
   public readonly lastContributionType: string | null;
-  public readonly lastContributionDate: Date | null;
   public readonly petFriendly: boolean;
 
   constructor(data: PlaceData) {
@@ -29,7 +28,6 @@ export class Place {
     this.numConfirm = data.numConfirm ?? 0;
     this.numDeny = data.numDeny ?? 0;
     this.lastContributionType = data.lastContributionType ?? null;
-    this.lastContributionDate = data.lastContributionDate ?? null;
     this.petFriendly = this.isPetFriendly();
   }
 
@@ -51,7 +49,6 @@ export class Place {
       numConfirm: this.numConfirm,
       numDeny: this.numDeny,
       lastContributionType: this.lastContributionType,
-      lastContributionDate: this.lastContributionDate,
       petFriendly: this.petFriendly,
     };
   }

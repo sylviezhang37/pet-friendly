@@ -20,6 +20,7 @@ import { PiThumbsUpBold, PiThumbsDownBold } from "react-icons/pi";
 import { FaArrowLeft } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { usePlaceReviews } from "@/hooks/usePlaceReviews";
+import { usePlaceUpdate } from "@/hooks/usePlaceUpdate";
 
 const sampleUser: User = {
   id: "1",
@@ -43,6 +44,8 @@ export default function PlacePanel({ place }: { place: Place }) {
     addReview, // updates the State in usePlaceReviews hook
   } = usePlaceReviews(place.id);
 
+  const { updatePlaceStatus } = usePlaceUpdate(place.id);
+
   useEffect(() => {
     setSelected(null);
     setComment("");
@@ -56,7 +59,6 @@ export default function PlacePanel({ place }: { place: Place }) {
 
   const handleSelect = (type: "confirm" | "deny") => {
     setSelected(type);
-    // setSubmitted(false);
   };
 
   const handleCancel = () => {
@@ -82,6 +84,9 @@ export default function PlacePanel({ place }: { place: Place }) {
     setSubmitted(true);
     setComment("");
     setSelected(null);
+
+    console.log("handle post review calling update place");
+    updatePlaceStatus(place, selected === "confirm");
   };
 
   return (

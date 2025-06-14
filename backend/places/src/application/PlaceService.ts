@@ -48,9 +48,7 @@ export class PlaceService {
   async getPlace(id: string): Promise<PlaceOutput> {
     const place = await this.placeRepository.findById(id);
 
-    return {
-      place,
-    };
+    return { place };
   }
 
   async createPlace(input: CreatePlaceInput): Promise<PlaceOutput> {

@@ -16,6 +16,5 @@ export interface PlaceData {
   numConfirm?: number;
   numDeny?: number;
   lastContributionType?: string | null;
-  lastContributionDate?: Date | null;
   petFriendly?: boolean;
 }

@@ -4,12 +4,17 @@ import {
   BackendPlace,
   NearbyPlacesParams,
   SearchPlaceParams,
+  UpdatePlaceRequest,
 } from "@/models/backend-models";
 
 type PlacesResponse = {
   places: BackendPlace[];
   total: number;
   petFriendlyCount: number;
+};
+
+type PlaceResponse = {
+  place: BackendPlace;
 };
 
 const mapToPlace = (data: BackendPlace): Place => ({
@@ -20,7 +25,7 @@ const mapToPlace = (data: BackendPlace): Place => ({
     lat: data.coordinates.lat,
     lng: data.coordinates.lng,
   },
-  type: data.type,
+  type: data.businessType,
   allowsPet: data.allowsPet,
   googleMapsUrl: data.googleMapsUrl,
   createdAt: new Date(data.createdAt),
@@ -39,18 +44,18 @@ export const placesService = {
 
     const { places, total, petFriendlyCount } = data;
     console.log(`Received ${total} places (${petFriendlyCount} pet friendly)`);
-    console.log(places);
-
     return places.map((place: BackendPlace) => mapToPlace(place));
   },
 
   getPlaceById: async (id: string): Promise<Place> => {
-    const place = await apiClient.get<BackendPlace>(`/api/v0/places/${id}`);
+    const { place } = await apiClient.get<PlaceResponse>(
+      `/api/v0/places/${id}`
+    );
     return mapToPlace(place);
   },
 
   createPlace: async (place: Place): Promise<Place> => {
-    const createdPlace = await apiClient.post<BackendPlace>(
+    const { place: createdPlace } = await apiClient.post<PlaceResponse>(
       "/api/v0/places",
       place
     );
@@ -58,25 +63,31 @@ export const placesService = {
   },
 
   searchPlace: async (params: SearchPlaceParams): Promise<Place[]> => {
-    const places = await apiClient.get<BackendPlace[]>(
+    const data = await apiClient.get<PlacesResponse>(
       "/api/v0/places/search",
       params
     );
+    const { places } = data;
     return places.map((place: BackendPlace) => mapToPlace(place));
   },
 
-  //   TODO: update req body
   updatePetFriendlyStatus: async (
     placeId: string,
-    petFriendly: boolean
+    isPetFriendly: boolean,
+    numConfirm: number,
+    numDeny: number
   ): Promise<Place> => {
-    const updatedPlace = await apiClient.put<BackendPlace>(
+    const req: UpdatePlaceRequest = {
+      last_contribution_type: isPetFriendly ? "confirm" : "deny",
+      num_confirm: numConfirm,
+      num_deny: numDeny,
+    };
+
+    const { place } = await apiClient.patch<PlaceResponse>(
       `/api/v0/places/${placeId}`,
-      {
-        petFriendly,
-      }
+      req
     );
-    return mapToPlace(updatedPlace);
+    return mapToPlace(place);
   },
 };
 

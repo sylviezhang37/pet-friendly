@@ -24,8 +24,10 @@ export const apiClient = {
     return response.data;
   },
 
-  async put<T>(url: string, data?: object): Promise<T> {
-    const response: AxiosResponse<T> = await axiosInstance.put(url, data);
+  async patch<T>(url: string, data?: object): Promise<T> {
+    // console.log("\npatch req body: ", data);
+    const response: AxiosResponse<T> = await axiosInstance.patch(url, data);
+    // console.log("\npatch response: ", response);
     return response.data;
   },
 

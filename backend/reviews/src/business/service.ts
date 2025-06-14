@@ -36,7 +36,6 @@ export class ReviewsService {
       }
     }
 
-    // generate id and createdAt on the server side
     const review = await this.reviewsRepo.create(
       new Review({
         id: uuidv4(),

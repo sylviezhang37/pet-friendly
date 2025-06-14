@@ -122,7 +122,6 @@ export class PostgresPlacesRepo implements PlacesRepo {
       numConfirm: data.num_confirm,
       numDeny: data.num_deny,
       lastContributionType: data.last_contribution_type,
-      lastContributionDate: data.last_contribution_date,
       petFriendly: data.pet_friendly,
     });
   }

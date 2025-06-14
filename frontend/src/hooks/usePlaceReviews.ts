@@ -25,8 +25,8 @@ export function usePlaceReviews(placeId: string) {
   }, [placeId]);
 
   const addReview = async (newReview: Review) => {
-    console.log("addReview called with newReview: ", newReview);
-    // Optimistically update the UI
+    // console.log("addReview called with newReview: ", newReview);
+    // optimistically update the UI
     setReviews((prevReviews) =>
       prevReviews ? [newReview, ...prevReviews] : [newReview]
     );

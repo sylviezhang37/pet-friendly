@@ -6,6 +6,10 @@ type ReviewsResponse = {
   reviews: BackendReview[];
 };
 
+type ReviewResponse = {
+  review: BackendReview;
+};
+
 const mapToReview = (data: BackendReview): Review => ({
   id: data.id,
   placeId: data.placeId,
@@ -13,12 +17,12 @@ const mapToReview = (data: BackendReview): Review => ({
   username: data.username,
   petFriendly: data.petFriendly,
   comment: data.comment,
-  createdAt: data.createdAt,
+  createdAt: new Date(data.createdAt),
 });
 
 export const reviewsService = {
   createReview: async (review: Review): Promise<Review> => {
-    const createdReview = await apiClient.post<BackendReview>(
+    const { review: createdReview } = await apiClient.post<ReviewResponse>(
       "/api/v0/reviews",
       review
     );
@@ -27,10 +31,9 @@ export const reviewsService = {
 
   getReviewsByPlaceId: async (placeId: string): Promise<Review[]> => {
     console.log("reviewsService getting reviews for placeId: ", placeId);
-    const data = await apiClient.get<ReviewsResponse>(
+    const { reviews } = await apiClient.get<ReviewsResponse>(
       `/api/v0/reviews/${placeId}`
     );
-    const { reviews } = data;
     return reviews.map((review: BackendReview) => mapToReview(review));
   },
 };
