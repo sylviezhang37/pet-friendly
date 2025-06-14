@@ -9,8 +9,9 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npm run monolith",
-    "monolith": "ts-node backend/index.ts",
+    "start": "concurrently \"npm run backend\" \"npm run frontend\"",
+    "frontend": "cd frontend && npm run dev",
+    "backend": "ts-node backend/index.ts",
     "places": "ts-node backend/places/src/server.ts",
     "reviews": "ts-node backend/reviews/src/server.ts",
     "users": "ts-node backend/users/src/server.ts"
