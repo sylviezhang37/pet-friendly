@@ -1,45 +1,34 @@
 "use client";
 
 import { Box, Text, Spinner, useBreakpointValue } from "@chakra-ui/react";
-import { useStore } from "@/hooks/useStore";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Map from "@/components/Map";
 import WelcomePanel from "@/components/Welcome";
 import PlacePanel from "@/components/Place";
-import { useNearbyPlaces } from "@/hooks/useNearbyPlaces";
+import { usePlaceManagement } from "@/hooks/usePlaceManagement";
 
 // default to NYC for V0
-const center = {
-  lat: 40.758,
-  lng: -73.9855,
-};
+// const center = {
+//   lat: 40.758,
+//   lng: -73.9855,
+// };
 
 export default function Home() {
-  const selectedPlaceId = useStore((s) => s.selectedPlaceId);
-  const setSelectedPlaceId = useStore((s) => s.setSelectedPlaceId);
   const isMobile = useBreakpointValue({ base: true, md: false });
   const [dynamicMaxHeight, setDynamicMaxHeight] = useState("100vh");
-
-  const { places, isLoading, error } = useNearbyPlaces(center.lat, center.lng);
-
-  const handleMarkerClick = useCallback(
-    (placeId: string) => {
-      setSelectedPlaceId(placeId);
-    },
-    [setSelectedPlaceId]
-  );
+  const { places, selectedPlaceId, handlePlaceSelect, handleMarkerClick } =
+    usePlaceManagement();
 
   // calculate viewport height on mount
   useEffect(() => {
     if (isMobile) {
       setDynamicMaxHeight(`${window.innerHeight}px`);
-      console.log("heights : ", dynamicMaxHeight, window.innerHeight);
     } else {
       setDynamicMaxHeight("100vh");
     }
-  }, [isMobile, dynamicMaxHeight]);
+  }, [isMobile]);
 
-  if (isLoading) {
+  if (places.length === 0) {
     return (
       <Box
         p={8}
@@ -51,14 +40,6 @@ export default function Home() {
       >
         <Spinner size="xl" color="yellow.500" mb={4} />
         <Text color="gray.500">Loading map...</Text>
-      </Box>
-    );
-  }
-
-  if (error) {
-    return (
-      <Box p={8} textAlign="center">
-        <Text color="red.500">Error loading map :(</Text>
       </Box>
     );
   }
@@ -86,7 +67,6 @@ export default function Home() {
         maxWidth="100vw"
         maxHeight={{ base: "40vh", md: "85vh" }}
         borderTopRadius="2xl"
-        // bottom border radius is 0 on mobile
         borderBottomRadius={{ base: "0", md: "2xl" }}
         boxShadow="2xl"
         bg="white"
@@ -112,7 +92,7 @@ export default function Home() {
           {selectedPlaceId ? (
             <PlacePanel place={places.find((p) => p.id === selectedPlaceId)!} />
           ) : (
-            <WelcomePanel />
+            <WelcomePanel onPlaceSelect={handlePlaceSelect} />
           )}
         </Box>
       </Box>

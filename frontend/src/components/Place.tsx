@@ -27,8 +27,6 @@ const sampleUser: User = {
   username: "noodle_doodle",
 };
 
-// TODO: handle adding a new review to db
-// TODO: handle updating pet friendly state of a place
 export default function PlacePanel({ place }: { place: Place }) {
   const setSelectedPlaceId = useStore((s) => s.setSelectedPlaceId);
   const [selected, setSelected] = useState<"confirm" | "deny" | null>(null);
@@ -41,7 +39,7 @@ export default function PlacePanel({ place }: { place: Place }) {
     reviews,
     isLoading: reviewsLoading,
     error: reviewsError,
-    addReview, // updates the state in usePlaceReviews hook
+    addReview,
   } = usePlaceReviews(place.id);
 
   const { updatePlaceStatus } = usePlaceUpdate(place.id);
@@ -61,13 +59,13 @@ export default function PlacePanel({ place }: { place: Place }) {
     setSelected(type);
   };
 
-  const handleCancel = () => {
+  const handleCancelReview = () => {
     setSelected(null);
     setComment("");
     setSubmitted(false);
   };
 
-  const handlePostReview = () => {
+  const handleAddReview = () => {
     // optimistically add new review
     const newReview: Review = {
       id: (reviews.length + 1).toString(),
@@ -173,11 +171,11 @@ export default function PlacePanel({ place }: { place: Place }) {
               bg="white"
             />
             <HStack justify="flex-end">
-              <Button onClick={handleCancel} variant="ghost">
+              <Button onClick={handleCancelReview} variant="ghost">
                 Cancel
               </Button>
               <Button
-                onClick={handlePostReview}
+                onClick={handleAddReview}
                 colorScheme="yellow"
                 fontWeight="bold"
               >
@@ -225,9 +223,9 @@ export default function PlacePanel({ place }: { place: Place }) {
 
       {!reviewsLoading && !reviewsError && (
         <VStack align="stretch" spacing={3}>
-          {/* If no reviews, show a CTA to submit a review */}
           {reviews.length === 0 ? (
-            <Text color="gray.400" textAlign="center">
+            // If no reviews, show a CTA to submit a review
+            <Text color="gray.400" textAlign="center" mt={4}>
               No reviews yet. Be the first to review!
             </Text>
           ) : (

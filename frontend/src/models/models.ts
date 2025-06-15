@@ -2,10 +2,9 @@ import { Coordinates } from "./backend-models";
 
 export interface Place {
   id: string;
-  coordinates: Coordinates;
   name: string;
   type: string;
-  allowsPet: boolean;
+  coordinates: Coordinates;
   googleMapsUrl: string;
   address: string;
   createdAt: Date;
@@ -13,6 +12,7 @@ export interface Place {
   numConfirm: number;
   numDeny: number;
   lastContributionType: string;
+  allowsPet: boolean;
   petFriendly: boolean;
 }
 

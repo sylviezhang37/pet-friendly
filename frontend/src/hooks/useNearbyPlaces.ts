@@ -29,7 +29,14 @@ export function useNearbyPlaces(lat: number, lng: number) {
 
   const addPlace = (place: Place) => {
     setPlaces([...places, place]);
+
+    // TODO: add place to db here
+    // addPlaceToDb(place);
   };
 
-  return { places, isLoading, error, addPlace };
+  const removePlace = (placeId: string) => {
+    setPlaces((prev) => prev.filter((p) => p.id !== placeId));
+  };
+
+  return { places, isLoading, error, addPlace, removePlace };
 }

@@ -52,18 +52,19 @@ export class PostgresPlacesRepo implements PlacesRepo {
   async save(place: Place): Promise<Place> {
     const query = `
       INSERT INTO places (
-        name, address, latitude, longitude, 
-        business_type, id, google_maps_url, allows_pet, created_at, updated_at
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+        id, name, address, latitude, longitude, 
+        business_type, google_maps_url, allows_pet, created_at, updated_at,
+        num_confirm, num_deny
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, 0, 0)
       RETURNING *
     `;
     const result = await this.dbConnection.query(query, [
+      place.id,
       place.name,
       place.address,
       place.coordinates.lat,
       place.coordinates.lng,
       place.businessType,
-      place.id,
       place.googleMapsUrl,
       place.allowsPet || null,
       place.createdAt,

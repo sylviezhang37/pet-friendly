@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { SearchService } from "./application/SearchService";
-import { PlaceService } from "./application/PlaceService";
+import { CreatePlaceInput, PlaceService } from "./application/PlaceService";
 
 export class Handler {
   constructor(
@@ -82,10 +82,10 @@ export class Handler {
   public addPlace = async (req: Request, res: Response) => {
     try {
       const {
+        id,
         name,
         address,
-        lat,
-        lng,
+        coordinates,
         businessType,
         googleMapsUrl,
         allowsPet,
@@ -103,28 +103,23 @@ export class Handler {
         });
       }
 
-      if (!lat) {
+      if (!coordinates || !coordinates.lat || !coordinates.lng) {
         return res.status(400).json({
-          error: "Latitude is required",
+          error: "Coordinates are required",
         });
       }
 
-      if (!lng) {
-        return res.status(400).json({
-          error: "Longitude is required",
-        });
-      }
-
-      const place = await this.placeService.createPlace({
+      const input: CreatePlaceInput = {
+        id,
         name,
         address,
-        lat,
-        lng,
+        coordinates,
         businessType,
         googleMapsUrl,
         allowsPet,
-      });
+      };
 
+      const place = await this.placeService.createPlace(input);
       res.status(201).json(place);
     } catch (error) {
       console.error("Error adding place:", error);

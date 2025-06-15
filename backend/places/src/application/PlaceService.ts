@@ -4,12 +4,12 @@ import { PlacesRepo } from "../repositories/PlacesRepo";
 import { v4 as uuidv4 } from "uuid";
 
 export interface CreatePlaceInput {
+  id?: string;
   name: string;
   address: string;
-  lat: number;
-  lng: number;
-  businessType?: string | null;
-  googleMapsUrl?: string | null;
+  coordinates: Coordinates;
+  businessType?: string;
+  googleMapsUrl?: string;
   allowsPet?: boolean | null;
 }
 
@@ -53,13 +53,10 @@ export class PlaceService {
 
   async createPlace(input: CreatePlaceInput): Promise<PlaceOutput> {
     const newPlace = new Place({
-      id: uuidv4(),
+      id: input.id || uuidv4(),
       name: input.name,
       address: input.address,
-      coordinates: {
-        lat: input.lat,
-        lng: input.lng,
-      },
+      coordinates: input.coordinates,
       businessType: input.businessType,
       googleMapsUrl: input.googleMapsUrl,
       allowsPet: input.allowsPet,
@@ -68,6 +65,9 @@ export class PlaceService {
     });
 
     const place = await this.placeRepository.save(newPlace);
+
+    console.log("placeService created place: ", place);
+
     return { place };
   }
 

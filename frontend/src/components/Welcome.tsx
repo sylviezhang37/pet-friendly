@@ -1,10 +1,14 @@
 import { Box, Heading, Text, Input, Button, VStack } from "@chakra-ui/react";
 import { useSearchPlaces } from "@/hooks/useSearchPlaces";
 import Support from "./Support";
-import { useStore } from "@/hooks/useStore";
 import { useEffect, useRef, useCallback } from "react";
+import { Place } from "@/models/models";
 
-export default function Welcome() {
+export default function Welcome({
+  onPlaceSelect,
+}: {
+  onPlaceSelect: (place: Place) => void;
+}) {
   const {
     searchQuery,
     setSearchQuery,
@@ -13,7 +17,6 @@ export default function Welcome() {
     results,
     clearResults,
   } = useSearchPlaces();
-  const { setSelectedPlaceId } = useStore();
   const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Memoize the debounced search handler
@@ -57,10 +60,6 @@ export default function Welcome() {
       }
       search();
     }
-  };
-
-  const handlePlaceSelect = (placeId: string) => {
-    setSelectedPlaceId(placeId);
   };
 
   return (
@@ -139,7 +138,10 @@ export default function Welcome() {
                   p={3}
                   cursor="pointer"
                   _hover={{ bg: "gray.50" }}
-                  onClick={() => handlePlaceSelect(place.id)}
+                  onClick={() => {
+                    onPlaceSelect(place);
+                    clearResults();
+                  }}
                   borderBottom="1px"
                   borderColor="gray.100"
                   _last={{ borderBottom: "none" }}

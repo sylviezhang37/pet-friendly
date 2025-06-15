@@ -2,6 +2,7 @@ import axios from "axios";
 import { Place } from "../domain/Place";
 import { PlacesProvider } from "./PlacesProvider";
 import { Coordinates } from "../domain/models";
+import { temp_data } from "./temp";
 
 export class GoogleMapsPlacesProvider implements PlacesProvider {
   private readonly baseUrl = "https://places.googleapis.com/v1";
@@ -79,25 +80,26 @@ export class GoogleMapsPlacesProvider implements PlacesProvider {
     coordinates: Coordinates
   ): Promise<Place[]> {
     try {
-      const response = await axios.post(
-        `${this.baseUrl}/places:searchText`,
-        {
-          textQuery: query,
-          locationBias: {
-            circle: {
-              center: {
-                latitude: coordinates.lat,
-                longitude: coordinates.lng,
-              },
-              radius: 5000, // 5km
-            },
-          },
-          maxResultCount: 7,
-          rankPreference: "RELEVANCE",
-        },
-        { headers: this.headers }
-      );
+      // const response = await axios.post(
+      //   `${this.baseUrl}/places:searchText`,
+      //   {
+      //     textQuery: query,
+      //     locationBias: {
+      //       circle: {
+      //         center: {
+      //           latitude: coordinates.lat,
+      //           longitude: coordinates.lng,
+      //         },
+      //         radius: 5000, // 5km
+      //       },
+      //     },
+      //     maxResultCount: 7,
+      //     rankPreference: "RELEVANCE",
+      //   },
+      //   { headers: this.headers }
+      // );
 
+      const response = temp_data;
       return response.data.places.map((place: any) => this.mapToPlace(place));
     } catch (error) {
       console.error("Error when searching places through Maps API:", error);
@@ -108,7 +110,7 @@ export class GoogleMapsPlacesProvider implements PlacesProvider {
   private mapToPlace(place: any): Place {
     return new Place({
       id: place.id,
-      name: place.displayName?.text,
+      name: place.displayName?.text || place.text,
       address: place.formattedAddress,
       coordinates: {
         lat: place.location?.latitude,
