@@ -2,12 +2,7 @@
 
 import { Place } from "@/models/models";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
-
-// defaults to NYC
-const DEFAULT_CENTER = {
-  lat: 40.758,
-  lng: -73.9855,
-};
+import { DEFAULT_CENTER } from "@/utils/constants";
 
 interface MapProps {
   places: Map<string, Place>;

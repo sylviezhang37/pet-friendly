@@ -3,24 +3,23 @@ import { Place } from "@/models/models";
 import { useNearbyPlaces } from "./useNearbyPlaces";
 import placesService from "@/api/places-service";
 import { useStore } from "./useStore";
+import { DEFAULT_CENTER } from "@/utils/constants";
 
-// default to NYC for V0
-const center = {
-  lat: 40.758,
-  lng: -73.9855,
-};
-
+/**
+ * This hook manages the places data and selected place id.
+ * It uses the useNearbyPlaces hook to fetch nearby places and
+ * manages the selected place id.
+ */
 export function usePlacesManagement() {
   const { places, addPlace, removePlace } = useNearbyPlaces(
-    center.lat,
-    center.lng
+    DEFAULT_CENTER.lat,
+    DEFAULT_CENTER.lng
   );
   const selectedPlaceId = useStore((s) => s.selectedPlaceId);
   const setSelectedPlaceId = useStore((s) => s.setSelectedPlaceId);
 
   const handlePlaceSelect = useCallback(
     async (place: Place) => {
-      // O(1) lookup using Map.has()
       if (places.has(place.id)) {
         setSelectedPlaceId(place.id);
         return;
@@ -30,7 +29,6 @@ export function usePlacesManagement() {
       setSelectedPlaceId(place.id);
 
       try {
-        // Try to save to DB
         await placesService.createOrGetPlace(place);
       } catch (error) {
         console.error("Failed to save place to DB:", error);

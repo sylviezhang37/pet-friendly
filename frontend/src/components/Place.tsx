@@ -56,6 +56,10 @@ export default function PlacePanel({ place }: { place: Place }) {
   }, [reviews, currentUser.id]);
 
   const handleSelect = (type: "confirm" | "deny") => {
+    if (selected === type) {
+      setSelected(null);
+      return;
+    }
     setSelected(type);
   };
 
@@ -107,9 +111,8 @@ export default function PlacePanel({ place }: { place: Place }) {
         fontSize="sm"
         color="yellow.800"
         bg="yellow.50"
-        py={1}
         borderRadius="md"
-        mb={2}
+        py={1}
         display="inline-block"
       >
         Last confirmed on{" "}
@@ -142,7 +145,7 @@ export default function PlacePanel({ place }: { place: Place }) {
 
       {/* case 2: user has not submitted a review yet */}
       <Collapse in={!userReview} unmountOnExit>
-        <HStack spacing={4} mb={6} justifyContent="center">
+        <HStack spacing={4} mb={2} justifyContent="center">
           {/* TODO: add accessibility attributes */}
           <IconButton
             aria-label="Confirm"
@@ -162,7 +165,7 @@ export default function PlacePanel({ place }: { place: Place }) {
           />
         </HStack>
         <Collapse in={!!selected} animateOpacity>
-          <Box mb={6} p={3} borderRadius="md" boxShadow="sm">
+          <Box p={3} borderRadius="md">
             <Textarea
               placeholder="Add a comment"
               value={comment}
