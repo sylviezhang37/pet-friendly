@@ -3,7 +3,6 @@ import { Place } from "@/models/models";
 import { useNearbyPlaces } from "./useNearbyPlaces";
 import placesService from "@/api/places-service";
 import { useStore } from "./useStore";
-import { AxiosError } from "axios";
 
 // default to NYC for V0
 const center = {
@@ -11,7 +10,7 @@ const center = {
   lng: -73.9855,
 };
 
-export function usePlaceManagement() {
+export function usePlacesManagement() {
   const { places, addPlace, removePlace } = useNearbyPlaces(
     center.lat,
     center.lng
@@ -21,25 +20,25 @@ export function usePlaceManagement() {
 
   const handlePlaceSelect = useCallback(
     async (place: Place) => {
+      // O(1) lookup using Map.has()
+      if (places.has(place.id)) {
+        setSelectedPlaceId(place.id);
+        return;
+      }
+
       addPlace(place);
       setSelectedPlaceId(place.id);
 
       try {
         // Try to save to DB
-        await placesService.createPlace(place);
+        await placesService.createOrGetPlace(place);
       } catch (error) {
-        // If save fails, rollback
-        if (error instanceof AxiosError && error.response?.status === 409) {
-          console.log("Place already exists in DB");
-          return;
-        }
         console.error("Failed to save place to DB:", error);
-        // Remove from map and clear selection
         removePlace(place.id);
         setSelectedPlaceId(null);
       }
     },
-    [addPlace, removePlace, setSelectedPlaceId]
+    [addPlace, removePlace, setSelectedPlaceId, places]
   );
 
   const handleMarkerClick = useCallback(

@@ -1,12 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Place } from "@/models/models";
 import { placesService } from "@/api/places-service";
 
 // TODO: cache
 export function useNearbyPlaces(lat: number, lng: number) {
-  const [places, setPlaces] = useState<Place[]>([]);
+  const [places, setPlaces] = useState<Map<string, Place>>(new Map());
+  const placesRef = useRef<Map<string, Place>>(new Map());
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    placesRef.current = places;
+  }, [places]);
 
   useEffect(() => {
     async function fetchPlace() {
@@ -15,7 +20,11 @@ export function useNearbyPlaces(lat: number, lng: number) {
           lat,
           lng,
         });
-        setPlaces(placesData);
+        // Clear and populate the Map directly
+        placesRef.current.clear();
+        placesData.forEach((place) => placesRef.current.set(place.id, place));
+        // Update state to trigger re-render
+        setPlaces(new Map(placesRef.current));
       } catch (err) {
         console.error("Failed to load nearby places:", err);
         setError("Failed to load nearby places");
@@ -28,14 +37,13 @@ export function useNearbyPlaces(lat: number, lng: number) {
   }, [lat, lng]);
 
   const addPlace = (place: Place) => {
-    setPlaces([...places, place]);
-
-    // TODO: add place to db here
-    // addPlaceToDb(place);
+    placesRef.current.set(place.id, place);
+    setPlaces(new Map(placesRef.current));
   };
 
   const removePlace = (placeId: string) => {
-    setPlaces((prev) => prev.filter((p) => p.id !== placeId));
+    placesRef.current.delete(placeId);
+    setPlaces(new Map(placesRef.current));
   };
 
   return { places, isLoading, error, addPlace, removePlace };

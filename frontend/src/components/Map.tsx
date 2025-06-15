@@ -10,13 +10,13 @@ const DEFAULT_CENTER = {
 };
 
 interface MapProps {
-  places: Place[];
+  places: Map<string, Place>;
   center?: { lat: number; lng: number };
   onMarkerClick?: (placeId: string) => void;
 }
 
 export default function Map({
-  places = [],
+  places,
   center = DEFAULT_CENTER,
   onMarkerClick,
 }: MapProps) {
@@ -33,7 +33,7 @@ export default function Map({
         zoom={14}
         options={{ streetViewControl: false, mapTypeControl: false }}
       >
-        {places.map((place) => (
+        {Array.from(places.values()).map((place) => (
           <Marker
             key={place.id}
             position={{

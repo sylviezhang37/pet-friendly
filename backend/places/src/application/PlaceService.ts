@@ -30,6 +30,7 @@ export interface NearbyPlacesInput {
   lat: number;
   lng: number;
   radius: number;
+  // TODO: support filters
   filters?: {
     businessType?: string;
   };
@@ -51,7 +52,15 @@ export class PlaceService {
     return { place };
   }
 
-  async createPlace(input: CreatePlaceInput): Promise<PlaceOutput> {
+  async createOrGetPlace(input: CreatePlaceInput): Promise<PlaceOutput> {
+    if (input.id) {
+      const place = await this.placeRepository.findById(input.id);
+      if (place) {
+        console.log("placeService create or get found place: ", place);
+        return { place };
+      }
+    }
+
     const newPlace = new Place({
       id: input.id || uuidv4(),
       name: input.name,
@@ -65,9 +74,6 @@ export class PlaceService {
     });
 
     const place = await this.placeRepository.save(newPlace);
-
-    console.log("placeService created place: ", place);
-
     return { place };
   }
 
@@ -89,21 +95,15 @@ export class PlaceService {
       lng: input.lng,
     };
 
-    console.log("placeService got coordinates: ", coordinates);
-
     const places = await this.placeRepository.findNearby(
       coordinates,
       input.radius
     );
 
-    console.log("placeService retrieved places. ");
-
-    const petFriendlyCount = places.filter((place) => place.petFriendly).length;
-
     let filteredPlaces = places;
-    // if (input.onlyPetFriendly) {
-    //   filteredPlaces = places.filter((place) => place.petFriendly);
-    // }
+    if (input.onlyPetFriendly) {
+      filteredPlaces = places.filter((place) => place.petFriendly);
+    }
 
     if (input.filters?.businessType) {
       filteredPlaces = filteredPlaces.filter(
@@ -114,7 +114,7 @@ export class PlaceService {
     return {
       places: filteredPlaces,
       total: places.length,
-      petFriendlyCount,
+      petFriendlyCount: filteredPlaces.length,
     };
   }
 }

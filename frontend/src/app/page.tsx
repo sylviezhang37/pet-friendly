@@ -5,19 +5,13 @@ import { useEffect, useState } from "react";
 import Map from "@/components/Map";
 import WelcomePanel from "@/components/Welcome";
 import PlacePanel from "@/components/Place";
-import { usePlaceManagement } from "@/hooks/usePlaceManagement";
-
-// default to NYC for V0
-// const center = {
-//   lat: 40.758,
-//   lng: -73.9855,
-// };
+import { usePlacesManagement } from "@/hooks/usePlacesManagement";
 
 export default function Home() {
   const isMobile = useBreakpointValue({ base: true, md: false });
   const [dynamicMaxHeight, setDynamicMaxHeight] = useState("100vh");
   const { places, selectedPlaceId, handlePlaceSelect, handleMarkerClick } =
-    usePlaceManagement();
+    usePlacesManagement();
 
   // calculate viewport height on mount
   useEffect(() => {
@@ -28,7 +22,7 @@ export default function Home() {
     }
   }, [isMobile]);
 
-  if (places.length === 0) {
+  if (places.size === 0) {
     return (
       <Box
         p={8}
@@ -53,7 +47,11 @@ export default function Home() {
     >
       {/* Map fills the background */}
       <Box position="absolute" inset={0} zIndex={0}>
-        <Map places={places} onMarkerClick={handleMarkerClick} />
+        <Map
+          // TODO: change map to use hasmap input
+          places={places}
+          onMarkerClick={handleMarkerClick}
+        />
       </Box>
       {/* Info/Place Panel overlays the map */}
       <Box
@@ -90,7 +88,7 @@ export default function Home() {
         {/* overflow auto makes panel scrollable */}
         <Box flex={1} overflowY="auto">
           {selectedPlaceId ? (
-            <PlacePanel place={places.find((p) => p.id === selectedPlaceId)!} />
+            <PlacePanel place={places.get(selectedPlaceId)!} />
           ) : (
             <WelcomePanel onPlaceSelect={handlePlaceSelect} />
           )}

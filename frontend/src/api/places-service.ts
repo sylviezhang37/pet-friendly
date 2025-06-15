@@ -68,7 +68,7 @@ export const placesService = {
     return mapToPlace(place);
   },
 
-  createPlace: async (place: Place): Promise<Place> => {
+  createOrGetPlace: async (place: Place): Promise<Place> => {
     const { place: createdPlace } = await apiClient.post<PlaceResponse>(
       "/api/v0/places",
       place
@@ -85,8 +85,6 @@ export const placesService = {
     );
     const { places } = data;
 
-    // TODO: edge case if none
-    console.log("returned places: ", places);
     return places.map((place: BackendPlace) => mapToPlace(place));
   },
 

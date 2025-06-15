@@ -119,7 +119,7 @@ export class Handler {
         allowsPet,
       };
 
-      const place = await this.placeService.createPlace(input);
+      const place = await this.placeService.createOrGetPlace(input);
       res.status(201).json(place);
     } catch (error) {
       console.error("Error adding place:", error);

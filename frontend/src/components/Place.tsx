@@ -225,7 +225,7 @@ export default function PlacePanel({ place }: { place: Place }) {
         <VStack align="stretch" spacing={3}>
           {reviews.length === 0 ? (
             // If no reviews, show a CTA to submit a review
-            <Text color="gray.400" textAlign="center" mt={4}>
+            <Text color="gray.400" textAlign="center">
               No reviews yet. Be the first to review!
             </Text>
           ) : (
