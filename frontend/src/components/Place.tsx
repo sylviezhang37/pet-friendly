@@ -17,7 +17,7 @@ import {
 import { User, Review, Place } from "@/models/models";
 import { useStore } from "@/hooks/useStore";
 import { PiThumbsUpBold, PiThumbsDownBold } from "react-icons/pi";
-import { FaArrowLeft } from "react-icons/fa";
+import { FaTimes } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { usePlaceReviews } from "@/hooks/usePlaceReviews";
 import { usePlaceUpdate } from "@/hooks/usePlaceUpdate";
@@ -90,17 +90,35 @@ export default function PlacePanel({ place }: { place: Place }) {
   };
 
   return (
-    <Box mx={10} my={6}>
-      <IconButton
-        aria-label="Back Arrow"
-        icon={<FaArrowLeft />}
-        colorScheme="gray"
-        variant="ghost"
-        justifyContent="flex-start"
-        mb={2}
-        onClick={() => setSelectedPlaceId(null)}
-      />
-      <Heading size="xl" mb={2}>
+    <Box mx={10} my={6} position="relative">
+      <Box
+        position="sticky"
+        top={0}
+        bg="whiteAlpha.800"
+        backdropFilter="blur(8px)"
+        pt={1}
+        zIndex={1}
+        mx={-5}
+        display="flex"
+        justifyContent="flex-end"
+        pr={2}
+      >
+        <IconButton
+          aria-label="Close"
+          icon={<FaTimes />}
+          size="lg"
+          colorScheme="gray"
+          variant="ghost"
+          onClick={() => setSelectedPlaceId(null)}
+          _hover={{
+            bg: "whiteAlpha.800",
+            transform: "scale(1.1)",
+            transition: "all 0.2s",
+          }}
+        />
+      </Box>
+
+      <Heading size="xl" mb={2} mt={4}>
         {place.name}
       </Heading>
       <Text color="gray.600" mb={2}>
