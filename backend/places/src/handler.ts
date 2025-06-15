@@ -58,6 +58,7 @@ export class Handler {
   public searchPlaces = async (req: Request, res: Response) => {
     try {
       const { query, lat, lng } = req.query;
+      console.log("search query: ", query, lat, lng);
 
       if (!query || !lat || !lng) {
         return res.status(400).json({

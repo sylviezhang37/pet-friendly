@@ -41,7 +41,7 @@ export default function PlacePanel({ place }: { place: Place }) {
     reviews,
     isLoading: reviewsLoading,
     error: reviewsError,
-    addReview, // updates the State in usePlaceReviews hook
+    addReview, // updates the state in usePlaceReviews hook
   } = usePlaceReviews(place.id);
 
   const { updatePlaceStatus } = usePlaceUpdate(place.id);
@@ -79,14 +79,12 @@ export default function PlacePanel({ place }: { place: Place }) {
       comment: comment,
     };
 
-    // TODO: handle update place.updatedAt
     addReview(newReview);
+    updatePlaceStatus(place, selected === "confirm");
+
     setSubmitted(true);
     setComment("");
     setSelected(null);
-
-    console.log("handle post review calling update place");
-    updatePlaceStatus(place, selected === "confirm");
   };
 
   return (
@@ -133,6 +131,7 @@ export default function PlacePanel({ place }: { place: Place }) {
           <Text>{reviews.filter((r) => !r.petFriendly).length} denied</Text>
         </HStack>
       </HStack>
+
       {/* User Review Section */}
       {/* case 1: user has submitted a review in a previous session */}
       {userReview && !submitted && (
@@ -232,7 +231,6 @@ export default function PlacePanel({ place }: { place: Place }) {
               No reviews yet. Be the first to review!
             </Text>
           ) : (
-            // TODO: ping current user's review at top
             reviews.map((review) => (
               <Box
                 key={review.id}

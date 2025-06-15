@@ -1,6 +1,6 @@
 import { apiClient } from "@/api/client";
 import { Place } from "@/models/models";
-import { BackendPlace } from "@/models/backend-models";
+import { BackendPlace, Coordinates } from "@/models/backend-models";
 
 type PlacesResponse = {
   places: BackendPlace[];
@@ -12,11 +12,11 @@ type PlaceResponse = {
   place: BackendPlace;
 };
 
-type SearchPlaceParams = {
-  query?: string;
-  lat: number;
-  lng: number;
-};
+// type SearchPlaceParams = {
+//   query?: string;
+//   lat: number;
+//   lng: number;
+// };
 
 type NearbyPlacesParams = {
   lat: number;
@@ -76,12 +76,17 @@ export const placesService = {
     return mapToPlace(createdPlace);
   },
 
-  searchPlace: async (params: SearchPlaceParams): Promise<Place[]> => {
+  searchAndCreatePlace: async (
+    query: string,
+    coordinates: Coordinates
+  ): Promise<Place[]> => {
     const data = await apiClient.get<PlacesResponse>(
-      "/api/v0/places/search",
-      params
+      `/api/v0/places/search?query=${query}&lat=${coordinates.lat}&lng=${coordinates.lng}`
     );
     const { places } = data;
+
+    // TODO: edge case if none
+    console.log("returned places: ", places);
     return places.map((place: BackendPlace) => mapToPlace(place));
   },
 
