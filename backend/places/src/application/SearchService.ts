@@ -25,24 +25,20 @@ export class SearchService {
       lng: input.lng,
     };
 
+    // TODO: figure out how to sort by best match
     // first search in our database
-    console.log("searching in repo");
-    let foundPlaces = await this.placeRepository.search(
+    let foundPlaces: Place[] = await this.placeRepository.search(
       input.query,
       coordinates
     );
 
-    console.log("repo search result:", foundPlaces);
-
-    // if not in db, search Google Maps
     if (foundPlaces.length === 0) {
-      console.log("searching in maps api");
       const googlePlaces = await this.placesProvider.searchPlaces(
         input.query,
         coordinates
       );
+      foundPlaces.push(...googlePlaces);
 
-      console.log("found new place: ", googlePlaces);
       // save new places to our database
       // for (const place of googlePlaces) {
       //   if (!places.some((p) => p.id === place.id)) {
