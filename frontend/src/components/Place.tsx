@@ -133,7 +133,7 @@ export default function PlacePanel({ place }: { place: Place }) {
         py={1}
         display="inline-block"
       >
-        Last confirmed on{" "}
+        Last updated on{" "}
         {(submitted && userReview
           ? new Date()
           : place.updatedAt

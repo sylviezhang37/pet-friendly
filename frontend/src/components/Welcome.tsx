@@ -1,8 +1,16 @@
-import { Box, Heading, Text, Input, Button, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Heading,
+  Text,
+  Input,
+  VStack,
+  IconButton,
+} from "@chakra-ui/react";
 import { useSearchPlaces } from "@/hooks/useSearchPlaces";
 import Support from "./Support";
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback, useState } from "react";
 import { Place } from "@/models/models";
+import { BiSearch } from "react-icons/bi";
 
 export default function Welcome({
   onPlaceSelect,
@@ -18,6 +26,7 @@ export default function Welcome({
     clearResults,
   } = useSearchPlaces();
   const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [delayedLoading, setDelayedLoading] = useState(false);
 
   // Memoize the debounced search handler
   const debouncedSearch = useCallback(() => {
@@ -51,6 +60,24 @@ export default function Welcome({
       }
     };
   }, [debouncedSearch]);
+
+  /*
+   * only show spinner if search takes more than 100ms,
+   * otherwise it looks like a glitch
+   */
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (isLoading) {
+      timer = setTimeout(() => {
+        setDelayedLoading(true);
+      }, 100);
+    } else {
+      setDelayedLoading(false);
+    }
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [isLoading]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && searchQuery.trim().length >= 2) {
@@ -117,6 +144,21 @@ export default function Welcome({
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyDown={handleKeyDown}
+            pr="4rem"
+          />
+          <IconButton
+            icon={<BiSearch size="24px" />}
+            position="absolute"
+            right={3}
+            top="50%"
+            transform="translateY(-50%)"
+            background="transparent"
+            _hover={{ background: "transparent" }}
+            aria-label="Search"
+            isLoading={delayedLoading}
+            onClick={() => searchQuery.trim().length >= 1 && search()}
+            // isDisabled={searchQuery.trim().length < 1}
+            zIndex={2}
           />
           {results.length > 0 && (
             <Box
@@ -155,17 +197,6 @@ export default function Welcome({
             </Box>
           )}
         </Box>
-        <Button
-          colorScheme="yellow"
-          width="100%"
-          size="lg"
-          fontWeight="bold"
-          onClick={() => searchQuery.trim().length >= 2 && search()}
-          isLoading={isLoading}
-          isDisabled={searchQuery.trim().length < 2}
-        >
-          SEARCH
-        </Button>
       </VStack>
       {/* Support section */}
       <Support />
