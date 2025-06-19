@@ -6,6 +6,7 @@ import Map from "@/components/Map";
 import WelcomePanel from "@/components/Welcome";
 import PlacePanel from "@/components/Place";
 import SearchBar from "@/components/SearchBar";
+import UserProfile from "@/components/UserProfile";
 import { usePlacesManagement } from "@/hooks/usePlacesManagement";
 
 export default function Home() {
@@ -45,6 +46,9 @@ export default function Home() {
       <Box position="absolute" inset={0} zIndex={0}>
         <Map places={places} onMarkerClick={handleMarkerClick} />
       </Box>
+
+      {/* User Profile */}
+      <UserProfile />
 
       {/* Search Bar overlays everything */}
       <Box
