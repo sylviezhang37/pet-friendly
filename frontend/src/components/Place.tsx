@@ -90,35 +90,35 @@ export default function PlacePanel({ place }: { place: Place }) {
   };
 
   return (
-    <Box mx={10} my={6} position="relative">
+    <Box position="relative" mx={10} my={4}>
       <Box
         position="sticky"
-        top={0}
-        bg="whiteAlpha.800"
-        backdropFilter="blur(8px)"
-        pt={1}
         zIndex={1}
+        top={0}
         mx={-5}
+        pt={1}
         display="flex"
         justifyContent="flex-end"
         pr={2}
+        bg="whiteAlpha.800"
+        backdropFilter="blur(8px)"
       >
         <IconButton
           aria-label="Close"
           icon={<FaTimes />}
           size="lg"
-          colorScheme="gray"
           variant="ghost"
-          onClick={() => setSelectedPlaceId(null)}
+          colorScheme="gray"
           _hover={{
             bg: "whiteAlpha.800",
             transform: "scale(1.1)",
             transition: "all 0.2s",
           }}
+          onClick={() => setSelectedPlaceId(null)}
         />
       </Box>
 
-      <Heading size="xl" mb={2} mt={4}>
+      <Heading size="xl" mt={4} mb={2}>
         {place.name}
       </Heading>
       <Text color="gray.600" mb={2}>
