@@ -20,7 +20,7 @@ export default function UserProfile() {
       alignItems="center"
     >
       <Text fontWeight="medium">{username}</Text>
-      <Avatar size="sm" name={username} bg="yellow.500" />r
+      <Avatar size="sm" name={username} bg="yellow.300" />
     </HStack>
   );
 }

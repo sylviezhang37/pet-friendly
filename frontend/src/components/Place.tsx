@@ -19,18 +19,16 @@ import { PiThumbsUpBold, PiThumbsDownBold } from "react-icons/pi";
 import { useState, useEffect } from "react";
 import { usePlaceReviews } from "@/hooks/usePlaceReviews";
 import { usePlaceUpdate } from "@/hooks/usePlaceUpdate";
-
-const sampleUser: User = {
-  id: "1",
-  username: "noodle_doodle",
-};
+import { useStore } from "@/hooks/useStore";
 
 export default function PlacePanel({ place }: { place: Place }) {
   const [selected, setSelected] = useState<"confirm" | "deny" | null>(null);
   const [comment, setComment] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [userReview, setUserReview] = useState<Review | null>(null);
-  const currentUser = sampleUser;
+
+  const user = useStore((state) => state.user);
+  const currentUser = user || ({ id: "-1", username: "Guest" } as User);
 
   const {
     reviews,
