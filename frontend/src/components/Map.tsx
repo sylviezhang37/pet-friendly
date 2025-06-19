@@ -2,22 +2,17 @@
 
 import { Place } from "@/models/models";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
-
-// defaults to NYC
-const defaultCenter = {
-  lat: 40.758,
-  lng: -73.9855,
-};
+import { DEFAULT_CENTER } from "@/utils/constants";
 
 interface MapProps {
-  places: Place[];
+  places: Map<string, Place>;
   center?: { lat: number; lng: number };
   onMarkerClick?: (placeId: string) => void;
 }
 
 export default function Map({
-  places = [],
-  center = defaultCenter,
+  places,
+  center = DEFAULT_CENTER,
   onMarkerClick,
 }: MapProps) {
   return (
@@ -33,7 +28,7 @@ export default function Map({
         zoom={14}
         options={{ streetViewControl: false, mapTypeControl: false }}
       >
-        {places.map((place) => (
+        {Array.from(places.values()).map((place) => (
           <Marker
             key={place.id}
             position={{

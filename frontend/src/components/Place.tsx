@@ -15,39 +15,35 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import { User, Review, Place } from "@/models/models";
-import { useStore } from "@/hooks/useStore";
 import { PiThumbsUpBold, PiThumbsDownBold } from "react-icons/pi";
-import { FaArrowLeft } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { usePlaceReviews } from "@/hooks/usePlaceReviews";
+import { usePlaceUpdate } from "@/hooks/usePlaceUpdate";
+import { useStore } from "@/hooks/useStore";
 
-const sampleUser: User = {
-  id: "1",
-  username: "noodle_doodle",
-};
-
-// TODO: handle adding a new review to db
-// TODO: handle updating pet friendly state of a place
 export default function PlacePanel({ place }: { place: Place }) {
-  const setSelectedPlaceId = useStore((s) => s.setSelectedPlaceId);
   const [selected, setSelected] = useState<"confirm" | "deny" | null>(null);
   const [comment, setComment] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [userReview, setUserReview] = useState<Review | null>(null);
-  const currentUser = sampleUser;
+
+  const user = useStore((state) => state.user);
+  const currentUser = user || ({ id: "-1", username: "Guest" } as User);
 
   const {
     reviews,
     isLoading: reviewsLoading,
     error: reviewsError,
-    addReview, // updates the State in usePlaceReviews hook
+    addReview,
   } = usePlaceReviews(place.id);
+
+  const { updatePlaceStatus } = usePlaceUpdate(place.id);
 
   useEffect(() => {
     setSelected(null);
     setComment("");
     setSubmitted(false);
-  }, [place.id, reviews]);
+  }, [place.id]);
 
   useEffect(() => {
     const found = reviews.find((r) => r.userId === currentUser.id);
@@ -55,17 +51,20 @@ export default function PlacePanel({ place }: { place: Place }) {
   }, [reviews, currentUser.id]);
 
   const handleSelect = (type: "confirm" | "deny") => {
+    if (selected === type) {
+      setSelected(null);
+      return;
+    }
     setSelected(type);
-    setSubmitted(false);
   };
 
-  const handleCancel = () => {
+  const handleCancelReview = () => {
     setSelected(null);
     setComment("");
     setSubmitted(false);
   };
 
-  const handlePost = () => {
+  const handleAddReview = () => {
     // optimistically add new review
     const newReview: Review = {
       id: (reviews.length + 1).toString(),
@@ -73,48 +72,42 @@ export default function PlacePanel({ place }: { place: Place }) {
       userId: currentUser.id,
       username: currentUser.username,
       petFriendly: selected === "confirm",
-      createdAt: new Date().toISOString(),
+      createdAt: new Date(),
       comment: comment,
     };
 
-    // TODO: can i add to list without mutating the original?
     addReview(newReview);
+    updatePlaceStatus(place, selected === "confirm");
+
     setSubmitted(true);
     setComment("");
     setSelected(null);
   };
 
   return (
-    <Box mx={10} my={6}>
-      <IconButton
-        aria-label="Back Arrow"
-        icon={<FaArrowLeft />}
-        colorScheme="gray"
-        variant="ghost"
-        justifyContent="flex-start"
-        mb={2}
-        onClick={() => setSelectedPlaceId(null)}
-      />
-      <Heading size="xl" mb={2}>
+    <Box position="relative" mx={10} my={8}>
+      <Heading size="lg" mt={8} mb={2}>
         {place.name}
       </Heading>
       <Text color="gray.600" mb={2}>
         {place.address}
       </Text>
+
       <Text
         fontSize="sm"
         color="yellow.800"
         bg="yellow.50"
-        py={1}
         borderRadius="md"
-        mb={2}
+        py={1}
         display="inline-block"
       >
-        Last confirmed on{" "}
-        {userReview
-          ? new Date(userReview.createdAt).toLocaleDateString()
-          : place.updatedAt}
+        Last updated on{" "}
+        {(submitted && userReview
+          ? new Date()
+          : place.updatedAt
+        ).toLocaleDateString()}
       </Text>
+
       <HStack spacing={6} mb={4} mt={2}>
         <HStack>
           <Icon as={PiThumbsUpBold} color="green.500" />
@@ -125,6 +118,7 @@ export default function PlacePanel({ place }: { place: Place }) {
           <Text>{reviews.filter((r) => !r.petFriendly).length} denied</Text>
         </HStack>
       </HStack>
+
       {/* User Review Section */}
       {/* case 1: user has submitted a review in a previous session */}
       {userReview && !submitted && (
@@ -137,7 +131,7 @@ export default function PlacePanel({ place }: { place: Place }) {
 
       {/* case 2: user has not submitted a review yet */}
       <Collapse in={!userReview} unmountOnExit>
-        <HStack spacing={4} mb={6} justifyContent="center">
+        <HStack spacing={4} mb={2} justifyContent="center">
           {/* TODO: add accessibility attributes */}
           <IconButton
             aria-label="Confirm"
@@ -157,7 +151,7 @@ export default function PlacePanel({ place }: { place: Place }) {
           />
         </HStack>
         <Collapse in={!!selected} animateOpacity>
-          <Box mb={6} p={3} borderRadius="md" boxShadow="sm">
+          <Box p={3} borderRadius="md">
             <Textarea
               placeholder="Add a comment"
               value={comment}
@@ -166,11 +160,11 @@ export default function PlacePanel({ place }: { place: Place }) {
               bg="white"
             />
             <HStack justify="flex-end">
-              <Button onClick={handleCancel} variant="ghost">
+              <Button onClick={handleCancelReview} variant="ghost">
                 Cancel
               </Button>
               <Button
-                onClick={handlePost}
+                onClick={handleAddReview}
                 colorScheme="yellow"
                 fontWeight="bold"
               >
@@ -218,13 +212,12 @@ export default function PlacePanel({ place }: { place: Place }) {
 
       {!reviewsLoading && !reviewsError && (
         <VStack align="stretch" spacing={3}>
-          {/* If no reviews, show a CTA to submit a review */}
           {reviews.length === 0 ? (
+            // If no reviews, show a CTA to submit a review
             <Text color="gray.400" textAlign="center">
               No reviews yet. Be the first to review!
             </Text>
           ) : (
-            // TODO: ping current user's review at top
             reviews.map((review) => (
               <Box
                 key={review.id}

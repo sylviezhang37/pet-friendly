@@ -1,45 +1,30 @@
 "use client";
 
 import { Box, Text, Spinner, useBreakpointValue } from "@chakra-ui/react";
-import { useStore } from "@/hooks/useStore";
-import { useCallback, useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import Map from "@/components/Map";
 import WelcomePanel from "@/components/Welcome";
 import PlacePanel from "@/components/Place";
-import { useNearbyPlaces } from "@/hooks/useNearbyPlaces";
-
-// default to NYC for V0
-const center = {
-  lat: 40.758,
-  lng: -73.9855,
-};
+import SearchBar from "@/components/SearchBar";
+import UserProfile from "@/components/UserProfile";
+import { usePlacesManagement } from "@/hooks/usePlacesManagement";
 
 export default function Home() {
-  const selectedPlaceId = useStore((s) => s.selectedPlaceId);
-  const setSelectedPlaceId = useStore((s) => s.setSelectedPlaceId);
   const isMobile = useBreakpointValue({ base: true, md: false });
-  const [dynamicMaxHeight, setDynamicMaxHeight] = useState("100vh");
-
-  const { places, isLoading, error } = useNearbyPlaces(center.lat, center.lng);
-
-  const handleMarkerClick = useCallback(
-    (placeId: string) => {
-      setSelectedPlaceId(placeId);
-    },
-    [setSelectedPlaceId]
-  );
+  // const [dynamicMaxHeight, setDynamicMaxHeight] = useState("100vh");
+  const { places, selectedPlaceId, handlePlaceSelect, handleMarkerClick } =
+    usePlacesManagement();
 
   // calculate viewport height on mount
-  useEffect(() => {
-    if (isMobile) {
-      setDynamicMaxHeight(`${window.innerHeight}px`);
-      console.log("heights : ", dynamicMaxHeight, window.innerHeight);
-    } else {
-      setDynamicMaxHeight("100vh");
-    }
-  }, [isMobile, dynamicMaxHeight]);
+  // useEffect(() => {
+  //   if (isMobile) {
+  //     setDynamicMaxHeight(`${window.innerHeight}px`);
+  //   } else {
+  //     setDynamicMaxHeight("100vh");
+  //   }
+  // }, [isMobile]);
 
-  if (isLoading) {
+  if (places.size === 0) {
     return (
       <Box
         p={8}
@@ -55,47 +40,55 @@ export default function Home() {
     );
   }
 
-  if (error) {
-    return (
-      <Box p={8} textAlign="center">
-        <Text color="red.500">Error loading map :(</Text>
-      </Box>
-    );
-  }
-
   return (
-    <Box
-      maxHeight={dynamicMaxHeight}
-      height="100vh"
-      overflow="hidden"
-      position="relative"
-    >
+    <Box height="100vh" overflow="hidden" position="relative">
       {/* Map fills the background */}
       <Box position="absolute" inset={0} zIndex={0}>
         <Map places={places} onMarkerClick={handleMarkerClick} />
       </Box>
-      {/* Info/Place Panel overlays the map */}
+
+      {/* User Profile */}
+      <UserProfile />
+
+      {/* Search Bar overlays everything */}
+      <Box
+        position="absolute"
+        zIndex={2}
+        top={{ base: "auto", md: 12 }}
+        bottom={isMobile ? { base: 0 } : undefined}
+        left={{ base: 0, md: "auto" }}
+        right={{ base: 0, md: 8 }}
+        width={{ base: "100vw", md: "400px" }}
+        mx={{ base: 0, md: 2 }}
+        display="flex"
+        justifyContent="center"
+      >
+        <SearchBar onPlaceSelect={handlePlaceSelect} />
+      </Box>
+
+      {/* Welcome/Place Panel overlays the map */}
       <Box
         position="absolute"
         zIndex={1}
-        right={{ base: 0, md: 8 }}
+        // move panel to bottom of screen on mobile
+        top={{ base: "auto", md: 105 }}
+        bottom={isMobile ? { base: 0 } : undefined}
         left={{ base: 0, md: "auto" }}
-        bottom={{ base: 0, md: 8 }}
-        top={{ base: "auto", md: 8 }}
-        width={{ base: "100vw", md: "430px" }}
+        right={{ base: 0, md: 8 }}
+        width={{ base: "100vw", md: "400px" }}
         maxWidth="100vw"
-        maxHeight={{ base: "40vh", md: "85vh" }}
-        borderTopRadius="2xl"
-        // bottom border radius is 0 on mobile
-        borderBottomRadius={{ base: "0", md: "2xl" }}
-        boxShadow="2xl"
+        maxHeight={{ base: "40vh", md: "80vh" }}
+        mx={{ base: 0, md: 2 }}
+        borderTopRadius="3xl"
+        borderBottomRadius={{ base: "0", md: "3xl" }}
+        boxShadow="md"
         bg="white"
         overflowY="auto"
-        mx={{ base: 0, md: 2 }}
         display="flex"
         flexDirection="column"
       >
         {/* Drag handle for mobile */}
+        {/* TODO: fix mobile experience including search bar position */}
         {isMobile && (
           <Box
             w="40px"
@@ -107,10 +100,12 @@ export default function Home() {
             mb={2}
           />
         )}
+
+        {/* TODO: add a close button to the top right of the panel */}
         {/* overflow auto makes panel scrollable */}
         <Box flex={1} overflowY="auto">
           {selectedPlaceId ? (
-            <PlacePanel place={places.find((p) => p.id === selectedPlaceId)!} />
+            <PlacePanel place={places.get(selectedPlaceId)!} />
           ) : (
             <WelcomePanel />
           )}

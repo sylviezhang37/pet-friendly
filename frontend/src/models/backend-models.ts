@@ -8,7 +8,7 @@ export interface BackendPlace {
   name: string;
   address: string;
   coordinates: Coordinates;
-  type: string;
+  businessType: string;
   allowsPet: boolean;
   googleMapsUrl: string;
   createdAt: string;
@@ -34,21 +34,4 @@ export interface BackendUser {
   username: string;
   anonymous: boolean;
   createdAt: string;
-}
-
-export interface SearchPlaceParams {
-  query?: string;
-  lat: number;
-  lng: number;
-}
-
-export interface NearbyPlacesParams {
-  lat: number;
-  lng: number;
-  radius?: number;
-}
-
-export interface NewUserRequest {
-  username?: string;
-  anonymous?: boolean;
 }

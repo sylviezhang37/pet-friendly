@@ -1,10 +1,15 @@
 import { useState, useEffect } from "react";
 import { Place } from "@/models/models";
-import { placesService } from "@/data/places-service";
+import { placesService } from "@/api/places-service";
 
-// TODO: cache result
+// TODO: cache
+
+/**
+ * This hook fetches nearby places from the backend and
+ * manages the places data in a Hashmap.
+ */
 export function useNearbyPlaces(lat: number, lng: number) {
-  const [places, setPlaces] = useState<Place[]>([]);
+  const [places, setPlaces] = useState<Map<string, Place>>(new Map());
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -15,7 +20,8 @@ export function useNearbyPlaces(lat: number, lng: number) {
           lat,
           lng,
         });
-        setPlaces(placesData);
+        const newPlaces = new Map(placesData.map((place) => [place.id, place]));
+        setPlaces(newPlaces);
       } catch (err) {
         console.error("Failed to load nearby places:", err);
         setError("Failed to load nearby places");
@@ -28,8 +34,18 @@ export function useNearbyPlaces(lat: number, lng: number) {
   }, [lat, lng]);
 
   const addPlace = (place: Place) => {
-    setPlaces([...places, place]);
+    setPlaces((prev) => {
+      prev.set(place.id, place);
+      return prev;
+    });
   };
 
-  return { places, isLoading, error, addPlace };
+  const removePlace = (placeId: string) => {
+    setPlaces((prev) => {
+      prev.delete(placeId);
+      return prev;
+    });
+  };
+
+  return { places, isLoading, error, addPlace, removePlace };
 }

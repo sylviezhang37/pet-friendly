@@ -54,6 +54,6 @@ docs/places_service.md
 docs/notes.md
 docs/design_patterns.md
 docs/brainstorming/
-notes_to_self.md
-
+*.md
+.cursor/
 frontend/notes.md

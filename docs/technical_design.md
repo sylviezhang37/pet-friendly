@@ -93,7 +93,6 @@ The Places Service manages all business location data for the application.
 - numConfirm
 - numDeny
 - lastContributionType
-- lastContributionDate
 - petFriendly (boolean)
 
 #### 1.2.4 Reviews Service

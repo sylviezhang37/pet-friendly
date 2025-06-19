@@ -1,6 +1,6 @@
 import { Review } from "@/models/models";
 import { useState, useEffect } from "react";
-import { reviewsService } from "@/data/reviews-service";
+import { reviewsService } from "@/api/reviews-service";
 
 export function usePlaceReviews(placeId: string) {
   const [reviews, setReviews] = useState<Review[]>([]);
@@ -24,10 +24,20 @@ export function usePlaceReviews(placeId: string) {
     fetchReviews();
   }, [placeId]);
 
-  const addReview = (newReview: Review) => {
+  const addReview = async (newReview: Review) => {
+    // optimistically update the UI
     setReviews((prevReviews) =>
       prevReviews ? [newReview, ...prevReviews] : [newReview]
     );
+
+    try {
+      await reviewsService.createReview(newReview);
+    } catch (err) {
+      setReviews((prevReviews) => prevReviews?.slice(1) ?? []);
+      console.error("Failed to create review:", err);
+      setError("Failed to create review. Please try again.");
+      throw err;
+    }
   };
 
   return {

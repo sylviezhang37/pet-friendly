@@ -9,15 +9,16 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npm run monolith",
-    "monolith": "ts-node backend/index.ts",
+    "start": "concurrently \"npm run backend\" \"npm run frontend\"",
+    "frontend": "cd frontend && npm run dev",
+    "backend": "ts-node backend/index.ts",
     "places": "ts-node backend/places/src/server.ts",
     "reviews": "ts-node backend/reviews/src/server.ts",
     "users": "ts-node backend/users/src/server.ts"
   },
   "dependencies": {
-    "@googlemaps/google-maps-services-js": "^3.3.41",
-    "axios": "^1.9.0",
+    "@chakra-ui/icons": "^2.2.4",
+    "axios": "^1.10.0",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",

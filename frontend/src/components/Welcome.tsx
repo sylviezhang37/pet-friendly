@@ -1,17 +1,16 @@
-import { Box, Heading, Text, Input, Button, VStack } from "@chakra-ui/react";
+import { Box, Heading, Text, VStack } from "@chakra-ui/react";
 import Support from "./Support";
-// import { useStore } from "@/hooks/useStore";
 
 export default function Welcome() {
-  // const username = useStore((s) => s.username);
-
   return (
     <Box
       flex={{ base: "none", md: "0 0 450px" }}
       width={{ base: "100vw", md: "auto" }}
       height="100%"
       maxWidth="100vw"
-      boxShadow={{ base: "none", md: "xl" }}
+      bg="white"
+      borderRadius={{ base: "3xl", md: "3xl" }}
+      boxShadow="md"
       p={2}
       display="flex"
       flexDirection="column"
@@ -30,39 +29,19 @@ export default function Welcome() {
       >
         <Heading
           as="h1"
-          size="2xl"
-          fontWeight="bold"
+          size="lg"
+          fontWeight="regular"
           textAlign="left"
           width="100%"
+          pt={5}
         >
-          Pet Friendly
+          Pet Friendly ૮˶• ﻌ •˶ა
         </Heading>
-        {/* only display greeting if a user is set */}
-        {/* {!!username && (
-          <Text
-            fontSize="md"
-            color="orange.600"
-            textAlign="left"
-            width="100%"
-            mb={0}
-          >
-            Hi, {username} :)
-          </Text>
-        )} */}
-        <Text
-          fontSize="md"
-          color="gray.600"
-          textAlign="left"
-          width="100%"
-          // mb={2}
-        >
+        <Text fontSize="md" color="gray.600" textAlign="left" width="100%">
           Discover and contribute to a database of pet friendly places.
         </Text>
-        <Input placeholder="Find a place" size="lg" bg="gray.50" />
-        <Button colorScheme="yellow" width="100%" size="lg" fontWeight="bold">
-          SEARCH
-        </Button>
       </VStack>
+
       {/* Support section */}
       <Support />
     </Box>
