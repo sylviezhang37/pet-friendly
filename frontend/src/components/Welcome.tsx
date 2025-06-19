@@ -25,21 +25,21 @@ export default function Welcome() {
         justifyContent="center"
         alignItems="center"
       >
-        {/* add a spacing */}
-        <Box height="50px" />
         <Heading
           as="h1"
-          size="xl"
-          fontWeight="bold"
+          size="lg"
+          fontWeight="regular"
           textAlign="left"
           width="100%"
+          pt={5}
         >
-          Pet Friendly
+          Pet Friendly ૮˶• ﻌ •˶ა
         </Heading>
         <Text fontSize="md" color="gray.600" textAlign="left" width="100%">
           Discover and contribute to a database of pet friendly places.
         </Text>
       </VStack>
+
       {/* Support section */}
       <Support />
     </Box>

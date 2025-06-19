@@ -15,9 +15,7 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import { User, Review, Place } from "@/models/models";
-import { useStore } from "@/hooks/useStore";
 import { PiThumbsUpBold, PiThumbsDownBold } from "react-icons/pi";
-import { FaTimes } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { usePlaceReviews } from "@/hooks/usePlaceReviews";
 import { usePlaceUpdate } from "@/hooks/usePlaceUpdate";
@@ -28,7 +26,6 @@ const sampleUser: User = {
 };
 
 export default function PlacePanel({ place }: { place: Place }) {
-  const setSelectedPlaceId = useStore((s) => s.setSelectedPlaceId);
   const [selected, setSelected] = useState<"confirm" | "deny" | null>(null);
   const [comment, setComment] = useState("");
   const [submitted, setSubmitted] = useState(false);
@@ -90,35 +87,8 @@ export default function PlacePanel({ place }: { place: Place }) {
   };
 
   return (
-    <Box position="relative" mx={10} my={4}>
-      <Box
-        position="sticky"
-        zIndex={1}
-        top={0}
-        mx={-5}
-        pt={1}
-        display="flex"
-        justifyContent="flex-end"
-        pr={2}
-        bg="whiteAlpha.800"
-        backdropFilter="blur(8px)"
-      >
-        <IconButton
-          aria-label="Close"
-          icon={<FaTimes />}
-          size="lg"
-          variant="ghost"
-          colorScheme="gray"
-          _hover={{
-            bg: "whiteAlpha.800",
-            transform: "scale(1.1)",
-            transition: "all 0.2s",
-          }}
-          onClick={() => setSelectedPlaceId(null)}
-        />
-      </Box>
-
-      <Heading size="xl" mt={4} mb={2}>
+    <Box position="relative" mx={10} my={8}>
+      <Heading size="lg" mt={8} mb={2}>
         {place.name}
       </Heading>
       <Text color="gray.600" mb={2}>

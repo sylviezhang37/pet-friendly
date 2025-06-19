@@ -153,12 +153,14 @@ export default function SearchBar({ onPlaceSelect }: SearchBarProps) {
   };
 
   return (
-    <Box position="relative" width="90%" ref={searchBarRef}>
+    <Box position="relative" width="100%" ref={searchBarRef}>
       <Input
-        placeholder="Find a place"
+        placeholder="   Find a place"
+        pl={4}
         size="lg"
         pr={selectedPlaceId ? "8rem" : "4rem"}
         bg="gray.50"
+        borderRadius="2xl"
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
         onKeyDown={handleKeyDown}

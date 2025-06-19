@@ -67,7 +67,7 @@ export default function Home() {
         position="absolute"
         zIndex={1}
         // move panel to bottom of screen on mobile
-        top={{ base: "auto", md: 8 }}
+        top={{ base: "auto", md: 105 }}
         bottom={isMobile ? { base: 0 } : undefined}
         left={{ base: 0, md: "auto" }}
         right={{ base: 0, md: 8 }}
