@@ -159,8 +159,9 @@ export default function SearchBar({ onPlaceSelect }: SearchBarProps) {
         pl={4}
         size="lg"
         pr={selectedPlaceId ? "8rem" : "4rem"}
-        bg="gray.50"
-        borderRadius="2xl"
+        bg="white"
+        borderRadius="full"
+        boxShadow="md"
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
         onKeyDown={handleKeyDown}

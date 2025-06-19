@@ -19,8 +19,8 @@ export default function UserProfile() {
       boxShadow="md"
       alignItems="center"
     >
-      <Text fontWeight="medium">{username}</Text>
       <Avatar size="sm" name={username} bg="yellow.300" />
+      <Text fontWeight="medium">{username}</Text>
     </HStack>
   );
 }

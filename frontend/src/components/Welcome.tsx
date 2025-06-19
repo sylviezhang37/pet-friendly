@@ -8,7 +8,9 @@ export default function Welcome() {
       width={{ base: "100vw", md: "auto" }}
       height="100%"
       maxWidth="100vw"
-      boxShadow={{ base: "none", md: "xl" }}
+      bg="white"
+      borderRadius={{ base: "3xl", md: "3xl" }}
+      boxShadow="md"
       p={2}
       display="flex"
       flexDirection="column"

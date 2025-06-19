@@ -79,9 +79,9 @@ export default function Home() {
         maxWidth="100vw"
         maxHeight={{ base: "40vh", md: "80vh" }}
         mx={{ base: 0, md: 2 }}
-        borderTopRadius="2xl"
-        borderBottomRadius={{ base: "0", md: "2xl" }}
-        boxShadow="2xl"
+        borderTopRadius="3xl"
+        borderBottomRadius={{ base: "0", md: "3xl" }}
+        boxShadow="md"
         bg="white"
         overflowY="auto"
         display="flex"
