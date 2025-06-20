@@ -4,12 +4,11 @@ import {
   Text,
   HStack,
   VStack,
-  Icon,
   Divider,
   Spinner,
 } from "@chakra-ui/react";
 import { Review } from "@/models/frontend";
-import { PiThumbsUpBold, PiThumbsDownBold } from "react-icons/pi";
+import { PetIcon } from "@/components/common/PetIcon";
 
 interface ReviewsProps {
   reviews: Review[];
@@ -34,7 +33,7 @@ export function Reviews({
         justifyContent="center"
         minH="400px"
       >
-        <Spinner size="xl" color="yellow.500" mb={4} />
+        <Spinner size="xl" color="brand.primary" mb={4} />
         <Text color="gray.500">Loading reviews...</Text>
       </Box>
     );
@@ -96,15 +95,21 @@ interface ReviewItemProps {
 
 function ReviewItem({ review, isCurrentUser }: ReviewItemProps) {
   return (
-    <Box p={3} bg={isCurrentUser ? "green.50" : "gray.50"} borderRadius="md">
-      <HStack spacing={2} mb={1}>
-        <Icon
-          as={review.petFriendly ? PiThumbsUpBold : PiThumbsDownBold}
-          color={review.petFriendly ? "green.500" : "red.400"}
-        />
-        <Text fontWeight="bold">by {review.username}</Text>
-      </HStack>
-      {review.comment && <Text fontSize="sm">{review.comment}</Text>}
-    </Box>
+    <HStack spacing={1} align="stretch">
+      <Divider
+        orientation="vertical"
+        borderColor="brand.primary"
+        opacity={isCurrentUser ? "1" : "0.5"}
+        borderWidth={isCurrentUser ? "2px" : "1.5px"}
+        h="auto"
+      />
+      <Box p={3} borderRadius="md" flex={1}>
+        <HStack spacing={2} mb={1}>
+          <PetIcon isPetFriendly={review.petFriendly} />
+          <Text fontWeight="bold">by {review.username}</Text>
+        </HStack>
+        {review.comment && <Text fontSize="sm">{review.comment}</Text>}
+      </Box>
+    </HStack>
   );
 }

@@ -9,7 +9,6 @@ export default function UserProfile() {
   const { isOpen, onOpen, onClose, handleSignIn, handleSignOut } =
     useAuthModal();
 
-  // Use guest user when no user is signed in
   const currentUser = user || GUEST_USER;
   const isGuest = !user;
 
@@ -25,7 +24,7 @@ export default function UserProfile() {
         top={4}
         left={4}
         spacing={3}
-        bg="white"
+        bg="brand.background"
         px={4}
         py={2}
         borderRadius="full"
@@ -39,7 +38,7 @@ export default function UserProfile() {
         }}
         transition="all 0.2s"
       >
-        <Avatar size="sm" name={currentUser.username} bg="yellow.300" />
+        <Avatar size="sm" name={currentUser.username} bg="brand.primary" />
         <Text fontWeight="medium">{currentUser.username}</Text>
       </HStack>
 

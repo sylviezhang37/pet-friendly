@@ -1,14 +1,8 @@
-import {
-  Box,
-  Text,
-  HStack,
-  Button,
-  Textarea,
-  Collapse,
-  IconButton,
-} from "@chakra-ui/react";
+import { Box, Text, HStack, Textarea, Collapse } from "@chakra-ui/react";
 import { Review } from "@/models/frontend";
-import { PiThumbsUpBold, PiThumbsDownBold } from "react-icons/pi";
+import { PetIcon } from "../common/PetIcon";
+import { ActionButton } from "@/components/common/ActionButton";
+import { IconButton } from "@/components/common/IconButton";
 
 interface ReviewSubmissionProps {
   selected: "confirm" | "deny" | null;
@@ -32,16 +26,14 @@ export function ReviewSubmission({
   userReview,
   onSelect,
   onCancel,
-  onAddReview,
+  onAddReview: onPostReview,
   onCommentChange,
 }: ReviewSubmissionProps) {
   // Case 1: User has submitted a review in a previous session
   if (userReview && !submitted) {
     return (
-      <Box mb={6} p={4} bg="green.50" borderRadius="md" textAlign="center">
-        <Text color="green.700">
-          You&apos;ve submitted a review for this place.
-        </Text>
+      <Box mb={2} p={4} borderRadius="md" textAlign="center">
+        <Text>You&apos;ve submitted a review for this place.</Text>
       </Box>
     );
   }
@@ -50,20 +42,20 @@ export function ReviewSubmission({
   return (
     <>
       <Collapse in={!userReview} unmountOnExit>
-        <HStack spacing={4} mb={2} justifyContent="center">
+        <HStack spacing={4} mt={1} mb={2} justifyContent="center">
           <IconButton
             aria-label="Confirm pet-friendly"
-            icon={<PiThumbsUpBold />}
-            colorScheme={selected === "confirm" ? "yellow" : undefined}
-            variant={selected === "confirm" ? "solid" : "outline"}
+            icon={<PetIcon isPetFriendly={true} />}
+            isSelected={selected === "confirm"}
+            colorScheme="green"
             onClick={() => onSelect("confirm")}
             isDisabled={!!userReview}
           />
           <IconButton
             aria-label="Deny pet-friendly"
-            icon={<PiThumbsDownBold />}
-            colorScheme={selected === "deny" ? "yellow" : undefined}
-            variant={selected === "deny" ? "solid" : "outline"}
+            icon={<PetIcon isPetFriendly={false} />}
+            isSelected={selected === "deny"}
+            colorScheme="red"
             onClick={() => onSelect("deny")}
             isDisabled={!!userReview}
           />
@@ -78,16 +70,13 @@ export function ReviewSubmission({
               bg="white"
             />
             <HStack justify="flex-end">
-              <Button onClick={onCancel} variant="ghost">
-                Cancel
-              </Button>
-              <Button
-                onClick={onAddReview}
-                colorScheme="yellow"
-                fontWeight="bold"
-              >
-                Post
-              </Button>
+              <ActionButton
+                text="Cancel"
+                onClick={onCancel}
+                backgroundColor="transparent"
+                textColor="brand.primary"
+              />
+              <ActionButton text="Post" onClick={onPostReview} />
             </HStack>
           </Box>
         </Collapse>
@@ -96,8 +85,10 @@ export function ReviewSubmission({
       {/* Case 3: User submits a review in current session */}
       {userReview && submitted && (
         <Collapse in={submitted} unmountOnExit>
-          <Box mb={6} p={4} bg="green.50" borderRadius="md" textAlign="center">
-            <Text color="green.700">Review submitted</Text>
+          <Box mb={2} p={4} borderRadius="md" textAlign="center">
+            <Text color="green.700">
+              Review submitted. Thanks for contributing to the community!
+            </Text>
           </Box>
         </Collapse>
       )}

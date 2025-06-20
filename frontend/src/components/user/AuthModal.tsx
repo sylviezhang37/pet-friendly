@@ -36,7 +36,11 @@ export default function AuthModal({
         <ModalBody>
           <VStack spacing={4} align="stretch">
             <HStack spacing={3} mt={4}>
-              <Avatar size="md" name={currentUser.username} bg="yellow.300" />
+              <Avatar
+                size="md"
+                name={currentUser.username}
+                bg="brand.primary"
+              />
               <VStack align="start" spacing={1}>
                 <Text fontWeight="bold">{currentUser.username}</Text>
                 {!isGuest && (
@@ -63,7 +67,7 @@ export default function AuthModal({
             Cancel
           </Button>
           {isGuest ? (
-            <Button colorScheme="yellow" onClick={onSignIn}>
+            <Button colorScheme="red" onClick={onSignIn}>
               Sign In with Google
             </Button>
           ) : (

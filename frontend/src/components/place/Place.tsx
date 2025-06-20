@@ -1,8 +1,7 @@
 "use client";
 
-import { Box, Heading, Text, HStack, Icon, Spinner } from "@chakra-ui/react";
+import { Box, Heading, Text, HStack, Spinner } from "@chakra-ui/react";
 import { Review, Place } from "@/models/frontend";
-import { PiThumbsUpBold, PiThumbsDownBold } from "react-icons/pi";
 import { useState, useEffect } from "react";
 import { usePlaceReviews } from "@/hooks/usePlaceReviews";
 import { usePlaceUpdate } from "@/hooks/usePlaceUpdate";
@@ -11,11 +10,21 @@ import { useStore } from "@/hooks/useStore";
 import { GUEST_USER } from "@/lib/constants";
 import { ReviewsSection } from "./Reviews";
 import { ReviewSubmission } from "./ReviewSubmission";
+import { ActionButton } from "@/components/common/ActionButton";
+import { useAuthModal } from "@/hooks/useAuthModal";
+import AuthModal from "../user/AuthModal";
+import { PetIcon } from "../common/PetIcon";
 
 export default function PlacePanel({ place }: { place: Place }) {
   const [isLoading, setIsLoading] = useState(true);
   const user = useStore((state) => state.user);
   const currentUser = user || GUEST_USER;
+  const { isOpen, onOpen, onClose, handleSignIn, handleSignOut } =
+    useAuthModal();
+
+  const handleSignInClick = () => {
+    onOpen();
+  };
 
   const {
     reviews,
@@ -58,7 +67,7 @@ export default function PlacePanel({ place }: { place: Place }) {
         justifyContent="center"
         minH="400px"
       >
-        <Spinner size="xl" color="yellow.300" mb={4} />
+        <Spinner size="xl" color="brand.primary" mb={4} />
       </Box>
     );
   }
@@ -74,8 +83,9 @@ export default function PlacePanel({ place }: { place: Place }) {
 
       <Text
         fontSize="sm"
-        color="yellow.800"
-        bg="yellow.50"
+        fontWeight="bold"
+        color="brand.primary"
+        bg="brand.background"
         borderRadius="md"
         py={1}
         display="inline-block"
@@ -89,31 +99,55 @@ export default function PlacePanel({ place }: { place: Place }) {
 
       <HStack spacing={6} mb={4} mt={2}>
         <HStack>
-          <Icon as={PiThumbsUpBold} color="green.500" />
+          <PetIcon isPetFriendly={true} />
           <Text>{reviews.filter((r) => r.petFriendly).length} confirmed</Text>
         </HStack>
         <HStack>
-          <Icon as={PiThumbsDownBold} color="red.400" />
+          <PetIcon isPetFriendly={false} />
           <Text>{reviews.filter((r) => !r.petFriendly).length} denied</Text>
         </HStack>
       </HStack>
 
-      <ReviewSubmission
-        selected={reviewSubmission.selected}
-        comment={reviewSubmission.comment}
-        submitted={reviewSubmission.submitted}
-        userReview={reviewSubmission.userReview}
-        onSelect={reviewSubmission.handleSelect}
-        onCancel={reviewSubmission.handleCancelReview}
-        onAddReview={reviewSubmission.handleAddReview}
-        onCommentChange={reviewSubmission.setComment}
-      />
+      {!user ? (
+        <Box
+          color="gray.600"
+          textAlign="center"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          gap={1.5}
+        >
+          <ActionButton text="Sign in" onClick={handleSignInClick} />
+          <Text>to contribute</Text>
+        </Box>
+      ) : (
+        <ReviewSubmission
+          selected={reviewSubmission.selected}
+          comment={reviewSubmission.comment}
+          submitted={reviewSubmission.submitted}
+          userReview={reviewSubmission.userReview}
+          onSelect={reviewSubmission.handleSelect}
+          onCancel={reviewSubmission.handleCancelReview}
+          onAddReview={reviewSubmission.handleAddReview}
+          onCommentChange={reviewSubmission.setComment}
+        />
+      )}
 
       <ReviewsSection
         reviews={reviews}
         isLoading={reviewsLoading}
         error={reviewsError}
         currentUserId={currentUser.id}
+      />
+
+      {/* sign in pop-up */}
+      <AuthModal
+        isOpen={isOpen}
+        onClose={onClose}
+        onSignIn={handleSignIn}
+        onSignOut={handleSignOut}
+        currentUser={currentUser}
+        isGuest={!user}
       />
     </Box>
   );

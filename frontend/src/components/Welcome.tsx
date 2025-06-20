@@ -8,7 +8,7 @@ export default function Welcome() {
       width={{ base: "100vw", md: "auto" }}
       height="100%"
       maxWidth="100vw"
-      bg="white"
+      bg="brand.background"
       borderRadius={{ base: "3xl", md: "3xl" }}
       boxShadow="md"
       p={2}

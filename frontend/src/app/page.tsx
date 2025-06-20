@@ -34,7 +34,7 @@ export default function Home() {
         justifyContent="center"
         minH="400px"
       >
-        <Spinner size="xl" color="yellow.500" mb={4} />
+        <Spinner size="xl" color="brand.primary" mb={4} />
         <Text color="gray.500">Loading map...</Text>
       </Box>
     );
@@ -82,7 +82,7 @@ export default function Home() {
         borderTopRadius="3xl"
         borderBottomRadius={{ base: "0", md: "3xl" }}
         boxShadow="md"
-        bg="white"
+        bg="brand.background"
         overflowY="auto"
         display="flex"
         flexDirection="column"
