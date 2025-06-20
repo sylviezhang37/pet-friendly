@@ -1,11 +1,10 @@
-import { v4 as uuidv4 } from "uuid";
 import {
   uniqueUsernameGenerator,
   Config,
   adjectives,
   nouns,
 } from "unique-username-generator";
-
+import { GoogleAuthService, GoogleUserInfo } from "./google-auth";
 import { UsersRepo } from "../interfaces/repo";
 import { User } from "./domain";
 import {
@@ -18,16 +17,24 @@ const usernameConfig: Config = {
 };
 
 export interface UserInput {
-  username?: string;
-  anonymous: boolean;
+  email: string;
+  googleId: string;
+  username: string;
 }
 
 export interface UserOutput {
   user: User | null;
 }
 
+export interface GoogleSignInInput {
+  idToken: string;
+}
+
 export class UsersService {
-  constructor(private readonly usersRepo: UsersRepo) {}
+  constructor(
+    private readonly usersRepo: UsersRepo,
+    private readonly googleAuthService: GoogleAuthService
+  ) {}
 
   private async generateUsername(): Promise<string> {
     const username: string = uniqueUsernameGenerator(usernameConfig);
@@ -49,31 +56,28 @@ export class UsersService {
     return 0 < username.length && username.length < 25;
   }
 
-  async create(input: UserInput): Promise<UserOutput> {
+  async create(userData: UserInput): Promise<UserOutput> {
     let username: string;
 
-    if (input.username) {
-      if (!(await this.checkUsernameUniqueness(input.username))) {
-        throw new UsernameAlreadyExistsError(input.username);
+    if (userData.username) {
+      if (!(await this.checkUsernameUniqueness(userData.username))) {
+        throw new UsernameAlreadyExistsError(userData.username);
       }
 
-      if (!(await this.checkUsernameValidity(input.username))) {
-        throw new UsernameInvalidError(input.username);
+      if (!(await this.checkUsernameValidity(userData.username))) {
+        throw new UsernameInvalidError(userData.username);
       }
 
-      username = input.username;
+      username = userData.username;
     } else {
       username = await this.generateUsername();
     }
 
-    const user = await this.usersRepo.create(
-      new User({
-        id: uuidv4(),
-        username: username,
-        anonymous: input.anonymous,
-        createdAt: new Date(),
-      })
-    );
+    const user = await this.usersRepo.create({
+      username: userData.username,
+      email: userData.email,
+      googleId: userData.googleId,
+    });
 
     return {
       user: user,
@@ -94,5 +98,22 @@ export class UsersService {
     return {
       user: user,
     };
+  }
+
+  async signInWithGoogle(input: GoogleSignInInput): Promise<UserOutput> {
+    const googleUser = await this.googleAuthService.verifyToken(input.idToken);
+    if (!googleUser.sub) {
+      throw new Error("Google user ID is required");
+    }
+
+    let user: User | null = await this.usersRepo.getByGoogleId(googleUser.sub);
+    if (user) return { user };
+
+    const { user: newUser } = await this.create({
+      username: googleUser.name || (await this.generateUsername()),
+      email: googleUser.email,
+      googleId: googleUser.sub,
+    });
+    return { user: newUser };
   }
 }

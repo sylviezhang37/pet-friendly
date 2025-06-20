@@ -1,6 +1,6 @@
 "use client";
 import { useEffect } from "react";
-import { getOrCreateUser } from "@/hooks/getUser";
+import { getOrCreateUser } from "@/hooks/useUser";
 import { useStore } from "@/hooks/useStore";
 import { User } from "@/models/models";
 

@@ -17,7 +17,6 @@ const mapToUser = (data: BackendUser): User => ({
 });
 
 export const userService = {
-  // TODO change reqBody to a FE user model
   createUser: async (reqBody: NewUserRequest): Promise<User> => {
     const { user } = await apiClient.post<UserResponse>(
       "/api/v0/users",

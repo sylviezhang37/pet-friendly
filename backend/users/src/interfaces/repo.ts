@@ -1,27 +1,28 @@
 import { Pool } from "pg";
 import { User } from "../business/domain";
+import { UserInput } from "../business/service";
 
 export interface UsersRepo {
-  create(user: User): Promise<User>;
+  create(userData: UserInput): Promise<User>;
   getById(id: string): Promise<User | null>;
+  getByGoogleId(googleId: string): Promise<User | null>;
   getByUsername(username: string): Promise<User | null>;
 }
 
 export class PostgresUsersRepo implements UsersRepo {
-  constructor(private readonly dbConnection: Pool) {}
+  constructor(private readonly pool: Pool) {}
 
-  async create(user: User): Promise<User> {
+  async create(userData: UserInput): Promise<User> {
     const query = `
-        INSERT INTO users (id, username, created_at, anonymous)
-        VALUES ($1, $2, $3, $4)
+        INSERT INTO users (username, email, google_id)
+        VALUES ($1, $2, $3)
         RETURNING *
     `;
 
-    const result = await this.dbConnection.query(query, [
-      user.id,
-      user.username,
-      user.createdAt,
-      user.anonymous,
+    const result = await this.pool.query(query, [
+      userData.username,
+      userData.email,
+      userData.googleId,
     ]);
 
     return this.mapToDomain(result.rows[0]);
@@ -29,13 +30,20 @@ export class PostgresUsersRepo implements UsersRepo {
 
   async getById(id: string): Promise<User | null> {
     const query = `SELECT * FROM users where id = $1`;
-    const result = await this.dbConnection.query(query, [id]);
+    const result = await this.pool.query(query, [id]);
+    return result.rows.length ? this.mapToDomain(result.rows[0]) : null;
+  }
+
+  async getByGoogleId(googleId: string): Promise<User | null> {
+    console.log("getByGoogleId", googleId);
+    const query = `SELECT * FROM users where google_id = $1`;
+    const result = await this.pool.query(query, [googleId]);
     return result.rows.length ? this.mapToDomain(result.rows[0]) : null;
   }
 
   async getByUsername(username: string): Promise<User | null> {
     const query = `SELECT * FROM users where username = $1`;
-    const result = await this.dbConnection.query(query, [username]);
+    const result = await this.pool.query(query, [username]);
     return result.rows.length ? this.mapToDomain(result.rows[0]) : null;
   }
 
@@ -44,7 +52,8 @@ export class PostgresUsersRepo implements UsersRepo {
       id: data.id,
       username: data.usename,
       createdAt: data.created_at,
-      anonymous: data.anonymous,
+      email: data.email,
+      googleId: data.google_id,
     });
   }
 }

@@ -7,19 +7,21 @@ import dotenv from "dotenv";
 import { PostgresUsersRepo } from "./interfaces/repo";
 import { UsersService } from "./business/service";
 import { Handler } from "./interfaces/handler";
+import { GoogleAuthService } from "./business/google-auth";
 
 dotenv.config();
 
-const dbConnection = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: parseInt(process.env.DB_PORT || "5432"),
+const pool = new Pool({
+  user: process.env.DB_USER ?? process.env.TEST_DB_USER,
+  host: process.env.DB_HOST ?? process.env.TEST_DB_HOST,
+  database: process.env.DB_NAME ?? process.env.TEST_DB_NAME,
+  password: process.env.DB_PASSWORD ?? process.env.TEST_DB_PASSWORD,
+  port: parseInt(process.env.DB_PORT ?? process.env.TEST_DB_PORT ?? "5432"),
 });
 
-const usersRepo = new PostgresUsersRepo(dbConnection);
-const usersService = new UsersService(usersRepo);
+const googleAuthService = new GoogleAuthService();
+const usersRepo = new PostgresUsersRepo(pool);
+const usersService = new UsersService(usersRepo, googleAuthService);
 const handler = new Handler(usersService);
 
 const app = express();
@@ -29,8 +31,8 @@ app.use(cors());
 app.use(express.json());
 
 // routes
-app.post("/users", handler.createUser);
-app.get("/users/:id", handler.getUser);
+app.post("/auth/google", handler.signInWithGoogle);
+app.get("/user", handler.getUser);
 
 app.use(
   (
