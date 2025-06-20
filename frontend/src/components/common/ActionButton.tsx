@@ -48,6 +48,9 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
         backgroundColor={backgroundColor}
         color={textColor}
         colorScheme="red"
+        _hover={{
+          transform: "scale(1.02)",
+        }}
       >
         {buttonText}
       </Button>

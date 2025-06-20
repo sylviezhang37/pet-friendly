@@ -11,7 +11,7 @@ interface ReviewSubmissionProps {
   userReview: Review | null;
   onSelect: (type: "confirm" | "deny") => void;
   onCancel: () => void;
-  onAddReview: () => void;
+  onPostReview: () => void;
   onCommentChange: (comment: string) => void;
 }
 
@@ -23,16 +23,16 @@ export function ReviewSubmission({
   selected,
   comment,
   submitted,
-  userReview,
+  userReview: currentUserReview,
   onSelect,
   onCancel,
-  onAddReview: onPostReview,
+  onPostReview,
   onCommentChange,
 }: ReviewSubmissionProps) {
   // Case 1: User has submitted a review in a previous session
-  if (userReview && !submitted) {
+  if (currentUserReview && !submitted) {
     return (
-      <Box mb={2} p={4} borderRadius="md" textAlign="center">
+      <Box mb={2} p={2} textAlign="center">
         <Text>You&apos;ve submitted a review for this place.</Text>
       </Box>
     );
@@ -41,7 +41,7 @@ export function ReviewSubmission({
   // Case 2: User has not submitted a review yet
   return (
     <>
-      <Collapse in={!userReview} unmountOnExit>
+      <Collapse in={!currentUserReview} unmountOnExit>
         <HStack spacing={4} mt={1} mb={2} justifyContent="center">
           <IconButton
             aria-label="Confirm pet-friendly"
@@ -49,7 +49,7 @@ export function ReviewSubmission({
             isSelected={selected === "confirm"}
             colorScheme="green"
             onClick={() => onSelect("confirm")}
-            isDisabled={!!userReview}
+            isDisabled={!!currentUserReview}
           />
           <IconButton
             aria-label="Deny pet-friendly"
@@ -57,7 +57,7 @@ export function ReviewSubmission({
             isSelected={selected === "deny"}
             colorScheme="red"
             onClick={() => onSelect("deny")}
-            isDisabled={!!userReview}
+            isDisabled={!!currentUserReview}
           />
         </HStack>
         <Collapse in={!!selected} animateOpacity>
@@ -83,10 +83,10 @@ export function ReviewSubmission({
       </Collapse>
 
       {/* Case 3: User submits a review in current session */}
-      {userReview && submitted && (
+      {currentUserReview && submitted && (
         <Collapse in={submitted} unmountOnExit>
-          <Box mb={2} p={4} borderRadius="md" textAlign="center">
-            <Text color="green.700">
+          <Box mb={2} p={2} textAlign="center">
+            <Text>
               Review submitted. Thanks for contributing to the community!
             </Text>
           </Box>

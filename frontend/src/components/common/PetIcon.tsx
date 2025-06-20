@@ -13,7 +13,7 @@ export const PetIcon: React.FC<PetIconProps> = ({
   size = 5,
   color,
 }) => {
-  const defaultColor = isPetFriendly ? "green.500" : "red.400";
+  const defaultColor = isPetFriendly ? "green.500" : "red.700";
 
   return (
     <Icon

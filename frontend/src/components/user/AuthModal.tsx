@@ -4,13 +4,13 @@ import {
   ModalContent,
   ModalBody,
   ModalFooter,
-  Button,
   VStack,
   HStack,
   Text,
   Avatar,
 } from "@chakra-ui/react";
 import { User } from "@/models/frontend";
+import { ActionButton } from "@/components/common/ActionButton";
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -63,22 +63,21 @@ export default function AuthModal({
           </VStack>
         </ModalBody>
         <ModalFooter>
-          <Button variant="ghost" mr={3} onClick={onClose}>
-            Cancel
-          </Button>
+          <ActionButton
+            text="Cancel"
+            onClick={onClose}
+            backgroundColor="transparent"
+            textColor="brand.primary"
+          />
           {isGuest ? (
-            <Button colorScheme="red" onClick={onSignIn}>
-              Sign In with Google
-            </Button>
+            <ActionButton text="Sign In with Google" onClick={onSignIn} />
           ) : (
-            <Button
-              variant="outline"
-              colorScheme="red"
+            <ActionButton
+              text="Sign Out"
               onClick={onSignOut}
-              borderRadius="full"
-            >
-              Sign Out
-            </Button>
+              backgroundColor="transparent"
+              textColor="brand.primary"
+            />
           )}
         </ModalFooter>
       </ModalContent>

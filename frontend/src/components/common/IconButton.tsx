@@ -37,13 +37,13 @@ export const IconButton: React.FC<CustomIconButtonProps> = ({
     <ChakraIconButton
       icon={icon}
       size={size}
+      borderRadius="full"
       variant={getVariant()}
       colorScheme={getColorScheme()}
-      borderRadius="full"
-      borderWidth={isSelected ? 2 : 1.5}
+      borderWidth={2}
       _hover={{
         borderWidth: isSelected ? 4 : 2,
-        transform: "scale(1.02)",
+        transform: "scale(1.05)",
       }}
       transition="all 0.2s ease-in-out"
       {...props}

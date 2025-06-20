@@ -46,6 +46,7 @@ export function Reviews({
       </Box>
     );
   }
+  console.log("current user: ", currentUserId, typeof currentUserId);
 
   return (
     <VStack align="stretch" spacing={3}>
@@ -94,6 +95,7 @@ interface ReviewItemProps {
 }
 
 function ReviewItem({ review, isCurrentUser }: ReviewItemProps) {
+  console.log("review: ", review);
   return (
     <HStack spacing={1} align="stretch">
       <Divider

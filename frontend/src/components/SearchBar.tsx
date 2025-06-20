@@ -162,6 +162,8 @@ export default function SearchBar({ onPlaceSelect }: SearchBarProps) {
         bg="white"
         borderRadius="full"
         boxShadow="md"
+        borderColor="transparent"
+        focusBorderColor="brand.primary"
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
         onKeyDown={handleKeyDown}

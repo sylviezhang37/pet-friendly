@@ -20,7 +20,7 @@ interface UseReviewSubmissionReturn {
   userReview: Review | null;
   handleSelect: (type: "confirm" | "deny") => void;
   handleCancelReview: () => void;
-  handleAddReview: () => void;
+  handlePostReview: () => void;
   setComment: (comment: string) => void;
 }
 
@@ -66,7 +66,7 @@ export function useReviewSubmission({
     setSubmitted(false);
   }
 
-  function handleAddReview() {
+  function handlePostReview() {
     if (!selected) return;
 
     const newReview: Review = {
@@ -92,7 +92,7 @@ export function useReviewSubmission({
     userReview,
     handleSelect,
     handleCancelReview,
-    handleAddReview,
+    handlePostReview,
     setComment,
   };
 }

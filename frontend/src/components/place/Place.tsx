@@ -17,8 +17,10 @@ import { PetIcon } from "../common/PetIcon";
 
 export default function PlacePanel({ place }: { place: Place }) {
   const [isLoading, setIsLoading] = useState(true);
+
   const user = useStore((state) => state.user);
   const currentUser = user || GUEST_USER;
+
   const { isOpen, onOpen, onClose, handleSignIn, handleSignOut } =
     useAuthModal();
 
@@ -43,9 +45,9 @@ export default function PlacePanel({ place }: { place: Place }) {
     return () => clearTimeout(timer);
   }, [place.id]);
 
-  function handleReviewSubmit(review: Review, isPetFriendly: boolean) {
-    addReview(review);
-    updatePlaceStatus(place, isPetFriendly);
+  async function handleReviewSubmit(review: Review, isPetFriendly: boolean) {
+    await addReview(review);
+    await updatePlaceStatus(place, isPetFriendly);
   }
 
   const reviewSubmission = useReviewSubmission({
@@ -115,7 +117,7 @@ export default function PlacePanel({ place }: { place: Place }) {
           display="flex"
           alignItems="center"
           justifyContent="center"
-          gap={1.5}
+          gap={2}
         >
           <ActionButton text="Sign in" onClick={handleSignInClick} />
           <Text>to contribute</Text>
@@ -128,7 +130,7 @@ export default function PlacePanel({ place }: { place: Place }) {
           userReview={reviewSubmission.userReview}
           onSelect={reviewSubmission.handleSelect}
           onCancel={reviewSubmission.handleCancelReview}
-          onAddReview={reviewSubmission.handleAddReview}
+          onPostReview={reviewSubmission.handlePostReview}
           onCommentChange={reviewSubmission.setComment}
         />
       )}

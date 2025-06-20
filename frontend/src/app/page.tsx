@@ -54,7 +54,7 @@ export default function Home() {
       <Box
         position="absolute"
         zIndex={2}
-        top={{ base: "auto", md: 12 }}
+        top={{ base: "auto", md: 5 }}
         bottom={isMobile ? { base: 0 } : undefined}
         left={{ base: 0, md: "auto" }}
         right={{ base: 0, md: 8 }}
@@ -71,7 +71,7 @@ export default function Home() {
         position="absolute"
         zIndex={1}
         // move panel to bottom of screen on mobile
-        top={{ base: "auto", md: 105 }}
+        top={{ base: "auto", md: 75 }}
         bottom={isMobile ? { base: 0 } : undefined}
         left={{ base: 0, md: "auto" }}
         right={{ base: 0, md: 8 }}
@@ -103,7 +103,7 @@ export default function Home() {
 
         {/* TODO: add a close button to the top right of the panel */}
         {/* overflow auto makes panel scrollable */}
-        <Box flex={1} overflowY="auto">
+        <Box flex={1} overflowY="auto" className="hide-scrollbar">
           {selectedPlaceId ? (
             <PlacePanel place={places.get(selectedPlaceId)!} />
           ) : (
