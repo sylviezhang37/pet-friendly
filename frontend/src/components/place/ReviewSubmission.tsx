@@ -7,7 +7,7 @@ import {
   Collapse,
   IconButton,
 } from "@chakra-ui/react";
-import { Review } from "@/models/models";
+import { Review } from "@/models/frontend";
 import { PiThumbsUpBold, PiThumbsDownBold } from "react-icons/pi";
 
 interface ReviewSubmissionProps {

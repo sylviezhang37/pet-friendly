@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Review, Place } from "@/models/models";
+import { Review, Place } from "@/models/frontend";
 
 interface User {
   id: string;

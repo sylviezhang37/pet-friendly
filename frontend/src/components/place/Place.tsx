@@ -1,14 +1,14 @@
 "use client";
 
 import { Box, Heading, Text, HStack, Icon, Spinner } from "@chakra-ui/react";
-import { Review, Place } from "@/models/models";
+import { Review, Place } from "@/models/frontend";
 import { PiThumbsUpBold, PiThumbsDownBold } from "react-icons/pi";
 import { useState, useEffect } from "react";
 import { usePlaceReviews } from "@/hooks/usePlaceReviews";
 import { usePlaceUpdate } from "@/hooks/usePlaceUpdate";
 import { useReviewSubmission } from "@/hooks/useReviewSubmission";
 import { useStore } from "@/hooks/useStore";
-import { GUEST_USER } from "@/utils/constants";
+import { GUEST_USER } from "@/lib/constants";
 import { ReviewsSection } from "./Reviews";
 import { ReviewSubmission } from "./ReviewSubmission";
 

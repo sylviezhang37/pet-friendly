@@ -1,4 +1,4 @@
-import { Review } from "@/models/models";
+import { Review } from "@/models/frontend";
 import { useState, useEffect } from "react";
 import { reviewsService } from "@/api/reviews-service";
 

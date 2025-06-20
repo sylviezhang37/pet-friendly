@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { User } from "@/models/models";
+import { User } from "@/models/frontend";
 
 // zustand holds user info globally (a state manager)
 interface UserState {

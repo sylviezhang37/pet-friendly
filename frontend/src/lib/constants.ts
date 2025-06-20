@@ -1,4 +1,4 @@
-import { User } from "@/models/models";
+import { User } from "@/models/frontend";
 
 // defaults to NYC
 export const DEFAULT_CENTER = {

@@ -3,7 +3,7 @@ import { BiSearch } from "react-icons/bi";
 import { FaTimes } from "react-icons/fa";
 import { useSearchPlaces } from "@/hooks/useSearchPlaces";
 import { useEffect, useRef, useCallback, useState } from "react";
-import { Place } from "@/models/models";
+import { Place } from "@/models/frontend";
 import { useStore } from "@/hooks/useStore";
 
 interface SearchBarProps {

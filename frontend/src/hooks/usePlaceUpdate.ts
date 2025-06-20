@@ -1,4 +1,4 @@
-import { Place } from "@/models/models";
+import { Place } from "@/models/frontend";
 import placesService from "@/api/places-service";
 
 // TODO: move this operation into a queue

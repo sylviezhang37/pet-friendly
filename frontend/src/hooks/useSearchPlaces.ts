@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
-import { Place } from "@/models/models";
+import { Place } from "@/models/frontend";
 import { placesService } from "@/api/places-service";
-import { Coordinates } from "@/models/backend-models";
+import { Coordinates } from "@/models/backend";
 
 // Default to NYC coordinates
 const DEFAULT_COORDINATES: Coordinates = {

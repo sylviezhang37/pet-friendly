@@ -8,7 +8,7 @@ import {
   Divider,
   Spinner,
 } from "@chakra-ui/react";
-import { Review } from "@/models/models";
+import { Review } from "@/models/frontend";
 import { PiThumbsUpBold, PiThumbsDownBold } from "react-icons/pi";
 
 interface ReviewsProps {

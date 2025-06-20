@@ -1,8 +1,8 @@
 "use client";
 
-import { Place } from "@/models/models";
+import { Place } from "@/models/frontend";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
-import { DEFAULT_CENTER } from "@/utils/constants";
+import { DEFAULT_CENTER } from "@/lib/constants";
 
 interface MapProps {
   places: Map<string, Place>;

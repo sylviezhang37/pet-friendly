@@ -10,7 +10,7 @@ import {
   Text,
   Avatar,
 } from "@chakra-ui/react";
-import { User } from "@/models/models";
+import { User } from "@/models/frontend";
 
 interface AuthModalProps {
   isOpen: boolean;

@@ -1,6 +1,6 @@
 import { apiClient } from "@/api/client";
-import { Review } from "@/models/models";
-import { BackendReview } from "@/models/backend-models";
+import { Review } from "@/models/frontend";
+import { BackendReview } from "@/models/backend";
 
 type ReviewsResponse = {
   reviews: BackendReview[];

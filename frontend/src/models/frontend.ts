@@ -1,4 +1,4 @@
-import { Coordinates } from "./backend-models";
+import { Coordinates } from "./backend";
 
 export interface Place {
   id: string;

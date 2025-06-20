@@ -1,9 +1,9 @@
 import { useCallback } from "react";
-import { Place } from "@/models/models";
+import { Place } from "@/models/frontend";
 import { useNearbyPlaces } from "./useNearbyPlaces";
 import placesService from "@/api/places-service";
 import { useStore } from "./useStore";
-import { DEFAULT_CENTER } from "@/utils/constants";
+import { DEFAULT_CENTER } from "@/lib/constants";
 
 /**
  * This hook manages the places data and selected place id.

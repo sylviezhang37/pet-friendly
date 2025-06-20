@@ -1,6 +1,6 @@
 import { apiClient } from "@/api/client";
-import { Place } from "@/models/models";
-import { BackendPlace, Coordinates } from "@/models/backend-models";
+import { Place } from "@/models/frontend";
+import { BackendPlace, Coordinates } from "@/models/backend";
 
 type PlacesResponse = {
   places: BackendPlace[];

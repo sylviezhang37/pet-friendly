@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { Place } from "@/models/models";
+import { Place } from "@/models/frontend";
 import { placesService } from "@/api/places-service";
-import { Coordinates } from "@/models/backend-models";
+import { Coordinates } from "@/models/backend";
 
 interface UseNearbyPlacesReturn {
   places: Map<string, Place>;

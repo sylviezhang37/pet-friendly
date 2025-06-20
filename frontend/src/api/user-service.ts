@@ -1,6 +1,6 @@
 import { apiClient } from "@/api/client";
-import { User } from "@/models/models";
-import { BackendUser } from "@/models/backend-models";
+import { User } from "@/models/frontend";
+import { BackendUser } from "@/models/backend";
 
 type UserResponse = {
   user: BackendUser;

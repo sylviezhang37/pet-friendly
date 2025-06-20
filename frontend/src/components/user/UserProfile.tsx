@@ -1,6 +1,6 @@
 import { Text, Avatar, HStack } from "@chakra-ui/react";
 import { useStore } from "@/hooks/useStore";
-import { GUEST_USER } from "@/utils/constants";
+import { GUEST_USER } from "@/lib/constants";
 import { useAuthModal } from "@/hooks/useAuthModal";
 import AuthModal from "./AuthModal";
 
