@@ -76,7 +76,20 @@ export default function PlacePanel({ place }: { place: Place }) {
 
   return (
     <Box position="relative" mx={10} my={8}>
-      <Heading size="lg" mt={8} mb={2}>
+      <Text
+        size="sm"
+        color="brand.accent"
+        borderRadius="full"
+        borderColor="brand.accent"
+        borderWidth={1}
+        alignItems="center"
+        display="inline-flex" // Changed from "flex" to "inline-flex"
+        px={2}
+        py={1}
+      >
+        {place.type}
+      </Text>
+      <Heading size="lg" mt={2} mb={2}>
         {place.name}
       </Heading>
       <Text color="gray.600" mb={2}>

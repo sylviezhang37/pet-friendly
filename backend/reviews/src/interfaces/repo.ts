@@ -2,8 +2,8 @@ import { Pool } from "pg";
 import { Review } from "../business/domain";
 
 export interface ReviewsRepo {
-  getByPlaceId(placeId: string): Promise<Review[]>;
   create(review: Review): Promise<Review>;
+  getByPlaceId(placeId: string): Promise<Review[]>;
 }
 
 export class PostgresReviewsRepo implements ReviewsRepo {
@@ -32,6 +32,7 @@ export class PostgresReviewsRepo implements ReviewsRepo {
     const query = `
       SELECT * FROM reviews 
       WHERE place_id = $1
+      ORDER BY created_at DESC
     `;
 
     const result = await this.dbConnection.query(query, [placeId]);

@@ -14,6 +14,7 @@ export function useAuthModal() {
       status: "info",
       duration: 2000,
       isClosable: true,
+      colorScheme: "brand.primary",
     });
   };
 
@@ -25,6 +26,7 @@ export function useAuthModal() {
       status: "success",
       duration: 2000,
       isClosable: true,
+      colorScheme: "brand.primary",
     });
   };
 

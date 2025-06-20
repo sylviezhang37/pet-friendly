@@ -9,6 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { Review } from "@/models/frontend";
 import { PetIcon } from "@/components/common/PetIcon";
+import { getRelativeDateWithTime } from "@/lib/utils";
 
 interface ReviewsProps {
   reviews: Review[];
@@ -95,7 +96,6 @@ interface ReviewItemProps {
 }
 
 function ReviewItem({ review, isCurrentUser }: ReviewItemProps) {
-  console.log("review: ", review);
   return (
     <HStack spacing={1} align="stretch">
       <Divider
@@ -106,9 +106,14 @@ function ReviewItem({ review, isCurrentUser }: ReviewItemProps) {
         h="auto"
       />
       <Box p={3} borderRadius="md" flex={1}>
-        <HStack spacing={2} mb={1}>
-          <PetIcon isPetFriendly={review.petFriendly} />
-          <Text fontWeight="bold">by {review.username}</Text>
+        <HStack spacing={2} mb={1} justifyContent="space-between">
+          <HStack spacing={2}>
+            <PetIcon isPetFriendly={review.petFriendly} />
+            <Text fontWeight="bold">by {review.username}</Text>
+          </HStack>
+          <Text fontSize="xs" style={{ fontStyle: "italic" }}>
+            {getRelativeDateWithTime(review.createdAt)}
+          </Text>
         </HStack>
         {review.comment && <Text fontSize="sm">{review.comment}</Text>}
       </Box>

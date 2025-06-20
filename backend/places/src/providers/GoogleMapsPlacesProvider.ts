@@ -118,7 +118,7 @@ export class GoogleMapsPlacesProvider implements PlacesProvider {
       },
       // TODO: need an API upgrade for this field
       allowsPet: false,
-      businessType: place.primaryType,
+      businessType: place.primaryType || place.types[0],
       googleMapsUrl:
         place.googleMapsUri ||
         `https://www.google.com/maps/place/?q=place_id:${place.id}`,
