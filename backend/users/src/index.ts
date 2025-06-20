@@ -30,7 +30,6 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
-// routes
 app.post("/auth/google", handler.signInWithGoogle);
 app.get("/user", handler.getUser);
 

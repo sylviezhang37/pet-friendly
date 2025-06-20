@@ -4,7 +4,7 @@ import {
   adjectives,
   nouns,
 } from "unique-username-generator";
-import { GoogleAuthService, GoogleUserInfo } from "./google-auth";
+import { GoogleAuthService } from "./google-auth";
 import { UsersRepo } from "../interfaces/repo";
 import { User } from "./domain";
 import {
@@ -109,6 +109,7 @@ export class UsersService {
     let user: User | null = await this.usersRepo.getByGoogleId(googleUser.sub);
     if (user) return { user };
 
+    // TODO: move username generation to client side
     const { user: newUser } = await this.create({
       username: googleUser.name || (await this.generateUsername()),
       email: googleUser.email,

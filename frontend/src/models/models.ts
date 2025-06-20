@@ -29,4 +29,7 @@ export interface Review {
 export interface User {
   id: string;
   username: string;
+  googleId: string;
+  email: string;
+  createdAt: Date;
 }

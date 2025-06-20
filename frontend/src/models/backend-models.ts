@@ -32,6 +32,7 @@ export interface BackendReview {
 export interface BackendUser {
   id: string;
   username: string;
-  anonymous: boolean;
+  googleId: string;
+  email: string;
   createdAt: string;
 }

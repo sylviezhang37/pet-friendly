@@ -122,8 +122,9 @@ The Places Service manages all business location data for the application.
 
 - User ID (primary key)
 - Username (user-selected or randomly assigned)
-- Anonymous flag (boolean)
-- Created datetime
+- Google ID
+- Google email
+- CreatedAt
 
 ### 1.3 Data Storage
 
@@ -166,8 +167,8 @@ POST /api/v0/reviews
 #### User Service API
 
 ```
-GET /api/v0/users/{userId}
-POST /api/v0/users - Create a new user with username
+GET /api/v0/user
+POST /api/v0/auth/google
 ```
 
 ## 2. Technical Implementation
