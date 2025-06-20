@@ -110,11 +110,13 @@ export class UsersService {
     if (user) return { user };
 
     // TODO: move username generation to client side
+    const username = googleUser.name || (await this.generateUsername());
     const { user: newUser } = await this.create({
-      username: googleUser.name || (await this.generateUsername()),
+      username: username,
       email: googleUser.email,
       googleId: googleUser.sub,
     });
+
     return { user: newUser };
   }
 }

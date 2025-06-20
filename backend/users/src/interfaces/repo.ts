@@ -35,7 +35,6 @@ export class PostgresUsersRepo implements UsersRepo {
   }
 
   async getByGoogleId(googleId: string): Promise<User | null> {
-    console.log("getByGoogleId", googleId);
     const query = `SELECT * FROM users where google_id = $1`;
     const result = await this.pool.query(query, [googleId]);
     return result.rows.length ? this.mapToDomain(result.rows[0]) : null;
@@ -50,7 +49,7 @@ export class PostgresUsersRepo implements UsersRepo {
   private mapToDomain(data: any): User {
     return new User({
       id: data.id,
-      username: data.usename,
+      username: data.username,
       createdAt: data.created_at,
       email: data.email,
       googleId: data.google_id,

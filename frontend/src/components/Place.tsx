@@ -14,12 +14,13 @@ import {
   IconButton,
   Spinner,
 } from "@chakra-ui/react";
-import { User, Review, Place } from "@/models/models";
+import { Review, Place } from "@/models/models";
 import { PiThumbsUpBold, PiThumbsDownBold } from "react-icons/pi";
 import { useState, useEffect } from "react";
 import { usePlaceReviews } from "@/hooks/usePlaceReviews";
 import { usePlaceUpdate } from "@/hooks/usePlaceUpdate";
 import { useStore } from "@/hooks/useStore";
+import { GUEST_USER } from "@/utils/constants";
 
 export default function PlacePanel({ place }: { place: Place }) {
   const [selected, setSelected] = useState<"confirm" | "deny" | null>(null);
@@ -28,7 +29,7 @@ export default function PlacePanel({ place }: { place: Place }) {
   const [userReview, setUserReview] = useState<Review | null>(null);
 
   const user = useStore((state) => state.user);
-  const currentUser = user || ({ id: "-1", username: "Guest" } as User);
+  const currentUser = user || GUEST_USER;
 
   const {
     reviews,

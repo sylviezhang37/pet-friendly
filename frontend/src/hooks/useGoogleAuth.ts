@@ -19,5 +19,9 @@ export function useGoogleAuth() {
     },
   });
 
-  return { login };
+  const logout = () => {
+    setUser(null);
+  };
+
+  return { login, logout };
 }
