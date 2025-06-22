@@ -1,3 +1,5 @@
+import generateRandomAnimal from "random-animal-name";
+
 export const getRelativeDateWithTime = (date: Date) => {
   const now = new Date();
 
@@ -20,4 +22,9 @@ export const getRelativeDateWithTime = (date: Date) => {
   } else {
     return date.toLocaleDateString();
   }
+};
+
+export const generateRandomUsername = () => {
+  const randomName = generateRandomAnimal();
+  return randomName;
 };

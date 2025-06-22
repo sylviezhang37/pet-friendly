@@ -7,7 +7,7 @@ export class Handler {
   public getUser = async (req: Request, res: Response) => {
     try {
       const { id } = req.body;
-      const result = await this.usersService.getById(id);
+      const result = await this.usersService.getByUsername(id);
 
       res.json(result);
     } catch (error) {

@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
-// import { Pool } from "pg";
+import { Pool } from "pg";
 import dotenv from "dotenv";
 
 import placesApp from "./places/src";
@@ -9,15 +9,6 @@ import reviewsApp from "./reviews/src";
 import usersApp from "./users/src";
 
 dotenv.config();
-
-// TODO: Create a shared database connection pool
-// const pool = new Pool({
-//   user: process.env.DB_USER ?? process.env.TEST_DB_USER,
-//   host: process.env.DB_HOST ?? process.env.TEST_DB_HOST,
-//   database: process.env.DB_NAME ?? process.env.TEST_DB_NAME,
-//   password: process.env.DB_PASSWORD ?? process.env.TEST_DB_PASSWORD,
-//   port: parseInt(process.env.DB_PORT ?? process.env.TEST_DB_PORT ?? "5432"),
-// });
 
 const app = express();
 

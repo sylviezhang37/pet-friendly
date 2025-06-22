@@ -31,7 +31,7 @@ app.use(cors());
 app.use(express.json());
 
 app.post("/auth/google", handler.signInWithGoogle);
-app.get("/user", handler.getUser);
+app.get("/user/:username", handler.getUser);
 
 app.use(
   (
