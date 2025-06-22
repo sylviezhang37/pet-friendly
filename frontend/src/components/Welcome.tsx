@@ -40,10 +40,10 @@ export default function Welcome() {
         <Text fontSize="md" color="gray.600" textAlign="left" width="100%">
           Discover and contribute to a database of pet friendly places.
         </Text>
-      </VStack>
 
-      {/* Support section */}
-      <Support />
+        {/* Support section */}
+        <Support />
+      </VStack>
     </Box>
   );
 }

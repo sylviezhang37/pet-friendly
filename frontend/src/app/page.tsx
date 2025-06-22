@@ -11,18 +11,8 @@ import { usePlacesManagement } from "@/hooks/usePlacesManagement";
 
 export default function Home() {
   const isMobile = useBreakpointValue({ base: true, md: false });
-  // const [dynamicMaxHeight, setDynamicMaxHeight] = useState("100vh");
   const { places, selectedPlaceId, handlePlaceSelect, handleMarkerClick } =
     usePlacesManagement();
-
-  // calculate viewport height on mount
-  // useEffect(() => {
-  //   if (isMobile) {
-  //     setDynamicMaxHeight(`${window.innerHeight}px`);
-  //   } else {
-  //     setDynamicMaxHeight("100vh");
-  //   }
-  // }, [isMobile]);
 
   if (places.size === 0) {
     return (
@@ -54,11 +44,11 @@ export default function Home() {
       <Box
         position="absolute"
         zIndex={2}
-        top={{ base: "auto", md: 5 }}
-        bottom={isMobile ? { base: 0 } : undefined}
+        top={5}
         left={{ base: 0, md: "auto" }}
         right={{ base: 0, md: 8 }}
-        width={{ base: "100vw", md: "400px" }}
+        // base 80vw = 80% width on mobile
+        width={{ base: "80vw", md: "400px" }}
         mx={{ base: 0, md: 2 }}
         display="flex"
         justifyContent="center"

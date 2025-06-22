@@ -1,10 +1,11 @@
-import { Box, Input, IconButton, Text, HStack } from "@chakra-ui/react";
+import { Box, Input, Text, HStack } from "@chakra-ui/react";
 import { BiSearch } from "react-icons/bi";
 import { FaTimes } from "react-icons/fa";
 import { useSearchPlaces } from "@/hooks/useSearchPlaces";
 import { useEffect, useRef, useCallback, useState } from "react";
 import { Place } from "@/models/frontend";
 import { useStore } from "@/hooks/useStore";
+import { IconButton } from "@/components/common/IconButton";
 
 interface SearchBarProps {
   onPlaceSelect: (place: Place) => void;
@@ -34,7 +35,7 @@ export default function SearchBar({ onPlaceSelect }: SearchBarProps) {
   }, [results]);
 
   /* to make sure focus item stay in view,
-   * we need to scroll the item into view when the focus changes
+   * need to scroll the item into view when the focus changes
    */
   useEffect(() => {
     if (
@@ -179,8 +180,7 @@ export default function SearchBar({ onPlaceSelect }: SearchBarProps) {
         <IconButton
           aria-label="Search"
           icon={<BiSearch size="24px" />}
-          background="transparent"
-          _hover={{ background: "transparent" }}
+          borderColor="transparent"
           isLoading={delayedLoading}
           onClick={() => searchQuery.trim().length >= 1 && search()}
         />
@@ -188,8 +188,7 @@ export default function SearchBar({ onPlaceSelect }: SearchBarProps) {
           <IconButton
             aria-label="Close"
             icon={<FaTimes />}
-            background="transparent"
-            _hover={{ background: "transparent" }}
+            borderColor="transparent"
             onClick={() => {
               setSelectedPlaceId(null);
               clearResults();
