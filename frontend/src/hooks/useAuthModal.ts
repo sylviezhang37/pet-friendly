@@ -3,12 +3,11 @@ import { useGoogleAuth } from "./useGoogleAuth";
 
 export function useAuthModal() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { login, logout } = useGoogleAuth();
+  const { handleGoogleSignIn, logout } = useGoogleAuth();
   const toast = useToast();
 
   const handleSignIn = () => {
     onClose();
-    login();
     toast({
       title: "Signing in...",
       status: "info",
@@ -36,5 +35,6 @@ export function useAuthModal() {
     onClose,
     handleSignIn,
     handleSignOut,
+    handleGoogleSignIn,
   };
 }

@@ -6,7 +6,7 @@ import AuthModal from "./AuthModal";
 
 export default function UserProfile() {
   const user = useStore((state) => state.user);
-  const { isOpen, onOpen, onClose, handleSignIn, handleSignOut } =
+  const { isOpen, onOpen, onClose, handleSignOut, handleGoogleSignIn } =
     useAuthModal();
 
   const currentUser = user || GUEST_USER;
@@ -45,8 +45,8 @@ export default function UserProfile() {
       <AuthModal
         isOpen={isOpen}
         onClose={onClose}
-        onSignIn={handleSignIn}
         onSignOut={handleSignOut}
+        onGoogleSignIn={handleGoogleSignIn}
         currentUser={currentUser}
         isGuest={isGuest}
       />

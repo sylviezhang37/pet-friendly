@@ -9,14 +9,15 @@ import {
   Text,
   Avatar,
 } from "@chakra-ui/react";
+import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
 import { User } from "@/models/frontend";
 import { ActionButton } from "@/components/common/ActionButton";
 
 interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSignIn: () => void;
   onSignOut: () => void;
+  onGoogleSignIn: (credentialResponse: CredentialResponse) => void;
   currentUser: User;
   isGuest: boolean;
 }
@@ -24,8 +25,8 @@ interface AuthModalProps {
 export default function AuthModal({
   isOpen,
   onClose,
-  onSignIn,
   onSignOut,
+  onGoogleSignIn,
   currentUser,
   isGuest,
 }: AuthModalProps) {
@@ -70,7 +71,14 @@ export default function AuthModal({
             textColor="brand.primary"
           />
           {isGuest ? (
-            <ActionButton text="Sign In with Google" onClick={onSignIn} />
+            <GoogleLogin
+              onSuccess={onGoogleSignIn}
+              onError={() => console.log("Login Failed")}
+              theme="outline"
+              size="large"
+              text="signin_with"
+              shape="rectangular"
+            />
           ) : (
             <ActionButton
               text="Sign Out"

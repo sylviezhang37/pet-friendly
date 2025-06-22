@@ -21,7 +21,7 @@ export default function PlacePanel({ place }: { place: Place }) {
   const user = useStore((state) => state.user);
   const currentUser = user || GUEST_USER;
 
-  const { isOpen, onOpen, onClose, handleSignIn, handleSignOut } =
+  const { isOpen, onOpen, onClose, handleSignOut, handleGoogleSignIn } =
     useAuthModal();
 
   const handleSignInClick = () => {
@@ -159,8 +159,8 @@ export default function PlacePanel({ place }: { place: Place }) {
       <AuthModal
         isOpen={isOpen}
         onClose={onClose}
-        onSignIn={handleSignIn}
         onSignOut={handleSignOut}
+        onGoogleSignIn={handleGoogleSignIn}
         currentUser={currentUser}
         isGuest={!user}
       />

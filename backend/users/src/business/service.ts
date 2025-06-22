@@ -111,7 +111,7 @@ export class UsersService {
 
     // TODO: move username generation to client side
     const { user: newUser } = await this.create({
-      username: googleUser.name,
+      username: "",
       email: googleUser.email,
       googleId: googleUser.sub,
     });

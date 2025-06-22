@@ -1,27 +1,31 @@
-import { useGoogleLogin } from "@react-oauth/google";
 import { useStore } from "./useStore";
 import { userService } from "@/api/user-service";
+import { CredentialResponse } from "@react-oauth/google";
 
 export function useGoogleAuth() {
   const setUser = useStore((state) => state.setUser);
 
-  const login = useGoogleLogin({
-    onSuccess: async (response) => {
-      try {
-        const user = await userService.signInWithGoogle(response.access_token);
-        setUser(user);
-      } catch (error) {
-        console.error("Google sign-in failed:", error);
+  const handleGoogleSignIn = async (credentialResponse: CredentialResponse) => {
+    try {
+      console.log("credentialResponse", credentialResponse);
+
+      if (!credentialResponse.credential) {
+        console.error("No credential received from Google");
+        return;
       }
-    },
-    onError: (error) => {
-      console.error("Google sign-in error:", error);
-    },
-  });
+
+      const user = await userService.signInWithGoogle(
+        credentialResponse.credential
+      );
+      setUser(user);
+    } catch (error) {
+      console.error("Google sign-in failed:", error);
+    }
+  };
 
   const logout = () => {
     setUser(null);
   };
 
-  return { login, logout };
+  return { handleGoogleSignIn, logout };
 }

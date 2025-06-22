@@ -1,6 +1,5 @@
-// backend/users/src/business/google-auth.ts
 import { OAuth2Client } from "google-auth-library";
-import { payload as samplePayload } from "../payload";
+// import { payload as samplePayload } from "../payload";
 
 export interface GoogleUserInfo {
   sub: string; // Google ID
@@ -17,17 +16,17 @@ export class GoogleAuthService {
   }
 
   async verifyToken(idToken: string): Promise<GoogleUserInfo> {
-    // const ticket = await this.client.verifyIdToken({
-    //   idToken,
-    //   audience: process.env.GOOGLE_CLIENT_ID,
-    // });
+    const ticket = await this.client.verifyIdToken({
+      idToken,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
 
-    // const payload = ticket.getPayload();
-    // if (!payload) {
-    //   throw new Error("Invalid token payload");
-    // }
+    const payload = ticket.getPayload();
+    if (!payload) {
+      throw new Error("Invalid token payload");
+    }
 
-    const payload = samplePayload;
+    // const payload = samplePayload;
 
     return {
       sub: payload.sub,
