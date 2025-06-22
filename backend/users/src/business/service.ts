@@ -4,7 +4,7 @@ import {
   adjectives,
   nouns,
 } from "unique-username-generator";
-import { GoogleAuthService } from "./google-auth";
+import { GoogleAuthService, GoogleUserInfo } from "./google-auth";
 import { UsersRepo } from "../interfaces/repo";
 import { User } from "./domain";
 import {
@@ -24,6 +24,11 @@ export interface UserInput {
 
 export interface UserOutput {
   user: User | null;
+}
+
+export interface SignInOutput {
+  isNewUser: boolean;
+  user: GoogleUserInfo | User;
 }
 
 export interface GoogleSignInInput {
@@ -54,6 +59,14 @@ export class UsersService {
   private async checkUsernameValidity(username: string): Promise<boolean> {
     // TODO: add a a more robust validity check logic
     return 0 < username.length && username.length < 25;
+  }
+
+  async isUsernameAvailable(username: string): Promise<boolean> {
+    if (!(await this.checkUsernameValidity(username))) {
+      return false;
+    }
+
+    return await this.checkUsernameUniqueness(username);
   }
 
   async create(userData: UserInput): Promise<UserOutput> {
@@ -100,22 +113,34 @@ export class UsersService {
     };
   }
 
-  async signInWithGoogle(input: GoogleSignInInput): Promise<UserOutput> {
+  async update(id: string, username: string): Promise<UserOutput> {
+    const user = await this.usersRepo.updateUsername(id, username);
+    return {
+      user: user,
+    };
+  }
+
+  async signInWithGoogle(input: GoogleSignInInput): Promise<SignInOutput> {
     const googleUser = await this.googleAuthService.verifyToken(input.idToken);
     if (!googleUser.sub) {
       throw new Error("Google user ID is required");
     }
 
     let user: User | null = await this.usersRepo.getByGoogleId(googleUser.sub);
-    if (user) return { user };
+    if (user) return { isNewUser: false, user };
+
+    return { isNewUser: true, user: googleUser };
+  }
+
+  async completeGoogleSignIn(input: UserInput): Promise<UserOutput> {
+    const { user } = await this.create(input);
+    return { user };
 
     // TODO: move username generation to client side
-    const { user: newUser } = await this.create({
-      username: "",
-      email: googleUser.email,
-      googleId: googleUser.sub,
-    });
-
-    return { user: newUser };
+    // const newUser: User = {
+    //   username: "",
+    //   email: googleUser.email,
+    //   googleId: googleUser.sub,
+    // };
   }
 }

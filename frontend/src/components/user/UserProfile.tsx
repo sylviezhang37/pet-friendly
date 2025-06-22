@@ -3,11 +3,21 @@ import { useStore } from "@/hooks/useStore";
 import { GUEST_USER } from "@/lib/constants";
 import { useAuthModal } from "@/hooks/useAuthModal";
 import AuthModal from "./AuthModal";
+import UsernameSelection from "./UsernameEntry";
 
 export default function UserProfile() {
   const user = useStore((state) => state.user);
-  const { isOpen, onOpen, onClose, handleSignOut, handleGoogleSignIn } =
-    useAuthModal();
+  const {
+    isOpen,
+    onOpen,
+    onClose,
+    handleSignOut,
+    handleGoogleSignIn,
+    isNewUser,
+    newUserData,
+    handleCompleteSignIn,
+    handleCloseNewUser,
+  } = useAuthModal();
 
   const currentUser = user || GUEST_USER;
   const isGuest = !user;
@@ -50,6 +60,15 @@ export default function UserProfile() {
         currentUser={currentUser}
         isGuest={isGuest}
       />
+
+      {/* username selection for new users */}
+      {newUserData && (
+        <UsernameSelection
+          isOpen={isNewUser}
+          onClose={handleCloseNewUser}
+          onComplete={handleCompleteSignIn}
+        />
+      )}
     </>
   );
 }

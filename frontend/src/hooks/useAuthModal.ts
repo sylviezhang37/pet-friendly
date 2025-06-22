@@ -1,32 +1,74 @@
 import { useDisclosure, useToast } from "@chakra-ui/react";
+import { useState } from "react";
 import { useGoogleAuth } from "./useGoogleAuth";
+import { CredentialResponse } from "@react-oauth/google";
+import { toastConfig } from "@/lib/toast";
 
 export function useAuthModal() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { handleGoogleSignIn, logout } = useGoogleAuth();
+  const { handleGoogleSignIn, completeSignIn, logout } = useGoogleAuth();
   const toast = useToast();
+
+  // new user flow state
+  const [isNewUser, setIsNewUser] = useState(false);
+  const [newUserData, setNewUserData] = useState<{
+    email: string;
+    googleId: string;
+  } | null>(null);
 
   const handleSignIn = () => {
     onClose();
-    toast({
-      title: "Signing in...",
-      status: "info",
-      duration: 2000,
-      isClosable: true,
-      colorScheme: "brand.primary",
-    });
+    toast(toastConfig.info("Signing in..."));
   };
 
   const handleSignOut = () => {
     onClose();
     logout();
-    toast({
-      title: "Signed out successfully",
-      status: "success",
-      duration: 2000,
-      isClosable: true,
-      colorScheme: "brand.primary",
-    });
+    toast(toastConfig.success("Signed out successfully"));
+  };
+
+  const handleGoogleSignInWithFlow = async (
+    credentialResponse: CredentialResponse
+  ) => {
+    try {
+      const signInResponse = await handleGoogleSignIn(credentialResponse);
+
+      if (signInResponse && signInResponse.isNewUser) {
+        const googleUser = signInResponse.user;
+        setNewUserData({
+          email: googleUser.email,
+          googleId: googleUser.sub,
+        });
+        setIsNewUser(true);
+        onClose();
+      } else {
+        onClose();
+        toast(toastConfig.success("Signed in successfully"));
+      }
+    } catch (error) {
+      console.error("Google sign-in failed:", error);
+      toast(toastConfig.error("Sign-in failed"));
+    }
+  };
+
+  const handleCompleteSignIn = async (username: string) => {
+    if (!newUserData) return;
+
+    try {
+      await completeSignIn(username, newUserData.email, newUserData.googleId);
+      setIsNewUser(false);
+      setNewUserData(null);
+      toast(toastConfig.success("Account created successfully"));
+    } catch (error) {
+      console.error("Failed to complete sign-in:", error);
+      toast(toastConfig.error("Failed to create account"));
+    }
+  };
+
+  const handleCloseNewUser = () => {
+    toast(toastConfig.info("Account not created because username is not set"));
+    setIsNewUser(false);
+    setNewUserData(null);
   };
 
   return {
@@ -35,6 +77,11 @@ export function useAuthModal() {
     onClose,
     handleSignIn,
     handleSignOut,
-    handleGoogleSignIn,
+    handleGoogleSignIn: handleGoogleSignInWithFlow,
+    // New user flow
+    isNewUser,
+    newUserData,
+    handleCompleteSignIn,
+    handleCloseNewUser,
   };
 }

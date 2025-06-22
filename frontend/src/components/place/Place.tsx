@@ -13,6 +13,7 @@ import { ReviewSubmission } from "./ReviewSubmission";
 import { ActionButton } from "@/components/common/ActionButton";
 import { useAuthModal } from "@/hooks/useAuthModal";
 import AuthModal from "../user/AuthModal";
+import UsernameSelection from "../user/UsernameEntry";
 import { PetIcon } from "../common/PetIcon";
 
 export default function PlacePanel({ place }: { place: Place }) {
@@ -21,8 +22,17 @@ export default function PlacePanel({ place }: { place: Place }) {
   const user = useStore((state) => state.user);
   const currentUser = user || GUEST_USER;
 
-  const { isOpen, onOpen, onClose, handleSignOut, handleGoogleSignIn } =
-    useAuthModal();
+  const {
+    isOpen,
+    onOpen,
+    onClose,
+    handleSignOut,
+    handleGoogleSignIn,
+    isNewUser,
+    newUserData,
+    handleCompleteSignIn,
+    handleCloseNewUser,
+  } = useAuthModal();
 
   const handleSignInClick = () => {
     onOpen();
@@ -164,6 +174,15 @@ export default function PlacePanel({ place }: { place: Place }) {
         currentUser={currentUser}
         isGuest={!user}
       />
+
+      {/* username selection for new users */}
+      {newUserData && (
+        <UsernameSelection
+          isOpen={isNewUser}
+          onClose={handleCloseNewUser}
+          onComplete={handleCompleteSignIn}
+        />
+      )}
     </Box>
   );
 }

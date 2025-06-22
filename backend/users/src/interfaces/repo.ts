@@ -7,6 +7,7 @@ export interface UsersRepo {
   getById(id: string): Promise<User | null>;
   getByGoogleId(googleId: string): Promise<User | null>;
   getByUsername(username: string): Promise<User | null>;
+  updateUsername(id: string, username: string): Promise<User>;
 }
 
 export class PostgresUsersRepo implements UsersRepo {
@@ -44,6 +45,12 @@ export class PostgresUsersRepo implements UsersRepo {
     const query = `SELECT * FROM users where username = $1`;
     const result = await this.pool.query(query, [username]);
     return result.rows.length ? this.mapToDomain(result.rows[0]) : null;
+  }
+
+  async updateUsername(id: string, username: string): Promise<User> {
+    const query = `UPDATE users SET username = $1 WHERE id = $2 RETURNING *`;
+    const result = await this.pool.query(query, [username, id]);
+    return this.mapToDomain(result.rows[0]);
   }
 
   private mapToDomain(data: any): User {

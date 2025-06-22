@@ -1,6 +1,7 @@
 import { useStore } from "./useStore";
 import { userService } from "@/api/user-service";
 import { CredentialResponse } from "@react-oauth/google";
+import { User } from "@/models/frontend";
 
 export function useGoogleAuth() {
   const setUser = useStore((state) => state.setUser);
@@ -14,12 +15,39 @@ export function useGoogleAuth() {
         return;
       }
 
-      const user = await userService.signInWithGoogle(
+      const signInResponse = await userService.signInWithGoogle(
         credentialResponse.credential
       );
-      setUser(user);
+
+      if (signInResponse.isNewUser) {
+        return signInResponse;
+      } else {
+        const user = signInResponse.user as User;
+        setUser(user);
+        return null;
+      }
     } catch (error) {
       console.error("Google sign-in failed:", error);
+      return null;
+    }
+  };
+
+  const completeSignIn = async (
+    username: string,
+    email: string,
+    googleId: string
+  ) => {
+    try {
+      const user = await userService.completeGoogleSignIn({
+        username,
+        email,
+        googleId,
+      });
+      setUser(user);
+      return user;
+    } catch (error) {
+      console.error("Complete sign-in failed:", error);
+      throw error;
     }
   };
 
@@ -27,5 +55,5 @@ export function useGoogleAuth() {
     setUser(null);
   };
 
-  return { handleGoogleSignIn, logout };
+  return { handleGoogleSignIn, completeSignIn, logout };
 }

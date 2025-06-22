@@ -1,4 +1,4 @@
-import generateRandomAnimal from "random-animal-name";
+import randomNameGenerator from "@atomiclotus/random-name-generator";
 
 export const getRelativeDateWithTime = (date: Date) => {
   const now = new Date();
@@ -25,6 +25,6 @@ export const getRelativeDateWithTime = (date: Date) => {
 };
 
 export const generateRandomUsername = () => {
-  const randomName = generateRandomAnimal();
+  const randomName = randomNameGenerator.get();
   return randomName;
 };
