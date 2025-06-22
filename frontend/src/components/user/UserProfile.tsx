@@ -48,7 +48,12 @@ export default function UserProfile() {
         }}
         transition="all 0.2s"
       >
-        <Avatar size="sm" name={currentUser.username} bg="brand.primary" />
+        <Avatar
+          size="sm"
+          name={currentUser.username}
+          bg="brand.primary"
+          textColor="white"
+        />
         <Text fontWeight="medium">{currentUser.username}</Text>
       </HStack>
 

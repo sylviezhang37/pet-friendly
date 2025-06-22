@@ -16,17 +16,17 @@ export class GoogleAuthService {
   }
 
   async verifyToken(idToken: string): Promise<GoogleUserInfo> {
-    // const ticket = await this.client.verifyIdToken({
-    //   idToken,
-    //   audience: process.env.GOOGLE_CLIENT_ID,
-    // });
+    const ticket = await this.client.verifyIdToken({
+      idToken,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
 
-    // const payload = ticket.getPayload();
-    // if (!payload) {
-    //   throw new Error("Invalid token payload");
-    // }
+    const payload = ticket.getPayload();
+    if (!payload) {
+      throw new Error("Invalid token payload");
+    }
 
-    const payload = samplePayload;
+    // const payload = samplePayload;
 
     return {
       sub: payload.sub,

@@ -41,6 +41,7 @@ export default function AuthModal({
                 size="md"
                 name={currentUser.username}
                 bg="brand.primary"
+                textColor="white"
               />
               <VStack align="start" spacing={1}>
                 <Text fontWeight="bold">{currentUser.username}</Text>
