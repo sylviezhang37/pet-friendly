@@ -56,16 +56,7 @@ export class UsersService {
     return user === null;
   }
 
-  private async checkUsernameValidity(username: string): Promise<boolean> {
-    // TODO: add a a more robust validity check logic
-    return 0 < username.length && username.length < 25;
-  }
-
   async isUsernameAvailable(username: string): Promise<boolean> {
-    if (!(await this.checkUsernameValidity(username))) {
-      return false;
-    }
-
     return await this.checkUsernameUniqueness(username);
   }
 
@@ -75,10 +66,6 @@ export class UsersService {
     if (userData.username) {
       if (!(await this.checkUsernameUniqueness(userData.username))) {
         throw new UsernameAlreadyExistsError(userData.username);
-      }
-
-      if (!(await this.checkUsernameValidity(userData.username))) {
-        throw new UsernameInvalidError(userData.username);
       }
 
       username = userData.username;
@@ -135,12 +122,5 @@ export class UsersService {
   async completeGoogleSignIn(input: UserInput): Promise<UserOutput> {
     const { user } = await this.create(input);
     return { user };
-
-    // TODO: move username generation to client side
-    // const newUser: User = {
-    //   username: "",
-    //   email: googleUser.email,
-    //   googleId: googleUser.sub,
-    // };
   }
 }

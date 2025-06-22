@@ -10,6 +10,7 @@ interface ActionButtonProps {
   textColor?: string;
   size?: "sm" | "md" | "lg";
   variant?: "default" | "compact";
+  disabled?: boolean;
 }
 
 export const ActionButton: React.FC<ActionButtonProps> = ({
@@ -22,6 +23,7 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
   textColor = "white",
   size = "sm",
   variant = "default",
+  disabled = false,
 }) => {
   if (variant === "compact") {
     return (
@@ -30,6 +32,7 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
         size={size}
         onClick={onClick}
         isLoading={isLoading}
+        disabled={disabled}
       >
         {buttonText}
       </Button>
@@ -42,6 +45,7 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
         size={size}
         onClick={onClick}
         isLoading={isLoading}
+        disabled={disabled}
         borderRadius="full"
         borderColor={borderColor}
         borderWidth={borderWidth}

@@ -28,3 +28,7 @@ export const generateRandomUsername = () => {
   const randomName = randomNameGenerator.get();
   return randomName;
 };
+
+export const isValidUsername = (username: string) => {
+  return 5 <= username.length && username.length <= 20;
+};

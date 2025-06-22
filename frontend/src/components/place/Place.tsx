@@ -86,19 +86,21 @@ export default function PlacePanel({ place }: { place: Place }) {
 
   return (
     <Box position="relative" mx={10} my={8}>
-      <Text
-        size="sm"
-        color="brand.accent"
-        borderRadius="full"
-        borderColor="brand.accent"
-        borderWidth={1}
-        alignItems="center"
-        display="inline-flex" // Changed from "flex" to "inline-flex"
-        px={2}
-        py={1}
-      >
-        {place.type}
-      </Text>
+      {place.type && (
+        <Text
+          size="sm"
+          color="brand.accent"
+          borderRadius="full"
+          borderColor="brand.accent"
+          borderWidth={1}
+          alignItems="center"
+          display="inline-flex" // Changed from "flex" to "inline-flex"
+          px={2}
+          py={1}
+        >
+          {place.type}
+        </Text>
+      )}
       <Heading size="lg" mt={2} mb={2}>
         {place.name}
       </Heading>
@@ -122,14 +124,15 @@ export default function PlacePanel({ place }: { place: Place }) {
         ).toLocaleDateString()}
       </Text>
 
-      <HStack spacing={6} mb={4} mt={2}>
-        <HStack>
-          <PetIcon isPetFriendly={true} />
-          <Text>{reviews.filter((r) => r.petFriendly).length} confirmed</Text>
-        </HStack>
-        <HStack>
-          <PetIcon isPetFriendly={false} />
-          <Text>{reviews.filter((r) => !r.petFriendly).length} denied</Text>
+      <HStack spacing={4} mb={4} mt={2}>
+        <HStack spacing={4}>
+          <Text>Pet Friendly? </Text>
+          <HStack>
+            <PetIcon isPetFriendly={true} />
+            <Text>{reviews.filter((r) => r.petFriendly).length} </Text>
+            <PetIcon isPetFriendly={false} />
+            <Text>{reviews.filter((r) => !r.petFriendly).length} </Text>
+          </HStack>
         </HStack>
       </HStack>
 

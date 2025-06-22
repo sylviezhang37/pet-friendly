@@ -33,7 +33,6 @@ app.use(express.json());
 app.post("/auth/google", handler.signInWithGoogle);
 app.post("/auth/google/complete", handler.completeGoogleSignIn);
 app.get("/user/:username/available", handler.isUsernameAvailable);
-// app.post("/user/:id", handler.updateUser);
 
 app.use(
   (
