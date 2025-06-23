@@ -19,30 +19,19 @@
   }
 }
 
+html {
+  overscroll-behavior-y: none;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Verdana, Helvetica, sans-serif;
   /* Prevent pull-to-refresh on mobile */
   overscroll-behavior: none;
+  touch-action: manipulation;
   -webkit-overflow-scrolling: touch;
 }
-
-/* Prevent pull-to-refresh on the main container */
-/* html,
-body {
-  overscroll-behavior: none;
-  overflow-x: hidden;
-} */
-
-/* * {
-  outline: 1px solid red !important;
-}
-
-[style*="position: absolute"],
-[style*="position: fixed"] {
-  outline: 3px solid blue !important;
-} */
 
 .hide-scrollbar {
   -ms-overflow-style: none;

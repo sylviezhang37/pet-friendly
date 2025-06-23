@@ -47,9 +47,12 @@ export default function Home() {
   // Touch event handlers for drag
   const handleTouchStart = (e: React.TouchEvent) => {
     if (!isMobile) return;
-    // Only handle touches on the drag handle or panel edge
+
+    // Only handle touches on the drag handle specifically
     const target = e.target as HTMLElement;
-    if (!target.closest(".drag-panel")) return;
+    const dragHandle = target.closest("[data-drag-handle]");
+
+    if (!dragHandle) return;
 
     setIsDragging(true);
     setStartY(e.touches[0].clientY);
@@ -71,7 +74,7 @@ export default function Home() {
 
     setPanelHeight(newHeight);
 
-    // rrevent default only when we're actually dragging
+    // prevent default only when we're actually dragging
     if (Math.abs(deltaY) > 5) {
       e.preventDefault();
     }
@@ -92,31 +95,38 @@ export default function Home() {
 
   // prevent pull-to-refresh on mobile
   // Only prevent if we're at the top of the page and trying to pull down
-  useEffect(() => {
-    if (!isMobile) return;
+  // useEffect(() => {
+  //   if (!isMobile) return;
 
-    const preventPullToRefresh = (e: TouchEvent) => {
-      // Only prevent if touching the drag panel AND trying to pull down
-      const target = e.target as HTMLElement;
-      const isDragPanel = target.closest(".drag-panel");
+  //   const preventPullToRefresh = (e: TouchEvent) => {
+  //     const target = e.target as HTMLElement;
+  //     const isDragPanel = target.closest(".drag-panel");
 
-      if (isDragPanel && window.scrollY === 0 && e.touches[0].clientY > 0) {
-        e.preventDefault();
-      }
-    };
+  //     // If touching the drag panel, let the panel's own handlers deal with it
+  //     if (isDragPanel) {
+  //       return; // Don't interfere with drag panel functionality
+  //     }
 
-    document.addEventListener("touchstart", preventPullToRefresh, {
-      passive: false,
-    });
-    document.addEventListener("touchmove", preventPullToRefresh, {
-      passive: false,
-    });
+  //     // Only prevent pull-to-refresh for other areas
+  //     if (window.scrollY === 0 && e.touches[0].clientY > 0) {
+  //       e.preventDefault();
+  //     }
+  //   };
 
-    return () => {
-      document.removeEventListener("touchstart", preventPullToRefresh);
-      document.removeEventListener("touchmove", preventPullToRefresh);
-    };
-  }, [isMobile]);
+  //   // add passive: false to allow preventDefault
+  //   document.addEventListener("touchstart", preventPullToRefresh, {
+  //     passive: false,
+  //   });
+  //   document.addEventListener("touchmove", preventPullToRefresh, {
+  //     passive: false,
+  //   });
+
+  //   return () => {
+  //     document.removeEventListener("touchstart", preventPullToRefresh);
+  //     document.removeEventListener("touchmove", preventPullToRefresh);
+  //   };
+  // }, [isMobile]);
+
   /* 
   reset panel height when place selection changes
   expand to full screen if currently minimized, otherwise keep current size
@@ -166,7 +176,7 @@ export default function Home() {
         zIndex={2}
         top={5}
         right={{ base: 2, md: 8 }}
-        width={{ base: "75vw", md: "400px" }}
+        width={{ base: "55vw", md: "400px" }}
         mx={{ base: 0, md: 2 }}
         // justifyContent="flex-end" // Changed: align content to the right
         // alignItems="center"
@@ -182,7 +192,7 @@ export default function Home() {
         ref={panelRef}
         position="absolute"
         zIndex={1}
-        bottom={isMobile ? { base: 0 } : undefined}
+        bottom={0}
         left={{ base: 0, md: "auto" }}
         right={{ base: 0, md: 8 }}
         width={{ base: "100vw", md: "400px" }}
@@ -198,24 +208,24 @@ export default function Home() {
         display="flex"
         flexDirection="column"
         transition={isDragging ? "none" : "height 0.3s ease-out"}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-        className={isMobile ? "drag-panel" : ""}
       >
         {/* Drag handle for mobile */}
         {isMobile && (
           <Box
+            data-drag-handle
             w="40px"
             h="4px"
             bg="gray.400"
             borderRadius="full"
             mx="auto"
-            mt={2}
+            mt="80px"
             mb={2}
             cursor="grab"
             _active={{ cursor: "grabbing" }}
             position="relative"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
           />
         )}
 
