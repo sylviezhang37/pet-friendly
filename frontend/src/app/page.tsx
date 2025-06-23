@@ -96,12 +96,15 @@ export default function Home() {
     if (!isMobile) return;
 
     const preventPullToRefresh = (e: TouchEvent) => {
-      if (window.scrollY === 0 && e.touches[0].clientY > 0) {
+      // Only prevent if touching the drag panel AND trying to pull down
+      const target = e.target as HTMLElement;
+      const isDragPanel = target.closest(".drag-panel");
+
+      if (isDragPanel && window.scrollY === 0 && e.touches[0].clientY > 0) {
         e.preventDefault();
       }
     };
 
-    // add passive: false to allow preventDefault
     document.addEventListener("touchstart", preventPullToRefresh, {
       passive: false,
     });
@@ -114,7 +117,6 @@ export default function Home() {
       document.removeEventListener("touchmove", preventPullToRefresh);
     };
   }, [isMobile]);
-
   /* 
   reset panel height when place selection changes
   expand to full screen if currently minimized, otherwise keep current size

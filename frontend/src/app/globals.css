@@ -50,10 +50,10 @@ body {
 }
 
 /* Improve touch handling for drag gestures */
-/* .drag-panel {
+.drag-panel {
   touch-action: pan-y;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-} */
+}
