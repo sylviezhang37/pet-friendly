@@ -11,7 +11,8 @@ export class UsersClient implements UsersClient {
   private readonly baseUrl: string;
 
   constructor() {
-    this.baseUrl = process.env.USERS_SERVICE_URL || "http://localhost:3000";
+    this.baseUrl =
+      process.env.USERS_SERVICE_URL || `http://${process.env.TEST_HOST}:3000`;
   }
 
   async getUsername(userId: string): Promise<string> {

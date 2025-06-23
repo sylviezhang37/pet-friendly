@@ -36,8 +36,8 @@ app.use(
 export { app };
 
 if (require.main === module) {
-  const port = process.env.PORT || 3000;
-  app.listen(port, () => {
+  const port = parseInt(process.env.PORT || "3000", 10);
+  app.listen(port, "0.0.0.0", () => {
     console.log(`Server running on port ${port}`);
   });
 }

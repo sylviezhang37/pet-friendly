@@ -78,7 +78,6 @@ export default function Home() {
         flexDirection="column"
       >
         {/* Drag handle for mobile */}
-        {/* TODO: fix mobile experience including search bar position */}
         {isMobile && (
           <Box
             w="40px"
