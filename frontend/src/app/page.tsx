@@ -21,7 +21,7 @@ const SNAP_THRESHOLDS = {
 } as const;
 
 export default function Home() {
-  const isMobile = useBreakpointValue({ base: true, md: false });
+  const isMobile = useBreakpointValue({ base: true, md: false }) ?? true;
   const { places, selectedPlaceId, handlePlaceSelect, handleMarkerClick } =
     usePlacesManagement();
 
@@ -37,34 +37,43 @@ export default function Home() {
     }
   }, [isMobile, dynamicMaxHeight]);
 
-  // Panel drag state
-  const [panelHeight, setPanelHeight] = useState<number>(PanelHeight.EXPANDED); // percentage of viewport height
+  // panel drag state
+  const [panelHeight, setPanelHeight] = useState<number>(PanelHeight.EXPANDED);
   const [isDragging, setIsDragging] = useState(false);
   const [startY, setStartY] = useState(0);
   const [startHeight, setStartHeight] = useState(0);
   const panelRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
-  // Touch event handlers for drag
+  // touch event handlers for drag
   const handleTouchStart = (e: React.TouchEvent) => {
     if (!isMobile) return;
 
-    // Allow touches in the bottom 80% of the screen
+    // allow swipe up/down to trigger drag in the bottom 90% of the screen
     const touchY = e.touches[0].clientY;
     const screenHeight = window.innerHeight;
-    const triggerZone = screenHeight * 0.2; // Top 20% is excluded
+    const triggerZone = screenHeight * 0.1;
 
     if (touchY < triggerZone) return;
 
-    setIsDragging(true);
+    // Don't set isDragging immediately - wait for movement
     setStartY(e.touches[0].clientY);
     setStartHeight(panelHeight);
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    if (!isMobile || !isDragging) return;
+    if (!isMobile || startY === 0) return;
 
     const currentY = e.touches[0].clientY;
     const deltaY = startY - currentY; // positive when dragging up
+
+    // Only start dragging if there's significant vertical movement
+    if (!isDragging && Math.abs(deltaY) > 25) {
+      setIsDragging(true);
+    }
+
+    if (!isDragging) return;
+
     const newHeight = Math.max(
       PanelHeight.MINIMIZED,
       Math.min(
@@ -75,34 +84,43 @@ export default function Home() {
 
     setPanelHeight(newHeight);
 
-    // prevent default only when we're actually dragging
-    if (Math.abs(deltaY) > 5) {
-      e.preventDefault();
+    if (Math.abs(deltaY) > 10) {
+      try {
+        e.preventDefault();
+      } catch (error) {
+        console.error("Error preventing default touch event:", error);
+      }
     }
   };
 
   const handleTouchEnd = () => {
     if (!isMobile) return;
-    setIsDragging(false);
 
-    if (panelHeight < SNAP_THRESHOLDS.MINIMIZED) {
-      setPanelHeight(PanelHeight.MINIMIZED);
-    } else if (panelHeight < SNAP_THRESHOLDS.EXPANDED) {
-      setPanelHeight(PanelHeight.EXPANDED);
-    } else {
-      setPanelHeight(PanelHeight.FULL_SCREEN);
+    if (isDragging) {
+      if (panelHeight < SNAP_THRESHOLDS.MINIMIZED) {
+        setPanelHeight(PanelHeight.MINIMIZED);
+      } else if (panelHeight < SNAP_THRESHOLDS.EXPANDED) {
+        setPanelHeight(PanelHeight.EXPANDED);
+      } else {
+        setPanelHeight(PanelHeight.FULL_SCREEN);
+      }
     }
+
+    setIsDragging(false);
+    setStartY(0);
   };
 
   /* 
   reset panel height when place selection changes
-  expand to full screen if currently minimized, otherwise keep current size
+  expand to full screen when a place is selected
   */
   useEffect(() => {
     if (selectedPlaceId) {
-      setPanelHeight((prev) =>
-        prev <= PanelHeight.MINIMIZED ? PanelHeight.FULL_SCREEN : prev
+      console.log(
+        "Setting panel to full screen, selectedPlaceId:",
+        selectedPlaceId
       );
+      setPanelHeight(PanelHeight.FULL_SCREEN);
     }
   }, [selectedPlaceId]);
 
@@ -122,13 +140,13 @@ export default function Home() {
     );
   }
 
-  /* touch events attach to the main container instead of just the drag handle */
   return (
     <Box
       maxHeight={dynamicMaxHeight}
       height="100vh"
       overflow="hidden"
       position="relative"
+      /* touch events attach to the main container instead of just the drag handle */
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
@@ -139,21 +157,16 @@ export default function Home() {
       </Box>
 
       {/* User Profile */}
-      <UserProfile />
+      <UserProfile isMobile={isMobile} />
 
       {/* Search Bar overlays everything */}
       <Box
         position="absolute"
         zIndex={2}
-        top={5}
+        top={4}
         right={{ base: 2, md: 8 }}
-        width={{ base: "55vw", md: "400px" }}
+        width={{ base: "80vw", md: "400px" }}
         mx={{ base: 0, md: 2 }}
-        // justifyContent="flex-end" // Changed: align content to the right
-        // alignItems="center"
-        // bg="red.200" // Temporary - to see the clickable area
-        // onTouchStart={() => alert("Touch works!")} // Test touch events
-        // onClick={() => alert("Click works!")} // Test click events
       >
         <SearchBar onPlaceSelect={handlePlaceSelect} />
       </Box>
@@ -163,16 +176,16 @@ export default function Home() {
         ref={panelRef}
         position="absolute"
         zIndex={1}
-        bottom={0}
+        top={isMobile ? undefined : "75px"}
+        bottom={isMobile ? 0 : undefined}
         left={{ base: 0, md: "auto" }}
         right={{ base: 0, md: 8 }}
         width={{ base: "100vw", md: "400px" }}
-        maxWidth="100vw"
         height={isMobile ? `${panelHeight}vh` : undefined}
-        maxHeight={{ base: "80vh", md: "80vh" }}
+        maxHeight={!isMobile && selectedPlaceId ? "90vh" : "80vh"}
         mx={{ base: 0, md: 2 }}
         borderTopRadius="3xl"
-        borderBottomRadius={{ base: "0", md: "3xl" }}
+        borderBottomRadius={{ base: 0, md: "3xl" }}
         boxShadow="md"
         bg="brand.background"
         overflowY="auto"
@@ -190,7 +203,7 @@ export default function Home() {
             borderRadius="full"
             mx="auto"
             mt={4}
-            mb={4}
+            // mb={4}
             cursor="grab"
             _active={{ cursor: "grabbing" }}
             position="relative"

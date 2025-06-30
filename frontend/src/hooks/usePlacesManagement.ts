@@ -41,9 +41,11 @@ export function usePlacesManagement() {
 
   const handleMarkerClick = useCallback(
     (placeId: string) => {
+      console.log('Marker clicked, placeId:', placeId);
+      console.log('Current selectedPlaceId before:', selectedPlaceId);
       setSelectedPlaceId(placeId);
     },
-    [setSelectedPlaceId]
+    [setSelectedPlaceId, selectedPlaceId]
   );
 
   return {

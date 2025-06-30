@@ -5,7 +5,11 @@ import { useAuthModal } from "@/hooks/useAuthModal";
 import AuthModal from "./AuthModal";
 import UsernameSelection from "./UsernameEntry";
 
-export default function UserProfile() {
+interface UserProfileProps {
+  isMobile: boolean;
+}
+
+export default function UserProfile({ isMobile }: UserProfileProps) {
   const user = useStore((state) => state.user);
   const {
     isOpen,
@@ -32,12 +36,12 @@ export default function UserProfile() {
         position="absolute"
         zIndex={2}
         top={4}
-        left={4}
+        left={{ base: 2, md: 4 }}
         spacing={3}
         bg="brand.background"
-        px={4}
+        px={isMobile ? 2 : 4}
         py={2}
-        borderRadius="full"
+        borderRadius={isMobile ? "full" : "full"}
         boxShadow="md"
         alignItems="center"
         cursor="pointer"
@@ -54,7 +58,7 @@ export default function UserProfile() {
           bg="brand.primary"
           textColor="white"
         />
-        <Text fontWeight="medium">{currentUser.username}</Text>
+        {!isMobile && <Text fontWeight="medium">{currentUser.username}</Text>}
       </HStack>
 
       <AuthModal
