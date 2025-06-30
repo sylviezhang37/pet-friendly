@@ -214,12 +214,12 @@ export default function Home() {
           <Box
             data-drag-handle
             w="40px"
-            h="4px"
+            h="5px"
             bg="gray.400"
             borderRadius="full"
             mx="auto"
-            mt="80px"
-            mb={2}
+            mt={4}
+            mb={4}
             cursor="grab"
             _active={{ cursor: "grabbing" }}
             position="relative"
