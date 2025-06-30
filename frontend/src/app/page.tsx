@@ -16,8 +16,8 @@ enum PanelHeight {
 }
 
 const SNAP_THRESHOLDS = {
-  MINIMIZED: 20,
-  EXPANDED: 60,
+  MINIMIZED: 30,
+  EXPANDED: 75,
 } as const;
 
 export default function Home() {
@@ -48,11 +48,12 @@ export default function Home() {
   const handleTouchStart = (e: React.TouchEvent) => {
     if (!isMobile) return;
 
-    // Only handle touches on the drag handle specifically
-    const target = e.target as HTMLElement;
-    const dragHandle = target.closest("[data-drag-handle]");
+    // Allow touches in the bottom 80% of the screen
+    const touchY = e.touches[0].clientY;
+    const screenHeight = window.innerHeight;
+    const triggerZone = screenHeight * 0.2; // Top 20% is excluded
 
-    if (!dragHandle) return;
+    if (touchY < triggerZone) return;
 
     setIsDragging(true);
     setStartY(e.touches[0].clientY);
@@ -93,40 +94,6 @@ export default function Home() {
     }
   };
 
-  // prevent pull-to-refresh on mobile
-  // Only prevent if we're at the top of the page and trying to pull down
-  // useEffect(() => {
-  //   if (!isMobile) return;
-
-  //   const preventPullToRefresh = (e: TouchEvent) => {
-  //     const target = e.target as HTMLElement;
-  //     const isDragPanel = target.closest(".drag-panel");
-
-  //     // If touching the drag panel, let the panel's own handlers deal with it
-  //     if (isDragPanel) {
-  //       return; // Don't interfere with drag panel functionality
-  //     }
-
-  //     // Only prevent pull-to-refresh for other areas
-  //     if (window.scrollY === 0 && e.touches[0].clientY > 0) {
-  //       e.preventDefault();
-  //     }
-  //   };
-
-  //   // add passive: false to allow preventDefault
-  //   document.addEventListener("touchstart", preventPullToRefresh, {
-  //     passive: false,
-  //   });
-  //   document.addEventListener("touchmove", preventPullToRefresh, {
-  //     passive: false,
-  //   });
-
-  //   return () => {
-  //     document.removeEventListener("touchstart", preventPullToRefresh);
-  //     document.removeEventListener("touchmove", preventPullToRefresh);
-  //   };
-  // }, [isMobile]);
-
   /* 
   reset panel height when place selection changes
   expand to full screen if currently minimized, otherwise keep current size
@@ -155,12 +122,16 @@ export default function Home() {
     );
   }
 
+  /* touch events attach to the main container instead of just the drag handle */
   return (
     <Box
       maxHeight={dynamicMaxHeight}
       height="100vh"
       overflow="hidden"
       position="relative"
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
     >
       {/* Map fills the background */}
       <Box position="absolute" inset={0} zIndex={0}>
@@ -223,9 +194,6 @@ export default function Home() {
             cursor="grab"
             _active={{ cursor: "grabbing" }}
             position="relative"
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
           />
         )}
 
