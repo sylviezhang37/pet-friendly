@@ -32,7 +32,6 @@ export default function Home() {
   useEffect(() => {
     if (isMobile) {
       setDynamicMaxHeight(`${window.innerHeight}px`);
-      console.log("heights : ", dynamicMaxHeight, window.innerHeight);
     } else {
       setDynamicMaxHeight("100vh");
     }
@@ -79,7 +78,7 @@ export default function Home() {
         zIndex={2}
         top={4}
         right={{ base: 2, md: 8 }}
-        width={{ base: "80vw", md: "400px" }}
+        width={{ base: "83vw", md: "400px" }}
         mx={{ base: 0, md: 2 }}
       >
         <SearchBar onPlaceSelect={handlePlaceSelect} />
@@ -121,6 +120,7 @@ export default function Home() {
             cursor="grab"
             _active={{ cursor: "grabbing" }}
             position="relative"
+            sx={{ touchAction: "manipulation" }}
           />
         )}
 

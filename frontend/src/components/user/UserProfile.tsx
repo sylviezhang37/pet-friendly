@@ -41,7 +41,7 @@ export default function UserProfile({ isMobile }: UserProfileProps) {
         bg="brand.background"
         px={isMobile ? 2 : 4}
         py={2}
-        borderRadius={isMobile ? "full" : "full"}
+        borderRadius="full"
         boxShadow="md"
         alignItems="center"
         cursor="pointer"
@@ -50,7 +50,11 @@ export default function UserProfile({ isMobile }: UserProfileProps) {
           boxShadow: "lg",
           transform: "translateY(-1px)",
         }}
+        _active={{
+          transform: "scale(0.95)",
+        }}
         transition="all 0.2s"
+        sx={{ touchAction: "manipulation" }}
       >
         <Avatar
           size="sm"

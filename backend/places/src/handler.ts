@@ -26,7 +26,6 @@ export class Handler {
       });
 
       res.json(places);
-      console.log("places: ", places);
     } catch (error) {
       console.error("Error finding nearby places:", error);
       res.status(500).json({ error: "Internal server error" });

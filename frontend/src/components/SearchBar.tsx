@@ -168,6 +168,7 @@ export default function SearchBar({ onPlaceSelect }: SearchBarProps) {
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
         onKeyDown={handleKeyDown}
+        sx={{ touchAction: "manipulation" }}
       />
       <HStack
         position="absolute"

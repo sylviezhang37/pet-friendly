@@ -1,4 +1,5 @@
 import { Button, Box } from "@chakra-ui/react";
+import { useTouchHandler } from "@/hooks/useTouchHandler";
 
 interface ActionButtonProps {
   onClick: () => void;
@@ -25,12 +26,18 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
   variant = "default",
   disabled = false,
 }) => {
+  const { handleTouchStart, handleTouchEnd, handleClick } = useTouchHandler({
+    onClick,
+  });
+
   if (variant === "compact") {
     return (
       <Button
         colorScheme="red"
         size={size}
-        onClick={onClick}
+        onClick={handleClick}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
         isLoading={isLoading}
         disabled={disabled}
       >
@@ -43,7 +50,9 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
     <Box textAlign="center" py={1}>
       <Button
         size={size}
-        onClick={onClick}
+        onClick={handleClick}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
         isLoading={isLoading}
         disabled={disabled}
         borderRadius="full"
@@ -52,9 +61,9 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
         backgroundColor={backgroundColor}
         color={textColor}
         colorScheme="red"
-        _hover={{
-          transform: "scale(1.02)",
-        }}
+        _hover={{ transform: "scale(1.02)" }}
+        _active={{ transform: "scale(0.98)" }}
+        sx={{ touchAction: "manipulation" }}
       >
         {buttonText}
       </Button>

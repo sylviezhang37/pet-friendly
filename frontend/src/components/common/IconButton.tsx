@@ -3,6 +3,7 @@ import {
   IconButtonProps,
 } from "@chakra-ui/react";
 import { ReactElement } from "react";
+import { useTouchHandler } from "@/hooks/useTouchHandler";
 
 interface CustomIconButtonProps extends Omit<IconButtonProps, "icon"> {
   icon: ReactElement;
@@ -19,6 +20,9 @@ export const IconButton: React.FC<CustomIconButtonProps> = ({
   variant,
   ...props
 }) => {
+  const { handleTouchStart, handleTouchEnd, handleClick } = useTouchHandler({
+    onClick: (e) => props.onClick?.(e),
+  });
   // Determine color scheme based on selection state
   const getColorScheme = () => {
     if (colorScheme) return colorScheme;
@@ -41,12 +45,14 @@ export const IconButton: React.FC<CustomIconButtonProps> = ({
       variant={getVariant()}
       colorScheme={getColorScheme()}
       borderWidth={2}
-      _hover={{
-        borderWidth: isSelected ? 4 : 2,
-        transform: "scale(1.05)",
-      }}
+      _hover={{ borderWidth: isSelected ? 4 : 2, transform: "scale(1.05)" }}
+      _active={{ transform: "scale(0.95)" }}
       transition="all 0.2s ease-in-out"
+      sx={{ touchAction: "manipulation" }}
       {...props}
+      onClick={handleClick}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
     />
   );
 };
