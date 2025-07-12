@@ -1,0 +1,102 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: PetFriendly Backend API
+
+Globals:
+  Function:
+    Runtime: nodejs18.x
+    Timeout: 30
+    MemorySize: 256
+    Environment:
+      Variables:
+        DB_USER: !Ref DBUser
+        DB_HOST: !Ref DBHost
+        DB_NAME: !Ref DBName
+        DB_PASSWORD: !Ref DBPassword
+        DB_PORT: !Ref DBPort
+        GOOGLE_MAPS_API_KEY: !Ref GoogleMapsApiKey
+
+Parameters:
+  DBUser:
+    Type: String
+    Description: Database username
+  DBHost:
+    Type: String
+    Description: Database host
+  DBName:
+    Type: String
+    Description: Database name
+  DBPassword:
+    Type: String
+    Description: Database password
+    NoEcho: true
+  DBPort:
+    Type: String
+    Default: "5432"
+    Description: Database port
+  GoogleMapsApiKey:
+    Type: String
+    Description: Google Maps API Key
+    NoEcho: true
+
+Resources:
+  ApiGateway:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
+      Cors:
+        AllowMethods: "'GET,POST,PUT,PATCH,DELETE,OPTIONS'"
+        AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+        AllowOrigin: "'*'"
+
+  PlacesFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: dist/
+      Handler: places-lambda.handler
+      Events:
+        PlacesApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGateway
+            Path: /api/v0/places/{proxy+}
+            Method: ANY
+
+  ReviewsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: dist/
+      Handler: reviews-lambda.handler
+      MemorySize: 128
+      Events:
+        ReviewsApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGateway
+            Path: /api/v0/reviews/{proxy+}
+            Method: ANY
+
+  UsersFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: dist/
+      Handler: users-lambda.handler
+      MemorySize: 128
+      Events:
+        AuthApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGateway
+            Path: /api/v0/auth/{proxy+}
+            Method: ANY
+        UserApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGateway
+            Path: /api/v0/user/{proxy+}
+            Method: ANY
+
+Outputs:
+  ApiGatewayUrl:
+    Description: "API Gateway endpoint URL"
+    Value: !Sub "https://${ApiGateway}.execute-api.${AWS::Region}.amazonaws.com/prod/"

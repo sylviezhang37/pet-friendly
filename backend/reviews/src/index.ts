@@ -10,7 +10,7 @@ import { UsersClient } from "./integrations/usersClient";
 dotenv.config();
 
 export default function createReviewsRouter(pool: Pool) {
-  const usersClient = new UsersClient(pool);
+  const usersClient = new UsersClient();
   const reviewsRepo = new PostgresReviewsRepo(pool);
   const reviewsService = new ReviewsService(reviewsRepo, usersClient);
   const handler = new Handler(reviewsService);
