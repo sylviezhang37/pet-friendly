@@ -1,22 +1,26 @@
-import axios from "axios";
-import dotenv from "dotenv";
-
-dotenv.config();
+import { Pool } from "pg";
+import { PostgresUsersRepo } from "../../../users/src/interfaces/repo";
+import { UsersService } from "../../../users/src/business/service";
+import { GoogleAuthService } from "../../../users/src/business/google-auth";
 
 export interface UsersClient {
   getUsername(userId: string): Promise<string>;
 }
 
 export class UsersClient implements UsersClient {
-  private readonly baseUrl: string;
+  private readonly usersService: UsersService;
 
-  constructor() {
-    this.baseUrl =
-      process.env.USERS_SERVICE_URL || `http://${process.env.TEST_HOST}:3000`;
+  constructor(pool: Pool) {
+    const googleAuthService = new GoogleAuthService();
+    const usersRepo = new PostgresUsersRepo(pool);
+    this.usersService = new UsersService(usersRepo, googleAuthService);
   }
 
   async getUsername(userId: string): Promise<string> {
-    const response = await axios.get(`${this.baseUrl}/api/v0/users/${userId}`);
-    return response.data.username;
+    const userResult = await this.usersService.getById(userId);
+    if (!userResult.user) {
+      throw new Error(`User with id ${userId} not found`);
+    }
+    return userResult.user.username;
   }
 }
