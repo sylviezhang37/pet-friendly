@@ -1,5 +1,3 @@
-SET search_path TO places;
-
 CREATE TABLE IF NOT EXISTS places (
     id VARCHAR(255) PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
