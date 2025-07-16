@@ -37,7 +37,6 @@ class PlacesDataSeeder:
             all_places.extend(places)
             all_reviews.extend(reviews)
 
-            # Rate limiting between different queries
             if i < len(query_configs):
                 logger.info("Waiting before next query...")
                 time.sleep(5)

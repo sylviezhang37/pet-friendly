@@ -11,8 +11,14 @@ class LocationRectangle(TypedDict):
     high: LocationPoint
 
 
-class LocationBias(TypedDict):
+class LocationCircle(TypedDict):
+    center: LocationPoint
+    radius: float
+
+
+class LocationBias(TypedDict, total=False):
     rectangle: LocationRectangle
+    circle: LocationCircle
 
 
 class QueryConfig(TypedDict, total=False):

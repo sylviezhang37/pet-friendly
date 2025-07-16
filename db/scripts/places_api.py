@@ -35,7 +35,6 @@ class PlacesAPI:
     def fetch_places_paginated(
         self, query_config: QueryConfig
     ) -> Tuple[List[Dict], List[Dict]]:
-        """Fetch all places for a given query with pagination support"""
         all_places = []
         all_reviews = []
         next_page_token = None
