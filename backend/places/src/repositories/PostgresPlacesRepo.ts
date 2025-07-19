@@ -20,6 +20,7 @@ export class PostgresPlacesRepo implements PlacesRepo {
         ST_SetSRID(ST_MakePoint($1, $2), 4326),
         $3
       )
+      AND allows_pet IS TRUE OR pet_friendly IS TRUE
     `;
     const result = await this.dbConnection.query(query, [
       coordinates.lng,

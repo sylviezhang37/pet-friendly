@@ -110,9 +110,9 @@ class PlacesAPI:
         return all_places, all_reviews
 
     def _extract_place_data(self, place: Dict) -> Dict:
-        """Extract and normalize place data"""
+        google_id = place.get("id")
         return {
-            "id": place.get("id"),
+            "id": google_id,
             "name": place.get("displayName", {}).get("text"),
             "address": place.get("formattedAddress"),
             "latitude": place.get("location", {}).get("latitude"),
@@ -120,7 +120,7 @@ class PlacesAPI:
             "business_type": self._get_primary_business_type(
                 place.get("types", [])
             ),
-            "google_maps_url": place.get("googleMapsUri"),
+            "google_maps_url": f"https://www.google.com/maps/place/?q=place_id:{google_id}",
             "allows_pet": place.get("allowsDogs", False),
             "pet_friendly": place.get("allowsDogs", False),
             "num_confirm": 0,

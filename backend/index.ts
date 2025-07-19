@@ -10,13 +10,17 @@ import createUsersRouter from "./users/src";
 
 dotenv.config();
 
-// Shared database pool
+console.log("host:", process.env.DB_HOST);
+
 const pool = new Pool({
   user: process.env.DB_USER ?? process.env.TEST_DB_USER,
   host: process.env.DB_HOST ?? process.env.TEST_DB_HOST,
   database: process.env.DB_NAME ?? process.env.TEST_DB_NAME,
   password: process.env.DB_PASSWORD ?? process.env.TEST_DB_PASSWORD,
-  port: parseInt(process.env.DB_PORT ?? process.env.TEST_DB_PORT ?? "5432"),
+  port: parseInt(process.env.DB_PORT ?? "5432"),
+  ssl: {
+    rejectUnauthorized: false,
+  },
 });
 
 const app = express();

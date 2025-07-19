@@ -187,7 +187,10 @@ class DatabaseManager:
                             LIMIT 1
                         ),
                         updated_at = CURRENT_TIMESTAMP,
-                        pet_friendly = (places.num_confirm > 0)
+                        pet_friendly = (
+                            (SELECT COUNT(*) FROM reviews 
+                             WHERE place_id = places.id AND pet_friendly = true) > 0
+                        )
                     WHERE id IN (SELECT DISTINCT place_id FROM reviews)
                 """
                 )

@@ -47,6 +47,10 @@ build/
 *.log
 debug.log
 
+# Test files
+backend/users/src/payload.ts
+backend/places/src/providers/temp.ts
+
 # Virtual Environments
 venv/
 
@@ -60,5 +64,4 @@ docs/brainstorming/
 *.md
 .cursor/
 frontend/notes.md
-backend/users/src/payload.ts
 /db/scripts/__pycache__

@@ -89,11 +89,7 @@ def generate_grid_queries() -> list[QueryConfig]:
 
 def main():
     API_KEY = os.getenv("GOOGLE_MAPS_API_KEY")
-    DB_CONNECTION = os.getenv(
-        "DATABASE_URL",
-        # "postgresql://postgres:password@localhost:5432/petfriendly",
-        "postgresql://sylvie@localhost:5432/pf_test_db",
-    )
+    DB_CONNECTION = os.getenv("DATABASE_URL")
 
     if not API_KEY:
         raise ValueError(
