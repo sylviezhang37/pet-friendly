@@ -1,6 +1,43 @@
 import time
 import re
 
+PET_RELATED_PHRASES = {
+    "pet-friendly",
+    "pet friendly",
+    "bring your dog",
+    "dog menu",
+    "pup cup",
+}
+PET_RELATED_WORDS = {
+    "dog",
+    "dogs",
+    "puppy",
+    "pup",
+    "canine",
+    "cat",
+    "cats",
+    "kitten",
+    "feline",
+    "pet",
+    "pets",
+    "animal",
+    "animals",
+    "leash",
+}
+EXCLUSION_KEYWORDS = {"hot dog", "Dog"}
+NEGATIVE_PHRASES = {
+    "not pet friendly",
+    "no pets",
+    "no dogs",
+    "pets not allowed",
+    "don't allow pets",
+    "pets aren't allowed",
+    "not allowed",
+    "refused",
+    "kicked out",
+    "asked to leave",
+}
+
 
 def clean_username(author_name: str) -> str:
     if not author_name:
@@ -15,60 +52,33 @@ def clean_username(author_name: str) -> str:
     return username[:25]
 
 
-def determine_pet_friendly_sentiment(text: str) -> bool:
-    if not text:
-        return True
-
-    text_lower = text.lower()
-
-    negative_phrases = [
-        "not pet friendly",
-        "no pets",
-        "no dogs",
-        "pets not allowed",
-        "don't allow pets",
-        "pets aren't allowed",
-        "not allowed",
-        "refused",
-        "kicked out",
-        "asked to leave",
-    ]
-
-    if any(phrase in text_lower for phrase in negative_phrases):
+def is_pet_friendly(text: str) -> bool:
+    if not text or any(phrase in text.lower() for phrase in NEGATIVE_PHRASES):
         return False
-
-    if is_pet_related(text):
-        return True
-
     return True
 
 
 def is_pet_related(text: str) -> bool:
-    """Check if review text contains pet-related keywords"""
     if not text:
         return False
 
-    pet_keywords = {
-        "dog",
-        "dogs",
-        "puppy",
-        "pup",
-        "canine",
-        "cat",
-        "cats",
-        "kitten",
-        "feline",
-        "pet",
-        "pets",
-        "animal",
-        "animals",
-        "leash",
-        "pet-friendly",
-        "pet friendly",
-        "bring your dog",
-        "dog menu",
-        "pup cup",
-    }
+    # First check exclusions
+    if contains_exclusion_keywords(text):
+        return False
 
     text_lower = text.lower()
-    return any(keyword in text_lower for keyword in pet_keywords)
+    return contains_pet_phrases(text_lower) or contains_pet_words(text_lower)
+
+
+def contains_exclusion_keywords(text: str) -> bool:
+    return any(keyword in text for keyword in EXCLUSION_KEYWORDS)
+
+
+def contains_pet_phrases(text: str) -> bool:
+    return any(phrase in text for phrase in PET_RELATED_PHRASES)
+
+
+def contains_pet_words(text: str) -> bool:
+    # Split on whitespace and remove punctuation for better word matching
+    words = re.findall(r"\b\w+\b", text.lower())
+    return any(word in PET_RELATED_WORDS for word in words)

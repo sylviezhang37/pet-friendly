@@ -47,6 +47,9 @@ build/
 *.log
 debug.log
 
+# Virtual Environments
+venv/
+
 # Other
 .env.local
 .env.*.local
@@ -58,3 +61,4 @@ docs/brainstorming/
 .cursor/
 frontend/notes.md
 backend/users/src/payload.ts
+/db/scripts/__pycache__

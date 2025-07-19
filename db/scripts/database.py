@@ -37,18 +37,10 @@ class DatabaseManager:
             places_df = pd.DataFrame(places)
             reviews_df = pd.DataFrame(reviews)
 
-            # Insert users first
-            if not reviews_df.empty:
-                self._insert_users(reviews_df)
-
-            # Insert places
-            if not places_df.empty:
-                self._insert_places(places_df)
-
-            # Insert reviews
-            if not reviews_df.empty:
-                self._insert_reviews(reviews_df)
-                self._update_place_confirmation_counts()
+            self._insert_users_from_reviews(reviews_df)
+            self._insert_places(places_df)
+            self._insert_reviews(reviews_df)
+            self._update_place_confirmation_counts()
 
             logger.info("Data insertion completed successfully")
 
@@ -56,7 +48,10 @@ class DatabaseManager:
             logger.error("Error inserting data to database: %s", str(e))
             raise
 
-    def _insert_users(self, reviews_df: pd.DataFrame):
+    def _insert_users_from_reviews(self, reviews_df: pd.DataFrame):
+        if reviews_df.empty:
+            return
+
         users_df = reviews_df[["username", "email"]].drop_duplicates()
         users_df["google_id"] = users_df["email"]
 
@@ -82,7 +77,9 @@ class DatabaseManager:
             conn.commit()
 
     def _insert_places(self, places_df: pd.DataFrame):
-        """Insert places into database"""
+        if places_df.empty:
+            return
+
         logger.info("Inserting %s places into database", len(places_df))
 
         with self.engine.connect() as conn:
@@ -126,49 +123,48 @@ class DatabaseManager:
             conn.commit()
 
     def _insert_reviews(self, reviews_df: pd.DataFrame):
-        if not reviews_df.empty:
-            logger.info(
-                "Inserting %s pet-related reviews into database",
-                len(reviews_df),
-            )
+        if reviews_df.empty:
+            return
 
-            with self.engine.connect() as conn:
+        logger.info(
+            "Inserting %s pet-related reviews into database",
+            len(reviews_df),
+        )
 
-                for _, review in reviews_df.iterrows():
-                    # Get user_id from username
-                    user_result = conn.execute(
+        with self.engine.connect() as conn:
+
+            for _, review in reviews_df.iterrows():
+                # Get user_id from username
+                user_result = conn.execute(
+                    text(
+                        """SELECT id FROM users WHERE username = :username LIMIT 1"""
+                    ),
+                    {"username": review["username"]},
+                )
+
+                user_row = user_result.fetchone()
+                if user_row:
+                    user_id = user_row[0]
+
+                    conn.execute(
                         text(
                             """
-                            SELECT id FROM users WHERE username = :username LIMIT 1
+                            INSERT INTO reviews 
+                            (place_id, user_id, username, pet_friendly, comment)
+                            VALUES (:place_id, :user_id, :username, :pet_friendly, :comment)
                         """
                         ),
-                        {"username": review["username"]},
+                        {
+                            "place_id": review["place_id"],
+                            "user_id": user_id,
+                            "username": review["username"],
+                            "pet_friendly": review["pet_friendly"],
+                            "comment": review["comment"],
+                        },
                     )
-
-                    user_row = user_result.fetchone()
-                    if user_row:
-                        user_id = user_row[0]
-
-                        conn.execute(
-                            text(
-                                """
-                                INSERT INTO reviews 
-                                (place_id, user_id, username, pet_friendly, comment)
-                                VALUES (:place_id, :user_id, :username, :pet_friendly, :comment)
-                            """
-                            ),
-                            {
-                                "place_id": review["place_id"],
-                                "user_id": user_id,
-                                "username": review["username"],
-                                "pet_friendly": review["pet_friendly"],
-                                "comment": review["comment"],
-                            },
-                        )
-                conn.commit()
+            conn.commit()
 
     def _update_place_confirmation_counts(self):
-        """Update num_confirm and num_deny counts for places based on reviews"""
         with self.engine.connect() as conn:
             conn.execute(
                 text(
@@ -190,7 +186,8 @@ class DatabaseManager:
                             ORDER BY created_at DESC 
                             LIMIT 1
                         ),
-                        updated_at = CURRENT_TIMESTAMP
+                        updated_at = CURRENT_TIMESTAMP,
+                        pet_friendly = (places.num_confirm > 0)
                     WHERE id IN (SELECT DISTINCT place_id FROM reviews)
                 """
                 )

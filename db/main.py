@@ -103,7 +103,6 @@ def main():
     query_configs = generate_grid_queries()
 
     seeder = PlacesDataSeeder(API_KEY, DB_CONNECTION)
-
     seeder.database.verify_extensions()
 
     try:

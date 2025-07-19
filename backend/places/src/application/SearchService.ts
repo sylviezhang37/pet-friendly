@@ -25,27 +25,19 @@ export class SearchService {
       lng: input.lng,
     };
 
-    // TODO: figure out how to sort by best match
     // first search in our database
     let foundPlaces: Place[] = await this.placeRepository.search(
       input.query,
       coordinates
     );
 
-    if (foundPlaces.length === 0) {
+    // only save a google-returned place if user selects it (in client)
+    if (foundPlaces.length <= 2) {
       const googlePlaces = await this.placesProvider.searchPlaces(
         input.query,
         coordinates
       );
       foundPlaces.push(...googlePlaces);
-
-      // save new places to our database
-      // for (const place of googlePlaces) {
-      //   if (!places.some((p) => p.id === place.id)) {
-      //     const savedPlace = await this.placeRepository.save(place);
-      //     places.push(savedPlace);
-      //   }
-      // }
     }
 
     return { places: foundPlaces };

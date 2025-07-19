@@ -37,6 +37,9 @@ class PlacesDataSeeder:
             all_places.extend(places)
             all_reviews.extend(reviews)
 
+            print("breaking...!")
+            break
+
             if i < len(query_configs):
                 logger.info("Waiting before next query...")
                 time.sleep(5)

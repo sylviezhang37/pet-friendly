@@ -9,7 +9,7 @@ import requests
 from .types import QueryConfig
 from .utils import (
     clean_username,
-    determine_pet_friendly_sentiment,
+    is_pet_friendly,
     is_pet_related,
 )
 
@@ -87,12 +87,14 @@ class PlacesAPI:
 
                     if "reviews" in place:
                         for review in place["reviews"]:
-                            review_data = self._extract_review_data(
-                                review, place["id"]
+                            pet_friendly_review = (
+                                self._extract_pet_related_review_data(
+                                    review, place["id"]
+                                )
                             )
 
-                            if review_data["is_pet_related"]:
-                                all_reviews.append(review_data)
+                            if pet_friendly_review:
+                                all_reviews.append(pet_friendly_review)
 
             next_page_token = data.get("nextPageToken")
             if not next_page_token:
@@ -119,30 +121,32 @@ class PlacesAPI:
                 place.get("types", [])
             ),
             "google_maps_url": place.get("googleMapsUri"),
-            "allows_pet": place.get("allowsDogs"),
+            "allows_pet": place.get("allowsDogs", False),
             "pet_friendly": place.get("allowsDogs", False),
             "num_confirm": 0,
             "num_deny": 0,
             "last_contribution_type": None,
         }
 
-    def _extract_review_data(self, review: Dict, place_id: str) -> Dict:
-        """Extract and normalize review data"""
+    def _extract_pet_related_review_data(
+        self, review: Dict, place_id: str
+    ) -> Dict | None:
         review_text = review.get("text", {}).get("text", "")
+        if not is_pet_related(review_text):
+            return None
+
         author_name = review.get("authorAttribution", {}).get(
             "displayName", ""
         )
-
         username = clean_username(author_name)
-        email = f"{username}@email.com"
 
         return {
             "place_id": place_id,
             "username": username,
-            "email": email,
-            "pet_friendly": determine_pet_friendly_sentiment(review_text),
+            "email": f"{username}@email.com",
+            "pet_friendly": is_pet_friendly(review_text),
             "comment": review_text,
-            "is_pet_related": is_pet_related(review_text),
+            "is_pet_related": True,
             "fetched_at": datetime.now(),
         }
 

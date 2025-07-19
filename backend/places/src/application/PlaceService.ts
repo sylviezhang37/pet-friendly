@@ -26,11 +26,11 @@ export interface PlaceOutput {
   place: Place | null;
 }
 
+// TODO: support filters + pagination
 export interface NearbyPlacesInput {
   lat: number;
   lng: number;
   radius: number;
-  // TODO: support filters
   filters?: {
     businessType?: string;
   };
@@ -55,10 +55,7 @@ export class PlaceService {
   async createOrGetPlace(input: CreatePlaceInput): Promise<PlaceOutput> {
     if (input.id) {
       const place = await this.placeRepository.findById(input.id);
-      if (place) {
-        console.log("placeService create or get found place: ", place);
-        return { place };
-      }
+      if (place) return { place };
     }
 
     const newPlace = new Place({

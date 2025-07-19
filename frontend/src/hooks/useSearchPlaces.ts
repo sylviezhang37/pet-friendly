@@ -25,6 +25,7 @@ export function useSearchPlaces() {
     setIsLoading(true);
     setError(null);
 
+    // TODO: update default coords to center of the map
     try {
       const places = await placesService.searchAndCreatePlace(
         trimmedQuery,
@@ -37,7 +38,7 @@ export function useSearchPlaces() {
     } finally {
       setIsLoading(false);
     }
-  }, [query]); // Only depends on query
+  }, [query]);
 
   const clearResults = useCallback(() => {
     setResults([]);
