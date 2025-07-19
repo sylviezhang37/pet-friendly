@@ -1,6 +1,13 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+let API_URL;
+if (process.env.NEXT_PUBLIC_ENV == "local") {
+  API_URL = process.env.NEXT_PUBLIC_LOCAL_API_URL;
+} else {
+  API_URL = process.env.NEXT_PUBLIC_API_URL;
+}
+
+console.log("API_URL", process.env.ENV, API_URL);
 
 if (!API_URL) {
   throw new Error("API_URL environment variable is not defined.");

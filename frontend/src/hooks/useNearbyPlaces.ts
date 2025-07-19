@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Place } from "@/models/frontend";
 import { placesService } from "@/api/places-service";
 import { Coordinates } from "@/models/backend";
@@ -27,11 +27,7 @@ export function useNearbyPlaces(
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    fetchNearbyPlaces({ lat, lng });
-  }, [lat, lng]);
-
-  async function fetchNearbyPlaces(coordinates: Coordinates): Promise<void> {
+  const fetchNearbyPlaces = useCallback(async (coordinates: Coordinates): Promise<void> => {
     try {
       setIsLoading(true);
       setError(null);
@@ -46,7 +42,11 @@ export function useNearbyPlaces(
     } finally {
       setIsLoading(false);
     }
-  }
+  }, []);
+
+  useEffect(() => {
+    fetchNearbyPlaces({ lat, lng });
+  }, [lat, lng, fetchNearbyPlaces]);
 
   function createPlacesMap(placesData: Place[]): Map<string, Place> {
     return new Map(placesData.map((place) => [place.id, place]));
