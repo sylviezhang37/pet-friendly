@@ -1,6 +1,7 @@
 import { useRef } from "react";
 
 interface UseTouchHandlerProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onClick: (event?: any) => void;
 }
 
@@ -12,7 +13,7 @@ export const useTouchHandler = ({ onClick }: UseTouchHandlerProps) => {
     e.preventDefault();
     // Immediate visual feedback
     const target = e.currentTarget as HTMLElement;
-    target.style.transform = 'scale(0.95)';
+    target.style.transform = "scale(0.95)";
   };
 
   const handleTouchEnd = (e: React.TouchEvent) => {
@@ -20,9 +21,10 @@ export const useTouchHandler = ({ onClick }: UseTouchHandlerProps) => {
       e.preventDefault();
       e.stopPropagation();
       const target = e.currentTarget as HTMLElement;
-      target.style.transform = '';
+      target.style.transform = "";
       // Trigger click immediately on touch end
       setTimeout(() => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         onClick({} as any);
       }, 0);
       touchStartedRef.current = false;
@@ -40,6 +42,6 @@ export const useTouchHandler = ({ onClick }: UseTouchHandlerProps) => {
   return {
     handleTouchStart,
     handleTouchEnd,
-    handleClick
+    handleClick,
   };
 };
