@@ -1,5 +1,5 @@
 import request from "supertest";
-import app from "../src/index";
+import app from "../reviews/src/index";
 import * as dotenv from "dotenv";
 
 dotenv.config();

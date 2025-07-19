@@ -16,7 +16,8 @@ env.json
 # AWS
 *.pem
 *.key
-server/.aws-sam/
+backend/samconfig.toml
+backend/.aws-sam
 
 # Operating system files
 .DS_Store

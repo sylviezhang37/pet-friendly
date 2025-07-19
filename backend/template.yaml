@@ -4,7 +4,7 @@ Description: PetFriendly Backend API
 
 Globals:
   Function:
-    Runtime: nodejs18.x
+    Runtime: nodejs20.x
     Timeout: 30
     MemorySize: 256
     Environment:
@@ -52,7 +52,7 @@ Resources:
   PlacesFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: dist/
+      CodeUri: .
       Handler: places-lambda.handler
       Events:
         PlacesApi:
@@ -65,7 +65,7 @@ Resources:
   ReviewsFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: dist/
+      CodeUri: .
       Handler: reviews-lambda.handler
       MemorySize: 128
       Events:
@@ -79,7 +79,7 @@ Resources:
   UsersFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: dist/
+      CodeUri: .
       Handler: users-lambda.handler
       MemorySize: 128
       Events:
