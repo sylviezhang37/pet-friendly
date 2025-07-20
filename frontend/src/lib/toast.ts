@@ -3,7 +3,11 @@ import { UseToastOptions } from "@chakra-ui/react";
 const defaultToastOptions: Partial<UseToastOptions> = {
   duration: 2000,
   isClosable: true,
-  colorScheme: "brand.accent",
+  variant: "subtle",
+  containerStyle: {
+    borderRadius: "md",
+    boxShadow: "md",
+  },
 };
 
 export const toastConfig = {

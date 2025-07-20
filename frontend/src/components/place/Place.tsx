@@ -19,7 +19,6 @@ import UsernameSelection from "../user/UsernameEntry";
 
 export default function PlacePanel({ place }: { place: Place }) {
   const [isLoading, setIsLoading] = useState(true);
-  const [reviewsDelayLoading, setReviewsDelayLoading] = useState(true);
 
   const user = useStore((state) => state.user);
   const currentUser = user || GUEST_USER;
@@ -34,6 +33,7 @@ export default function PlacePanel({ place }: { place: Place }) {
     newUserData,
     handleCompleteSignIn,
     handleCloseNewUser,
+    isSigningIn,
   } = useAuthModal();
 
   const handleSignInClick = () => {
@@ -50,19 +50,12 @@ export default function PlacePanel({ place }: { place: Place }) {
   const { updatePlaceStatus } = usePlaceUpdate(place.id);
 
   useEffect(() => {
-    setReviewsDelayLoading(true);
-
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 100);
 
-    const reviewsTimer = setTimeout(() => {
-      setReviewsDelayLoading(false);
-    }, 50);
-
     return () => {
       clearTimeout(timer);
-      clearTimeout(reviewsTimer);
     };
   }, [place.id]);
 
@@ -178,7 +171,7 @@ export default function PlacePanel({ place }: { place: Place }) {
 
       <ReviewsSection
         reviews={reviews}
-        isLoading={reviewsLoading || reviewsDelayLoading}
+        isLoading={reviewsLoading}
         error={reviewsError}
         currentUserId={currentUser.id}
       />
@@ -191,6 +184,7 @@ export default function PlacePanel({ place }: { place: Place }) {
         onGoogleSignIn={handleGoogleSignIn}
         currentUser={currentUser}
         isGuest={!user}
+        isSigningIn={isSigningIn}
       />
 
       {/* username selection for new users */}

@@ -112,6 +112,7 @@ export class UsersService {
     if (!googleUser.sub) {
       throw new Error("Google user ID is required");
     }
+    console.log("Completed verification with google auth service.");
 
     let user: User | null = await this.usersRepo.getByGoogleId(googleUser.sub);
     if (user) return { isNewUser: false, user };

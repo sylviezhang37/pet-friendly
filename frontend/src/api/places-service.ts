@@ -57,7 +57,7 @@ export const placesService = {
     });
 
     const { places, total, petFriendlyCount } = data;
-    console.log(`Received ${total} places (${petFriendlyCount} pet friendly)`);
+    console.log(`Getting ${total} places (${petFriendlyCount} pet friendly)`);
     return places.map((place: BackendPlace) => mapToPlace(place));
   },
 

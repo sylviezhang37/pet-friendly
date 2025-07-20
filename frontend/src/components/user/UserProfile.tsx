@@ -21,6 +21,7 @@ export default function UserProfile({ isMobile }: UserProfileProps) {
     newUserData,
     handleCompleteSignIn,
     handleCloseNewUser,
+    isSigningIn,
   } = useAuthModal();
 
   const currentUser = user || GUEST_USER;
@@ -72,6 +73,7 @@ export default function UserProfile({ isMobile }: UserProfileProps) {
         onGoogleSignIn={handleGoogleSignIn}
         currentUser={currentUser}
         isGuest={isGuest}
+        isSigningIn={isSigningIn}
       />
 
       {/* username selection for new users */}

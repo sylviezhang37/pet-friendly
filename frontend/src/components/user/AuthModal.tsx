@@ -8,6 +8,8 @@ import {
   HStack,
   Text,
   Avatar,
+  Spinner,
+  Box,
 } from "@chakra-ui/react";
 import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
 import { User } from "@/models/frontend";
@@ -20,6 +22,7 @@ interface AuthModalProps {
   onGoogleSignIn: (credentialResponse: CredentialResponse) => void;
   currentUser: User;
   isGuest: boolean;
+  isSigningIn?: boolean;
 }
 
 export default function AuthModal({
@@ -29,6 +32,7 @@ export default function AuthModal({
   onGoogleSignIn,
   currentUser,
   isGuest,
+  isSigningIn = false,
 }: AuthModalProps) {
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
@@ -72,14 +76,21 @@ export default function AuthModal({
             textColor="brand.primary"
           />
           {isGuest ? (
-            <GoogleLogin
-              onSuccess={onGoogleSignIn}
-              onError={() => console.log("Login Failed")}
-              theme="outline"
-              size="large"
-              text="signin_with"
-              shape="rectangular"
-            />
+            isSigningIn ? (
+              <Box display="flex" alignItems="center" gap={2} p={3}>
+                <Spinner size="sm" color="brand.primary" />
+                <Text color="brand.text">Signing in...</Text>
+              </Box>
+            ) : (
+              <GoogleLogin
+                onSuccess={onGoogleSignIn}
+                onError={() => console.log("Login Failed")}
+                theme="outline"
+                size="large"
+                text="signin_with"
+                shape="rectangular"
+              />
+            )
           ) : (
             <ActionButton
               text="Sign Out"

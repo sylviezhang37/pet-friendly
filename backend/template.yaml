@@ -15,6 +15,7 @@ Globals:
         DB_PASSWORD: !Ref DBPassword
         DB_PORT: !Ref DBPort
         GOOGLE_MAPS_API_KEY: !Ref GoogleMapsApiKey
+        GOOGLE_CLIENT_ID: !Ref GoogleClientId
 
 Parameters:
   DBUser:
@@ -37,6 +38,10 @@ Parameters:
   GoogleMapsApiKey:
     Type: String
     Description: Google Maps API Key
+    NoEcho: true
+  GoogleClientId:
+    Type: String
+    Description: Google OAuth Client ID
     NoEcho: true
 
 Resources:
@@ -75,12 +80,6 @@ Resources:
     Properties:
       CodeUri: .
       Handler: dist/places-lambda.handler
-      VpcConfig:
-        SecurityGroupIds:
-          - !Ref LambdaSecurityGroup
-        SubnetIds:
-          - subnet-0035003799b774217
-          - subnet-078c8954810e6a0ba
       Events:
         PlacesApi:
           Type: Api
@@ -115,12 +114,6 @@ Resources:
       CodeUri: .
       Handler: dist/users-lambda.handler
       MemorySize: 128
-      VpcConfig:
-        SecurityGroupIds:
-          - !Ref LambdaSecurityGroup
-        SubnetIds:
-          - subnet-0035003799b774217
-          - subnet-078c8954810e6a0ba
       Events:
         AuthApi:
           Type: Api
