@@ -47,7 +47,6 @@ export function Reviews({
       </Box>
     );
   }
-  console.log("current user: ", currentUserId, typeof currentUserId);
 
   return (
     <VStack align="stretch" spacing={3}>

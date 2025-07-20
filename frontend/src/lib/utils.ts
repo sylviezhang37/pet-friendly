@@ -32,3 +32,7 @@ export const generateRandomUsername = () => {
 export const isValidUsername = (username: string) => {
   return 5 <= username.length && username.length <= 20;
 };
+
+export const cleanBusinessType = (type: string) => {
+  return type.split("_").join(" ");
+};

@@ -33,11 +33,16 @@ export class SearchService {
 
     // only save a google-returned place if user selects it (in client)
     if (foundPlaces.length <= 2) {
-      const googlePlaces = await this.placesProvider.searchPlaces(
+      const googlePlaces: Place[] = await this.placesProvider.searchPlaces(
         input.query,
         coordinates
       );
-      foundPlaces.push(...googlePlaces);
+
+      const foundPlaceIds = new Set(foundPlaces.map((place) => place.id));
+      const newGooglePlaces = googlePlaces.filter(
+        (place) => !foundPlaceIds.has(place.id)
+      );
+      foundPlaces.push(...newGooglePlaces);
     }
 
     return { places: foundPlaces };

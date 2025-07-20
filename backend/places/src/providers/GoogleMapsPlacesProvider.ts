@@ -92,7 +92,7 @@ export class GoogleMapsPlacesProvider implements PlacesProvider {
               radius: 5000, // 5km
             },
           },
-          maxResultCount: 7,
+          maxResultCount: 5,
           rankPreference: "RELEVANCE",
         },
         { headers: this.headers }

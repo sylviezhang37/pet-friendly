@@ -12,9 +12,10 @@ import { ReviewsSection } from "./Reviews";
 import { ReviewSubmission } from "./ReviewSubmission";
 import { ActionButton } from "@/components/common/ActionButton";
 import { useAuthModal } from "@/hooks/useAuthModal";
+import { cleanBusinessType } from "@/lib/utils";
+import { PetIcon } from "../common/PetIcon";
 import AuthModal from "../user/AuthModal";
 import UsernameSelection from "../user/UsernameEntry";
-import { PetIcon } from "../common/PetIcon";
 
 export default function PlacePanel({ place }: { place: Place }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -98,7 +99,7 @@ export default function PlacePanel({ place }: { place: Place }) {
           px={2}
           py={1}
         >
-          {place.type}
+          {cleanBusinessType(place.type)}
         </Text>
       )}
       <Heading size="lg" mt={2} mb={2}>
@@ -117,16 +118,20 @@ export default function PlacePanel({ place }: { place: Place }) {
         py={1}
         display="inline-block"
       >
-        Last updated on{" "}
-        {(reviewSubmission.submitted && reviewSubmission.userReview
-          ? new Date()
-          : place.updatedAt
-        ).toLocaleDateString()}
+        {place.allowsPet
+          ? "Confirmed Pet-Friendly by Establishment"
+          : `Last updated on ${(reviewSubmission.submitted &&
+            reviewSubmission.userReview
+              ? new Date()
+              : place.updatedAt
+            ).toLocaleDateString()}`}
       </Text>
 
       <HStack spacing={4} mb={4} mt={2}>
         <HStack spacing={4}>
-          <Text>Pet Friendly? </Text>
+          <Text fontSize="sm">
+            {place.allowsPet ? "Review Summary " : "Pet Friendly? "}
+          </Text>
           <HStack>
             <PetIcon isPetFriendly={true} />
             <Text>{reviews.filter((r) => r.petFriendly).length} </Text>
