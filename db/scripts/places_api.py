@@ -3,7 +3,6 @@ from typing import List, Dict, Tuple
 import os
 import json
 import time
-import logging
 import requests
 
 from .types import QueryConfig
@@ -13,7 +12,7 @@ from .utils import (
     is_pet_related,
 )
 
-logger = logging.getLogger(__name__)
+from ..utils.logger import logger
 
 
 class PlacesAPI:
@@ -48,7 +47,8 @@ class PlacesAPI:
         while True:
             if self.use_test_data:
                 with open(
-                    os.path.join(os.path.dirname(__file__), "test.json"), "r"
+                    os.path.join(os.path.dirname(__file__), "utils/test.json"),
+                    "r",
                 ) as f:
                     data = json.load(f)
             else:

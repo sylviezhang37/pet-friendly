@@ -1,9 +1,8 @@
-import logging
 from typing import List, Dict
 import pandas as pd
 from sqlalchemy import create_engine, text
 
-logger = logging.getLogger(__name__)
+from ..utils.logger import logger
 
 
 class DatabaseManager:

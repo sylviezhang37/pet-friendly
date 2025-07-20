@@ -1,12 +1,10 @@
 import time
-import logging
 from typing import List
 
 from .types import QueryConfig
 from .places_api import PlacesAPI
 from .database import DatabaseManager
-
-logger = logging.getLogger(__name__)
+from ..utils.logger import logger
 
 
 class PlacesDataSeeder:
@@ -23,7 +21,7 @@ class PlacesDataSeeder:
         all_places = []
         all_reviews = []
 
-        for i, query_config in enumerate(query_configs, 1):
+        for i, query_config in enumerate(query_configs, 2):
             logger.info(
                 "Processing query %s/%s: %s",
                 i,
@@ -36,9 +34,6 @@ class PlacesDataSeeder:
             )
             all_places.extend(places)
             all_reviews.extend(reviews)
-
-            print("breaking...!")
-            break
 
             if i < len(query_configs):
                 logger.info("Waiting before next query...")

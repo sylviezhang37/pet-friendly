@@ -1,59 +1,16 @@
 import os
-import logging
 from dotenv import load_dotenv
 from scripts.seeder import PlacesDataSeeder
 from scripts.types import QueryConfig
+from db.utils.constants import *
+from db.utils.logger import logger
 
 load_dotenv()
 
-logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
-)
-logger = logging.getLogger(__name__)
-
 
 def generate_grid_queries() -> list[QueryConfig]:
-    boroughs = {
-        "Manhattan": {
-            "bounds": {
-                "north": 40.8176,
-                "south": 40.7009,
-                "east": -73.9442,
-                "west": -74.0479,
-            },
-            "grid_size": 0.035,
-        },
-        # "Brooklyn": {
-        #     "bounds": {
-        #         "north": 40.7394,
-        #         "south": 40.5755,
-        #         "east": -73.8336,
-        #         "west": -74.0421,
-        #     },
-        #     "grid_size": 0.05
-        # },
-        # "Queens": {
-        #     "bounds": {
-        #         "north": 40.7958,
-        #         "south": 40.5434,
-        #         "east": -73.7004,
-        #         "west": -73.9626,
-        #     },
-        #     "grid_size": 0.05
-        # },
-        # "Bronx": {
-        #     "bounds": {
-        #         "north": 40.9176,
-        #         "south": 40.7854,
-        #         "east": -73.7654,
-        #         "west": -73.9339,
-        #     },
-        #     "grid_size": 0.05
-        # },
-    }
-
     queries = []
-    radius = 1500.0
+    boroughs = BOROUGHS
     place_types = ["restaurant", "bar", "cafe"]
 
     for borough, data in boroughs.items():
@@ -76,7 +33,7 @@ def generate_grid_queries() -> list[QueryConfig]:
                                         "latitude": lat,
                                         "longitude": lng,
                                     },
-                                    "radius": radius,
+                                    "radius": 1000,
                                 }
                             },
                         }
@@ -103,13 +60,9 @@ def main():
 
     try:
         total_places, total_reviews = seeder.run_query_batch(query_configs)
-        logger.info(
-            "Seeding completed. Total: %s places, %s reviews",
-            total_places,
-            total_reviews,
-        )
+        logger.info(f"Seeded: {total_places} places, {total_reviews} reviews")
     except Exception as e:
-        logger.error("Seeding failed: %s", str(e))
+        logger.error(f"Seeding failed: {str(e)}")
         raise
 
 

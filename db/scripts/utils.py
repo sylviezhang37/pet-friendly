@@ -1,42 +1,6 @@
 import time
 import re
-
-PET_RELATED_PHRASES = {
-    "pet-friendly",
-    "pet friendly",
-    "bring your dog",
-    "dog menu",
-    "pup cup",
-}
-PET_RELATED_WORDS = {
-    "dog",
-    "dogs",
-    "puppy",
-    "pup",
-    "canine",
-    "cat",
-    "cats",
-    "kitten",
-    "feline",
-    "pet",
-    "pets",
-    "animal",
-    "animals",
-    "leash",
-}
-EXCLUSION_KEYWORDS = {"hot dog", "Dog"}
-NEGATIVE_PHRASES = {
-    "not pet friendly",
-    "no pets",
-    "no dogs",
-    "pets not allowed",
-    "don't allow pets",
-    "pets aren't allowed",
-    "not allowed",
-    "refused",
-    "kicked out",
-    "asked to leave",
-}
+from db.utils.constants import *
 
 
 def clean_username(author_name: str) -> str:
@@ -59,11 +23,7 @@ def is_pet_friendly(text: str) -> bool:
 
 
 def is_pet_related(text: str) -> bool:
-    if not text:
-        return False
-
-    # First check exclusions
-    if contains_exclusion_keywords(text):
+    if not text or contains_exclusion_keywords(text):
         return False
 
     text_lower = text.lower()
