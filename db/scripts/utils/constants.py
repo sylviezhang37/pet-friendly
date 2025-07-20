@@ -39,6 +39,8 @@ BOROUGHS = {
 PET_RELATED_PHRASES = {
     "pet-friendly",
     "pet friendly",
+    "dog friendly",
+    "dog-friendly",
     "bring your dog",
     "dog menu",
     "pup cup",
@@ -55,7 +57,6 @@ PET_RELATED_WORDS = {
     "feline",
     "pet",
     "pets",
-    "animal",
     "animals",
     "leash",
 }

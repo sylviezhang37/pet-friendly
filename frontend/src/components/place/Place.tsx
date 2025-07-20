@@ -19,6 +19,7 @@ import UsernameSelection from "../user/UsernameEntry";
 
 export default function PlacePanel({ place }: { place: Place }) {
   const [isLoading, setIsLoading] = useState(true);
+  const [reviewsDelayLoading, setReviewsDelayLoading] = useState(true);
 
   const user = useStore((state) => state.user);
   const currentUser = user || GUEST_USER;
@@ -49,11 +50,20 @@ export default function PlacePanel({ place }: { place: Place }) {
   const { updatePlaceStatus } = usePlaceUpdate(place.id);
 
   useEffect(() => {
+    setReviewsDelayLoading(true);
+
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 100);
 
-    return () => clearTimeout(timer);
+    const reviewsTimer = setTimeout(() => {
+      setReviewsDelayLoading(false);
+    }, 50);
+
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(reviewsTimer);
+    };
   }, [place.id]);
 
   async function handleReviewSubmit(review: Review, isPetFriendly: boolean) {
@@ -168,7 +178,7 @@ export default function PlacePanel({ place }: { place: Place }) {
 
       <ReviewsSection
         reviews={reviews}
-        isLoading={reviewsLoading}
+        isLoading={reviewsLoading || reviewsDelayLoading}
         error={reviewsError}
         currentUserId={currentUser.id}
       />

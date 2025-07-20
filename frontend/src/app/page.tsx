@@ -113,7 +113,7 @@ export default function Home() {
         borderBottomRadius={{ base: 0, md: "3xl" }}
         boxShadow="md"
         bg="brand.background"
-        overflowY="auto"
+        overflowY={panelHeight <= PanelHeight.MINIMIZED ? "hidden" : "auto"}
         display="flex"
         flexDirection="column"
         transition={isDragging ? "none" : "height 0.3s ease-out"}
@@ -140,7 +140,7 @@ export default function Home() {
         <Box
           ref={contentRef}
           flex={1}
-          overflowY="auto"
+          overflowY={panelHeight >= PanelHeight.FULL_SCREEN ? "auto" : "hidden"}
           className="hide-scrollbar"
           display={panelHeight <= PanelHeight.MINIMIZED ? "none" : "block"}
         >
