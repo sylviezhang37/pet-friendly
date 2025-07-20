@@ -17,6 +17,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Pet Friendly",
   description: "Find pet friendly places near you.",
+  icons: {
+    icon: '/logo.ico',
+  },
 };
 
 export default function RootLayout({

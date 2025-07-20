@@ -1,3 +1,4 @@
 # PetFriendly
+#### a pet-friendly business discovery platform 
 
-A web app that helps pet owners discover and contribute to a map of pet-friendly businesses and places in their area. The application provides an interactive map interface where users can view, search for, and contribute to maintaining the information of pet-friendly locations.
+Discover and contribute to a visualized database of pet-friendly establishments! Use the interactive map interface to view, search, and contribute to pet-friendly places. 

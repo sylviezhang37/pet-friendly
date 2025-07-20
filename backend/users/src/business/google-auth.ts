@@ -26,8 +26,6 @@ export class GoogleAuthService {
       throw new Error("Invalid token payload");
     }
 
-    // const payload = samplePayload;
-
     return {
       sub: payload.sub,
       email: payload.email!,
