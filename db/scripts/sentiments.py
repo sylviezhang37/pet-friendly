@@ -1,19 +1,11 @@
 import time
 import re
-from db.utils.constants import *
-
-
-def clean_username(author_name: str) -> str:
-    if not author_name:
-        return f"user_{int(time.time())}"
-
-    username = re.sub(r"[^a-zA-Z0-9\s]", "", author_name.lower())
-    username = re.sub(r"\s+", "_", username.strip())
-
-    if not username:
-        username = f"user_{int(time.time())}"
-
-    return username[:25]
+from .utils.constants import (
+    NEGATIVE_PHRASES,
+    EXCLUSION_KEYWORDS,
+    PET_RELATED_WORDS,
+    PET_RELATED_PHRASES,
+)
 
 
 def is_pet_friendly(text: str) -> bool:
@@ -42,3 +34,16 @@ def contains_pet_words(text: str) -> bool:
     # Split on whitespace and remove punctuation for better word matching
     words = re.findall(r"\b\w+\b", text.lower())
     return any(word in PET_RELATED_WORDS for word in words)
+
+
+def clean_username(author_name: str) -> str:
+    if not author_name:
+        return f"user_{int(time.time())}"
+
+    username = re.sub(r"[^a-zA-Z0-9\s]", "", author_name.lower())
+    username = re.sub(r"\s+", "_", username.strip())
+
+    if not username:
+        username = f"user_{int(time.time())}"
+
+    return username[:25]

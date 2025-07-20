@@ -2,8 +2,9 @@ import os
 from dotenv import load_dotenv
 from scripts.seeder import PlacesDataSeeder
 from scripts.types import QueryConfig
-from db.utils.constants import *
-from db.utils.logger import logger
+from scripts.utils.constants import BOROUGHS
+from scripts.utils.logger import logger
+from scripts.sentiments import *
 
 load_dotenv()
 

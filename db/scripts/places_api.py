@@ -1,18 +1,59 @@
-from datetime import datetime
-from typing import List, Dict, Tuple
+from typing import List, Dict, Set, Tuple
 import os
 import json
 import time
 import requests
+from dataclasses import dataclass
 
 from .types import QueryConfig
-from .utils import (
+from .sentiments import (
     clean_username,
     is_pet_friendly,
     is_pet_related,
 )
 
-from ..utils.logger import logger
+from .utils.logger import logger
+
+
+@dataclass(frozen=True)
+class PlaceData:
+    id: str
+    name: str
+    address: str
+    latitude: float
+    longitude: float
+    business_type: str
+    google_maps_url: str
+    allows_pet: bool
+    pet_friendly: bool
+    num_confirm: int
+    num_deny: int
+    last_contribution_type: str
+
+    def __hash__(self):
+        return hash(self.id)
+
+
+@dataclass(frozen=True)
+class UserData:
+    username: str
+    email: str
+
+    def __hash__(self):
+        return hash(self.username)
+
+
+@dataclass(frozen=True)
+class ReviewData:
+    place_id: str
+    username: str
+    email: str
+    pet_friendly: bool
+    comment: str
+    is_pet_related: bool
+
+    def __hash__(self):
+        return hash((self.place_id, self.username))
 
 
 class PlacesAPI:
@@ -33,9 +74,9 @@ class PlacesAPI:
 
     def fetch_places_paginated(
         self, query_config: QueryConfig
-    ) -> Tuple[List[Dict], List[Dict]]:
-        all_places = []
-        all_reviews = []
+    ) -> Tuple[Set[PlaceData], Set[ReviewData]]:
+        all_places = set()
+        all_reviews = set()
         next_page_token = None
         page_count = 0
 
@@ -83,18 +124,18 @@ class PlacesAPI:
             if "places" in data:
                 for place in data["places"]:
                     place_data = self._extract_place_data(place)
-                    all_places.append(place_data)
+                    all_places.add(place_data)
 
                     if "reviews" in place:
                         for review in place["reviews"]:
-                            pet_friendly_review = (
+                            pet_related_review = (
                                 self._extract_pet_related_review_data(
                                     review, place["id"]
                                 )
                             )
 
-                            if pet_friendly_review:
-                                all_reviews.append(pet_friendly_review)
+                            if pet_related_review:
+                                all_reviews.add(pet_related_review)
 
             next_page_token = data.get("nextPageToken")
             if not next_page_token:
@@ -109,28 +150,28 @@ class PlacesAPI:
         )
         return all_places, all_reviews
 
-    def _extract_place_data(self, place: Dict) -> Dict:
+    def _extract_place_data(self, place: Dict) -> PlaceData:
         google_id = place.get("id")
-        return {
-            "id": google_id,
-            "name": place.get("displayName", {}).get("text"),
-            "address": place.get("formattedAddress"),
-            "latitude": place.get("location", {}).get("latitude"),
-            "longitude": place.get("location", {}).get("longitude"),
-            "business_type": self._get_primary_business_type(
+        return PlaceData(
+            id=google_id,
+            name=place.get("displayName", {}).get("text"),
+            address=place.get("formattedAddress"),
+            latitude=place.get("location", {}).get("latitude"),
+            longitude=place.get("location", {}).get("longitude"),
+            business_type=self._get_primary_business_type(
                 place.get("types", [])
             ),
-            "google_maps_url": f"https://www.google.com/maps/place/?q=place_id:{google_id}",
-            "allows_pet": place.get("allowsDogs", False),
-            "pet_friendly": place.get("allowsDogs", False),
-            "num_confirm": 0,
-            "num_deny": 0,
-            "last_contribution_type": None,
-        }
+            google_maps_url=f"https://www.google.com/maps/place/?q=place_id:{google_id}",
+            allows_pet=place.get("allowsDogs", False),
+            pet_friendly=place.get("allowsDogs", False),
+            num_confirm=0,
+            num_deny=0,
+            last_contribution_type=None,
+        )
 
     def _extract_pet_related_review_data(
         self, review: Dict, place_id: str
-    ) -> Dict | None:
+    ) -> ReviewData | None:
         review_text = review.get("text", {}).get("text", "")
         if not is_pet_related(review_text):
             return None
@@ -140,15 +181,14 @@ class PlacesAPI:
         )
         username = clean_username(author_name)
 
-        return {
-            "place_id": place_id,
-            "username": username,
-            "email": f"{username}@email.com",
-            "pet_friendly": is_pet_friendly(review_text),
-            "comment": review_text,
-            "is_pet_related": True,
-            "fetched_at": datetime.now(),
-        }
+        return ReviewData(
+            place_id=place_id,
+            username=username,
+            email=f"{username}@email.com",
+            pet_friendly=is_pet_friendly(review_text),
+            comment=review_text,
+            is_pet_related=True,
+        )
 
     def _get_primary_business_type(self, types: List[str]) -> str:
         return types[0] if types else "establishment"

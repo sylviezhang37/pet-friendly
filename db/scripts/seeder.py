@@ -4,7 +4,7 @@ from typing import List
 from .types import QueryConfig
 from .places_api import PlacesAPI
 from .database import DatabaseManager
-from ..utils.logger import logger
+from .utils.logger import logger
 
 
 class PlacesDataSeeder:
@@ -18,10 +18,10 @@ class PlacesDataSeeder:
         self.database = DatabaseManager(db_connection_string)
 
     def run_query_batch(self, query_configs: List[QueryConfig]):
-        all_places = []
-        all_reviews = []
+        all_places = set()
+        all_reviews = set()
 
-        for i, query_config in enumerate(query_configs, 2):
+        for i, query_config in enumerate(query_configs, 1):
             logger.info(
                 "Processing query %s/%s: %s",
                 i,
@@ -32,11 +32,11 @@ class PlacesDataSeeder:
             places, reviews = self.places_api.fetch_places_paginated(
                 query_config
             )
-            all_places.extend(places)
-            all_reviews.extend(reviews)
+            all_places.update(places)
+            all_reviews.update(reviews)
 
             if i < len(query_configs):
-                logger.info("Waiting before next query...")
+                logger.info("\nWaiting before next query...")
                 time.sleep(5)
 
         self.database.insert_data(all_places, all_reviews)

@@ -45,20 +45,20 @@ class Logger:
     def get_logger(self) -> logging.Logger:
         return self._logger
 
-    def info(self, message: str) -> None:
-        self._logger.info(message)
+    def info(self, message: str, *args) -> None:
+        self._logger.info(message, *args)
 
-    def warning(self, message: str) -> None:
-        self._logger.warning(message)
+    def warning(self, message: str, *args) -> None:
+        self._logger.warning(message, *args)
 
-    def error(self, message: str) -> None:
-        self._logger.error(message)
+    def error(self, message: str, *args) -> None:
+        self._logger.error(message, *args)
 
-    def debug(self, message: str) -> None:
-        self._logger.debug(message)
+    def debug(self, message: str, *args) -> None:
+        self._logger.debug(message, *args)
 
-    def critical(self, message: str) -> None:
-        self._logger.critical(message)
+    def critical(self, message: str, *args) -> None:
+        self._logger.critical(message, *args)
 
 
 logger = Logger()

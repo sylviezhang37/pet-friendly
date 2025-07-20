@@ -1,8 +1,8 @@
-from typing import List, Dict
+from typing import Set
 import pandas as pd
 from sqlalchemy import create_engine, text
-
-from ..utils.logger import logger
+from .utils.logger import logger
+from .places_api import PlaceData, ReviewData
 
 
 class DatabaseManager:
@@ -31,10 +31,10 @@ class DatabaseManager:
 
         logger.info("Database extensions verified")
 
-    def insert_data(self, places: List[Dict], reviews: List[Dict]):
+    def insert_data(self, places: Set[PlaceData], reviews: Set[ReviewData]):
         try:
-            places_df = pd.DataFrame(places)
-            reviews_df = pd.DataFrame(reviews)
+            places_df = pd.DataFrame([place.__dict__ for place in places])
+            reviews_df = pd.DataFrame([review.__dict__ for review in reviews])
 
             self._insert_users_from_reviews(reviews_df)
             self._insert_places(places_df)
@@ -133,7 +133,6 @@ class DatabaseManager:
         with self.engine.connect() as conn:
 
             for _, review in reviews_df.iterrows():
-                # Get user_id from username
                 user_result = conn.execute(
                     text(
                         """SELECT id FROM users WHERE username = :username LIMIT 1"""

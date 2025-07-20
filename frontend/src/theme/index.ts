@@ -7,16 +7,11 @@ const config: ThemeConfig = {
 
 const colors = {
   brand: {
-    // Soft sage green as primary
-    primary: "#87A96B",
-    // Warm cream/sand for backgrounds
-    background: "#F7F3E9",
-    // Coral accent for CTAs and highlights
-    accent: "#FF8A65",
-    // Charcoal gray for text
-    text: "#2D3748",
+    primary: "#87A96B", // Soft sage green as primary
+    background: "#FCFBF7", // Warm cream/sand for backgrounds
+    accent: "#FF8A65", // Coral accent for CTAs and highlights
+    text: "#2D3748", // Charcoal gray for text
   },
-  // Override Chakra's default colors to use our palette
   yellow: {
     50: "#F7F3E9",
     100: "#F0E8D4",
@@ -24,10 +19,6 @@ const colors = {
     300: "#D2BA7E",
     400: "#C3A353",
     500: "#87A96B", // primary sage green
-    600: "#7A9A5F",
-    700: "#6D8B53",
-    800: "#607C47",
-    900: "#536D3B",
   },
   gray: {
     50: "#F7F3E9", // warm cream background
@@ -48,10 +39,6 @@ const colors = {
     300: "#FF8A65", // coral accent
     400: "#FF6B40",
     500: "#FF4C1B",
-    600: "#E63D00",
-    700: "#CC3600",
-    800: "#B32F00",
-    900: "#992800",
   },
   green: {
     50: "#F0F7ED",
@@ -60,10 +47,6 @@ const colors = {
     300: "#A5CF93",
     400: "#87A96B", // primary sage green
     500: "#6B8A55",
-    600: "#5F7A4E",
-    700: "#536A47",
-    800: "#475A40",
-    900: "#3B4A39",
   },
 };
 

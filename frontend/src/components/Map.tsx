@@ -15,10 +15,13 @@ export default function Map({
   center = DEFAULT_CENTER,
   onMarkerClick,
 }: MapProps) {
+  const API_KEY: string =
+    process.env.NEXT_PUBLIC_ENV == "test"
+      ? ""
+      : process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "";
+
   return (
-    <LoadScript
-      googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ""}
-    >
+    <LoadScript googleMapsApiKey={API_KEY}>
       <GoogleMap
         mapContainerStyle={{
           width: "100%",

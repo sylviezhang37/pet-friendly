@@ -12,7 +12,6 @@
     "backend/*"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "concurrently \"npm run backend\" \"npm run frontend\"",
     "start-cloud-local": "concurrently \"PORT=3000 npm run places\" \"PORT=3001 npm run users\" \"PORT=3002 npm run reviews\" \"npm run frontend\"",
     "frontend": "cd frontend && npm run dev",
@@ -20,7 +19,8 @@
     "backend-lambdas": "concurrently \"ts-node backend/places-lambda.ts\" \"ts-node backend/users-lambda.ts\" \"ts-node backend/reviews-lambda.ts\"",
     "places": "ts-node backend/places/src/server.ts",
     "reviews": "ts-node backend/reviews/src/server.ts",
-    "users": "ts-node backend/users/src/server.ts"
+    "users": "ts-node backend/users/src/server.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.2.4",
