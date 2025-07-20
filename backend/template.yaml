@@ -40,6 +40,27 @@ Parameters:
     NoEcho: true
 
 Resources:
+  LambdaSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group for Lambda functions
+      VpcId: vpc-078923b09b6ce579f
+      SecurityGroupEgress:
+        - IpProtocol: "-1"
+          CidrIp: 0.0.0.0/0
+          Description: Allow all outbound traffic
+
+  # Allow Lambda to access RDS
+  RDSSecurityGroupIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: sg-0a0f9b73e75116c6e
+      IpProtocol: tcp
+      FromPort: 5432
+      ToPort: 5432
+      SourceSecurityGroupId: !Ref LambdaSecurityGroup
+      Description: Allow Lambda access to RDS
+
   ApiGateway:
     Type: AWS::Serverless::Api
     Properties:
@@ -53,7 +74,13 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: .
-      Handler: places-lambda.handler
+      Handler: dist/places-lambda.handler
+      VpcConfig:
+        SecurityGroupIds:
+          - !Ref LambdaSecurityGroup
+        SubnetIds:
+          - subnet-0035003799b774217
+          - subnet-078c8954810e6a0ba
       Events:
         PlacesApi:
           Type: Api
@@ -66,8 +93,14 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: .
-      Handler: reviews-lambda.handler
+      Handler: dist/reviews-lambda.handler
       MemorySize: 128
+      VpcConfig:
+        SecurityGroupIds:
+          - !Ref LambdaSecurityGroup
+        SubnetIds:
+          - subnet-0035003799b774217
+          - subnet-078c8954810e6a0ba
       Events:
         ReviewsApi:
           Type: Api
@@ -80,8 +113,14 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: .
-      Handler: users-lambda.handler
+      Handler: dist/users-lambda.handler
       MemorySize: 128
+      VpcConfig:
+        SecurityGroupIds:
+          - !Ref LambdaSecurityGroup
+        SubnetIds:
+          - subnet-0035003799b774217
+          - subnet-078c8954810e6a0ba
       Events:
         AuthApi:
           Type: Api

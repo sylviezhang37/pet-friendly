@@ -12,6 +12,9 @@ const pool = new Pool({
   port: parseInt(process.env.DB_PORT ?? "5432"),
   max: 1,
   idleTimeoutMillis: 30000,
+  ssl: {
+    rejectUnauthorized: false,
+  },
 });
 
 const app = express();
