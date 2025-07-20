@@ -2,6 +2,7 @@
 
 import { Box, Text, Spinner, useBreakpointValue } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Map from "@/components/Map";
 import WelcomePanel from "@/components/Welcome";
 import PlacePanel from "@/components/place/Place";
@@ -11,6 +12,7 @@ import { usePlacesManagement } from "@/hooks/usePlacesManagement";
 import { usePanelDrag } from "@/hooks/usePanelDrag";
 
 export default function Home() {
+  const router = useRouter();
   const isMobile = useBreakpointValue({ base: true, md: false }) ?? true;
   const { places, selectedPlaceId, handlePlaceSelect, handleMarkerClick } =
     usePlacesManagement();
@@ -36,6 +38,16 @@ export default function Home() {
       setDynamicMaxHeight("100vh");
     }
   }, [isMobile, dynamicMaxHeight]);
+
+  useEffect(() => {
+    if (places.size === 0) {
+      const timeout = setTimeout(() => {
+        router.push("/error");
+      }, 10000); // 10 seconds
+
+      return () => clearTimeout(timeout);
+    }
+  }, [places.size, router]);
 
   if (places.size === 0) {
     return (
