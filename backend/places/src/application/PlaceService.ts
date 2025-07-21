@@ -1,16 +1,16 @@
 import { Coordinates } from "../domain/models";
 import { Place } from "../domain/Place";
+import { PlacesProvider } from "../providers/PlacesProvider";
 import { PlacesRepo } from "../repositories/PlacesRepo";
-import { v4 as uuidv4 } from "uuid";
 
 export interface CreatePlaceInput {
   id?: string;
-  name: string;
-  address: string;
-  coordinates: Coordinates;
-  businessType?: string;
-  googleMapsUrl?: string;
-  allowsPet?: boolean | null;
+  // name: string;
+  // address: string;
+  // coordinates: Coordinates;
+  // businessType?: string;
+  // googleMapsUrl?: string;
+  // allowsPet?: boolean | null;
 }
 
 export interface UpdatePlaceInput {
@@ -44,7 +44,10 @@ export interface NearbyPlacesOutput {
 }
 
 export class PlaceService {
-  constructor(private readonly placeRepository: PlacesRepo) {}
+  constructor(
+    private readonly placeRepository: PlacesRepo,
+    private readonly placeProvider: PlacesProvider
+  ) {}
 
   async getPlace(id: string): Promise<PlaceOutput> {
     const place = await this.placeRepository.findById(id);
@@ -53,23 +56,16 @@ export class PlaceService {
   }
 
   async createOrGetPlace(input: CreatePlaceInput): Promise<PlaceOutput> {
+    if (!input.id) {
+      throw Error("Place id is required for createOrGetPlace");
+    }
+
     if (input.id) {
       const place = await this.placeRepository.findById(input.id);
       if (place) return { place };
     }
 
-    const newPlace = new Place({
-      id: input.id || uuidv4(),
-      name: input.name,
-      address: input.address,
-      coordinates: input.coordinates,
-      businessType: input.businessType,
-      googleMapsUrl: input.googleMapsUrl,
-      allowsPet: input.allowsPet,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    });
-
+    const newPlace = await this.placeProvider.getPlaceDetails(input.id);
     const place = await this.placeRepository.save(newPlace);
     return { place };
   }

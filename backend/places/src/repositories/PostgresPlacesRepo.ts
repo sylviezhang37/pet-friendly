@@ -67,7 +67,7 @@ export class PostgresPlacesRepo implements PlacesRepo {
       place.coordinates.lng,
       place.businessType,
       place.googleMapsUrl,
-      place.allowsPet || null,
+      place.allowsPet,
       place.createdAt,
       place.updatedAt,
     ]);

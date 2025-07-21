@@ -87,6 +87,12 @@ Resources:
             RestApiId: !Ref ApiGateway
             Path: /api/v0/places/{proxy+}
             Method: ANY
+        PlacesRootApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGateway
+            Path: /api/v0/places
+            Method: POST
 
   ReviewsFunction:
     Type: AWS::Serverless::Function
@@ -107,6 +113,12 @@ Resources:
             RestApiId: !Ref ApiGateway
             Path: /api/v0/reviews/{proxy+}
             Method: ANY
+        ReviewsRootApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGateway
+            Path: /api/v0/reviews
+            Method: POST
 
   UsersFunction:
     Type: AWS::Serverless::Function

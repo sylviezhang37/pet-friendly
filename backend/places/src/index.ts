@@ -21,7 +21,7 @@ export default function createPlacesRouter(pool: Pool) {
     process.env.GOOGLE_MAPS_API_KEY || ""
   );
 
-  const placeService = new PlaceService(placesRepo);
+  const placeService = new PlaceService(placesRepo, placesProvider);
   const searchService = new SearchService(placesRepo, placesProvider);
 
   // api handler

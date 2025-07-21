@@ -3,26 +3,39 @@ import { Place } from "../domain/Place";
 import { PlacesProvider } from "./PlacesProvider";
 import { Coordinates } from "../domain/models";
 
+const SEARCH_FIELDS = [
+  "places.id",
+  "places.displayName",
+  "places.formattedAddress",
+  "places.location",
+  "places.types",
+];
+
+const DETAILS_FIELDS = [
+  "id",
+  "displayName",
+  "formattedAddress",
+  "location",
+  "types",
+  "allowsDogs",
+];
+
 export class GoogleMapsPlacesProvider implements PlacesProvider {
   private readonly baseUrl = "https://places.googleapis.com/v1";
-  private readonly headers: Record<string, string>;
+  private readonly basicHeaders: Record<string, string>;
+  private readonly advancedHeaders: Record<string, string>;
 
   constructor(private readonly apiKey: string) {
-    this.headers = {
+    this.basicHeaders = {
       "Content-Type": "application/json",
       "X-Goog-Api-Key": this.apiKey,
-      "X-Goog-FieldMask": [
-        "places.id",
-        "places.displayName",
-        "places.formattedAddress",
-        "places.location",
-        "places.types",
-        "places.addressDescriptor",
-        "places.primaryType",
-        "places.primaryTypeDisplayName",
-        "places.rating",
-        "places.googleMapsUri",
-      ].join(","),
+      "X-Goog-FieldMask": SEARCH_FIELDS.join(","),
+    };
+
+    this.advancedHeaders = {
+      "Content-Type": "application/json",
+      "X-Goog-Api-Key": this.apiKey,
+      "X-Goog-FieldMask": DETAILS_FIELDS.join(","),
     };
   }
 
@@ -48,7 +61,7 @@ export class GoogleMapsPlacesProvider implements PlacesProvider {
           maxResultCount: 20,
           rankPreference: "DISTANCE",
         },
-        { headers: this.headers }
+        { headers: this.basicHeaders }
       );
 
       return response.data.places.map((place: any) => this.mapToPlace(place));
@@ -64,7 +77,7 @@ export class GoogleMapsPlacesProvider implements PlacesProvider {
       const placeId = id.startsWith("places/") ? id.split("/")[1] : id;
 
       const response = await axios.get(`${this.baseUrl}/places/${placeId}`, {
-        headers: this.headers,
+        headers: this.advancedHeaders,
       });
 
       return this.mapToPlace(response.data);
@@ -95,7 +108,7 @@ export class GoogleMapsPlacesProvider implements PlacesProvider {
           maxResultCount: 5,
           rankPreference: "RELEVANCE",
         },
-        { headers: this.headers }
+        { headers: this.basicHeaders }
       );
 
       return response.data.places.map((place: any) => this.mapToPlace(place));
@@ -114,9 +127,9 @@ export class GoogleMapsPlacesProvider implements PlacesProvider {
         lat: place.location?.latitude,
         lng: place.location?.longitude,
       },
-      // TODO: need an API upgrade for this field
-      allowsPet: false,
-      businessType: place.primaryTypeDisplayName.text || place.types[0],
+      allowsPet: place.allowsDogs || false,
+      businessType:
+        place.primaryType || place.primaryTypeDisplayName || place.types[0],
       googleMapsUrl:
         place.googleMapsUri ||
         `https://www.google.com/maps/place/?q=place_id:${place.id}`,

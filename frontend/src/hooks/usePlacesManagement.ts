@@ -29,7 +29,7 @@ export function usePlacesManagement() {
       setSelectedPlaceId(place.id);
 
       try {
-        await placesService.createOrGetPlace(place);
+        await placesService.createOrGetPlace(place.id);
       } catch (error) {
         console.error("Failed to save place to DB:", error);
         removePlace(place.id);
@@ -41,8 +41,8 @@ export function usePlacesManagement() {
 
   const handleMarkerClick = useCallback(
     (placeId: string) => {
-      console.log('Marker clicked, placeId:', placeId);
-      console.log('Current selectedPlaceId before:', selectedPlaceId);
+      console.log("Marker clicked, placeId:", placeId);
+      console.log("Current selectedPlaceId before:", selectedPlaceId);
       setSelectedPlaceId(placeId);
     },
     [setSelectedPlaceId, selectedPlaceId]

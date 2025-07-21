@@ -12,12 +12,6 @@ type PlaceResponse = {
   place: BackendPlace;
 };
 
-// type SearchPlaceParams = {
-//   query?: string;
-//   lat: number;
-//   lng: number;
-// };
-
 type NearbyPlacesParams = {
   lat: number;
   lng: number;
@@ -68,10 +62,10 @@ export const placesService = {
     return mapToPlace(place);
   },
 
-  createOrGetPlace: async (place: Place): Promise<Place> => {
+  createOrGetPlace: async (id: string): Promise<Place> => {
     const { place: createdPlace } = await apiClient.post<PlaceResponse>(
       "/api/v0/places",
-      place
+      { id }
     );
     return mapToPlace(createdPlace);
   },

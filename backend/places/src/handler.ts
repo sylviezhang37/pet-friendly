@@ -80,43 +80,8 @@ export class Handler {
 
   public addPlace = async (req: Request, res: Response) => {
     try {
-      const {
-        id,
-        name,
-        address,
-        coordinates,
-        businessType,
-        googleMapsUrl,
-        allowsPet,
-      } = req.body;
-
-      if (!name) {
-        return res.status(400).json({
-          error: "Name is required",
-        });
-      }
-
-      if (!address) {
-        return res.status(400).json({
-          error: "Address is required",
-        });
-      }
-
-      if (!coordinates || !coordinates.lat || !coordinates.lng) {
-        return res.status(400).json({
-          error: "Coordinates are required",
-        });
-      }
-
-      const input: CreatePlaceInput = {
-        id,
-        name,
-        address,
-        coordinates,
-        businessType,
-        googleMapsUrl,
-        allowsPet,
-      };
+      const { id } = req.body;
+      const input: CreatePlaceInput = { id };
 
       const place = await this.placeService.createOrGetPlace(input);
       res.status(201).json(place);
