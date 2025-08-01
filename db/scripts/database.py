@@ -2,7 +2,7 @@ from typing import Set
 import pandas as pd
 from sqlalchemy import create_engine, text
 from .utils.logger import logger
-from .places_api import PlaceData, ReviewData
+from .api.places_api import PlaceData, ReviewData
 
 
 class DatabaseManager:

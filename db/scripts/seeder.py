@@ -2,7 +2,7 @@ import time
 from typing import List
 
 from .types import QueryConfig
-from .places_api import PlacesAPI
+from .api.places_api import PlacesAPI
 from .database import DatabaseManager
 from .utils.logger import logger
 

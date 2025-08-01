@@ -5,11 +5,11 @@ import time
 import requests
 from dataclasses import dataclass
 
-from .types import QueryConfig
-from .utils.helpers import clean_username
-from .text_analyzer import TextAnalyzer
+from ..types import QueryConfig
+from ..utils.text_utils import clean_username
+from ..ai.text_analyzer import TextAnalyzer
 
-from .utils.logger import logger
+from ..utils.logger import logger
 
 
 @dataclass(frozen=True)
@@ -86,7 +86,9 @@ class PlacesAPI:
         while True:
             if self.use_test_data:
                 with open(
-                    os.path.join(os.path.dirname(__file__), "utils/test.json"),
+                    os.path.join(
+                        os.path.dirname(__file__), "../tests/sample.json"
+                    ),
                     "r",
                 ) as f:
                     data = json.load(f)
