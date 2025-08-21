@@ -137,7 +137,7 @@ class PlacesAPI:
                             if pet_related_review:
                                 all_reviews.add(pet_related_review)
                                 # Break after first pet-related review for testing
-                                return all_places, all_reviews
+                                # return all_places, all_reviews
 
             next_page_token = data.get("nextPageToken")
             if not next_page_token:

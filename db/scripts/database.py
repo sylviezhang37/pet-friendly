@@ -65,7 +65,7 @@ class DatabaseManager:
                         INSERT INTO users (username, email, google_id)
                         VALUES (:username, :email, :google_id)
                         ON CONFLICT (username) DO NOTHING
-                    """
+                        """
                     ),
                     {
                         "username": user["username"],
@@ -103,7 +103,7 @@ class DatabaseManager:
                             allows_pet = EXCLUDED.allows_pet,
                             pet_friendly = EXCLUDED.pet_friendly,
                             updated_at = CURRENT_TIMESTAMP
-                    """
+                        """
                     ),
                     {
                         "id": place["id"],
@@ -150,7 +150,8 @@ class DatabaseManager:
                             INSERT INTO reviews 
                             (place_id, user_id, username, pet_friendly, comment)
                             VALUES (:place_id, :user_id, :username, :pet_friendly, :comment)
-                        """
+                            ON CONFLICT (place_id, user_id) DO NOTHING
+                            """
                         ),
                         {
                             "place_id": review["place_id"],

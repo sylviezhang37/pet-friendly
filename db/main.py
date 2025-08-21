@@ -8,9 +8,7 @@ from scripts.utils.logger import logger
 load_dotenv()
 
 
-def generate_grid_queries(
-    offset: int = 0, limit: int = None
-) -> list[QueryConfig]:
+def generate_grid_queries() -> list[QueryConfig]:
     queries = []
     boroughs = BOROUGHS
     place_types = ["restaurant", "bar", "cafe"]
@@ -43,11 +41,6 @@ def generate_grid_queries(
                 lng += grid_size
             lat += grid_size
 
-    if offset > 0:
-        queries = queries[offset:]
-    if limit is not None:
-        queries = queries[:limit]
-
     return queries
 
 
@@ -60,7 +53,7 @@ def main():
             "GOOGLE_MAPS_API_KEY environment variable is required"
         )
 
-    query_configs = generate_grid_queries(offset=1, limit=1)
+    query_configs = generate_grid_queries()
 
     seeder = PlacesDataSeeder(API_KEY, DB_CONNECTION)
     seeder.database.verify_extensions()
