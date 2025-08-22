@@ -1,11 +1,12 @@
 import os
-import google.generativeai as genai
-from ..utils.logger import logger
 from dotenv import load_dotenv
+from ..common.logger import logger
+import google.generativeai as genai
 
 
 def setup_gemini_api(api_key=None):
     load_dotenv()
+
     if api_key is None:
         api_key = os.getenv("GEMINI_API_KEY")
 

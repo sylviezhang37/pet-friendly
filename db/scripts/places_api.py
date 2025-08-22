@@ -1,15 +1,14 @@
 from typing import List, Dict, Set, Tuple
+from dataclasses import dataclass
+
 import os
 import json
 import time
 import requests
-from dataclasses import dataclass
-
-from ..types import QueryConfig
-from ..utils.text_utils import clean_username
-from ..ai.text_analyzer import TextAnalyzer
-
-from ..utils.logger import logger
+from ai.text_analyzer import TextAnalyzer
+from common.types import QueryConfig
+from common.text_utils import clean_username
+from common.logger import logger
 
 
 @dataclass(frozen=True)
@@ -136,8 +135,6 @@ class PlacesAPI:
 
                             if pet_related_review:
                                 all_reviews.add(pet_related_review)
-                                # Break after first pet-related review for testing
-                                # return all_places, all_reviews
 
             next_page_token = data.get("nextPageToken")
             if not next_page_token:

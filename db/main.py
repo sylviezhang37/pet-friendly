@@ -1,6 +1,6 @@
 import os
 from dotenv import load_dotenv
-from scripts.seeder import PlacesDataSeeder
+from scripts.seeder import DataSeeder
 from scripts.types import QueryConfig
 from scripts.utils.constants import BOROUGHS
 from scripts.utils.logger import logger
@@ -55,7 +55,7 @@ def main():
 
     query_configs = generate_grid_queries()
 
-    seeder = PlacesDataSeeder(API_KEY, DB_CONNECTION)
+    seeder = DataSeeder(API_KEY, DB_CONNECTION)
     seeder.database.verify_extensions()
 
     try:

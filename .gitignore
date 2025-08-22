@@ -68,4 +68,5 @@ docs/brainstorming/
 frontend/notes.md
 db/scripts/__pycache__
 db/scripts/utils/__pycache__
-sentiments_v0.py
+db/cleaned_data
+db/processed_data

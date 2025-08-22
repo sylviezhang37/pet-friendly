@@ -1,7 +1,7 @@
 import json
 from typing import Dict, Any
 from .gemini_setup import setup_gemini_api
-from ..utils.logger import logger
+from ..common.logger import logger
 
 PROMPT = """
             You are an expert at analyzing business reviews for pet-related information.
@@ -45,31 +45,34 @@ def analyze_pet_friendliness(review: str, model=None) -> Dict[str, Any]:
                 "response_mime_type": "application/json",
             },
         )
+
         result = parse_response(response.text)
         logger.info(f"AI analysis: {result}")
         return result
     except Exception as e:
         logger.error(f"AI analysis failed: {e}")
-        return create_error_response("Error occurred")
+        return _create_error_response("Error occurred")
 
 
-def create_error_response(reason: str) -> Dict[str, Any]:
+def parse_response(response_text: str) -> Dict[str, Any]:
+    try:
+        cleaned = response_text.strip()
+
+        if cleaned.startswith("```json"):
+            cleaned = cleaned[7:]
+        if cleaned.endswith("```"):
+            cleaned = cleaned[:-3]
+
+        return json.loads(cleaned.strip())
+    except json.JSONDecodeError as e:
+        logger.error(f"Failed to parse response: {e}")
+        return _create_error_response("Parse error")
+
+
+def _create_error_response(reason: str) -> Dict[str, Any]:
     return {
         "is_pet_related": False,
         "is_pet_friendly": False,
         "confidence": "low",
         "reasoning": reason,
     }
-
-
-def parse_response(response_text: str) -> Dict[str, Any]:
-    try:
-        cleaned = response_text.strip()
-        if cleaned.startswith("```json"):
-            cleaned = cleaned[7:]
-        if cleaned.endswith("```"):
-            cleaned = cleaned[:-3]
-        return json.loads(cleaned.strip())
-    except json.JSONDecodeError as e:
-        logger.error(f"Failed to parse response: {e}")
-        return create_error_response("Parse error")

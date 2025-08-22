@@ -5,14 +5,13 @@ from datetime import datetime
 from typing import List
 import glob
 
-from .types import QueryConfig
-from .api.places_api import PlacesAPI
-from .database import DatabaseManager
-from .utils.logger import logger
-from .api.places_api import PlaceData, ReviewData
+from .places_api import PlacesAPI, PlaceData, ReviewData
+from .db import DatabaseManager
+from .common.types import QueryConfig
+from .common.logger import logger
 
 
-class PlacesDataSeeder:
+class DataSeeder:
     def __init__(
         self,
         api_key: str,
@@ -44,10 +43,6 @@ class PlacesDataSeeder:
             )
             all_places.update(places)
             all_reviews.update(reviews)
-
-            if i < len(query_configs):
-                logger.info("\nWaiting before next query...")
-                time.sleep(5)
 
         self.generate_data_files(all_places, all_reviews)
         self.load_and_insert_from_files()
