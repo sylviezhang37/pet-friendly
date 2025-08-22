@@ -16,6 +16,7 @@ type NearbyPlacesParams = {
   lat: number;
   lng: number;
   radius?: number;
+  onlyPetFriendly?: boolean;
 };
 
 type UpdatePlaceRequest = {

@@ -5,12 +5,6 @@ import { PlacesRepo } from "../repositories/PlacesRepo";
 
 export interface CreatePlaceInput {
   id?: string;
-  // name: string;
-  // address: string;
-  // coordinates: Coordinates;
-  // businessType?: string;
-  // googleMapsUrl?: string;
-  // allowsPet?: boolean | null;
 }
 
 export interface UpdatePlaceInput {
@@ -31,10 +25,10 @@ export interface NearbyPlacesInput {
   lat: number;
   lng: number;
   radius: number;
+  onlyPetFriendly?: boolean;
   filters?: {
     businessType?: string;
   };
-  onlyPetFriendly?: boolean;
 }
 
 export interface NearbyPlacesOutput {
@@ -93,10 +87,9 @@ export class PlaceService {
       input.radius
     );
 
-    let filteredPlaces = places;
-    if (input.onlyPetFriendly) {
-      filteredPlaces = places.filter((place) => place.petFriendly);
-    }
+    let filteredPlaces = places.filter(
+      (place: Place) => place.petFriendly || place.numDeny > 0
+    );
 
     if (input.filters?.businessType) {
       filteredPlaces = filteredPlaces.filter(

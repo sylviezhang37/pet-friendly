@@ -30,7 +30,6 @@ export const reviewsService = {
   },
 
   getReviewsByPlaceId: async (placeId: string): Promise<Review[]> => {
-    console.log("reviewsService getting reviews for placeId: ", placeId);
     const { reviews } = await apiClient.get<ReviewsResponse>(
       `/api/v0/reviews/${placeId}`
     );

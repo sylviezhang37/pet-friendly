@@ -3,13 +3,13 @@
 import { Box, Text, Spinner, useBreakpointValue } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { usePlacesManagement } from "@/hooks/usePlacesManagement";
+import { usePanelDrag } from "@/hooks/usePanelDrag";
 import Map from "@/components/Map";
 import WelcomePanel from "@/components/Welcome";
 import PlacePanel from "@/components/place/Place";
 import SearchBar from "@/components/SearchBar";
 import UserProfile from "@/components/user/UserProfile";
-import { usePlacesManagement } from "@/hooks/usePlacesManagement";
-import { usePanelDrag } from "@/hooks/usePanelDrag";
 
 export default function Home() {
   const router = useRouter();

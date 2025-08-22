@@ -18,7 +18,7 @@ import AuthModal from "../user/AuthModal";
 import UsernameSelection from "../user/UsernameEntry";
 
 export default function PlacePanel({ place }: { place: Place }) {
-  const [isLoading, setIsLoading] = useState(true);
+  const [placeLoading, setPlaceLoading] = useState(true);
 
   const user = useStore((state) => state.user);
   const currentUser = user || GUEST_USER;
@@ -51,7 +51,7 @@ export default function PlacePanel({ place }: { place: Place }) {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setIsLoading(false);
+      setPlaceLoading(false);
     }, 100);
 
     return () => {
@@ -71,7 +71,7 @@ export default function PlacePanel({ place }: { place: Place }) {
     onReviewSubmit: handleReviewSubmit,
   });
 
-  if (isLoading) {
+  if (placeLoading) {
     return (
       <Box
         position="relative"

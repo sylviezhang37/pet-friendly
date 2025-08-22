@@ -29,17 +29,16 @@ export function useNearbyPlaces(
 
   const fetchNearbyPlaces = useCallback(
     async (coordinates: Coordinates): Promise<void> => {
-      try {
-        setIsLoading(true);
-        setError(null);
+      setIsLoading(true);
+      setError(null);
 
+      try {
         const placesData = await placesService.getNearbyPlaces(coordinates);
         const placesMap = createPlacesMap(placesData);
 
         setPlaces(placesMap);
       } catch {
         setError(ERROR_MESSAGES.FETCH_FAILED);
-        // TODO: add logging service instead of console.error
       } finally {
         setIsLoading(false);
       }
