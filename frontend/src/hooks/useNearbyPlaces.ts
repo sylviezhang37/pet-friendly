@@ -27,22 +27,25 @@ export function useNearbyPlaces(
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchNearbyPlaces = useCallback(async (coordinates: Coordinates): Promise<void> => {
-    try {
-      setIsLoading(true);
-      setError(null);
+  const fetchNearbyPlaces = useCallback(
+    async (coordinates: Coordinates): Promise<void> => {
+      try {
+        setIsLoading(true);
+        setError(null);
 
-      const placesData = await placesService.getNearbyPlaces(coordinates);
-      const placesMap = createPlacesMap(placesData);
+        const placesData = await placesService.getNearbyPlaces(coordinates);
+        const placesMap = createPlacesMap(placesData);
 
-      setPlaces(placesMap);
-    } catch {
-      setError(ERROR_MESSAGES.FETCH_FAILED);
-      // TODO: use proper logging service instead of console.error
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+        setPlaces(placesMap);
+      } catch {
+        setError(ERROR_MESSAGES.FETCH_FAILED);
+        // TODO: add logging service instead of console.error
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    []
+  );
 
   useEffect(() => {
     fetchNearbyPlaces({ lat, lng });

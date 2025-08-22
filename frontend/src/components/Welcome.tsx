@@ -35,10 +35,11 @@ export default function Welcome() {
           width="100%"
           pt={5}
         >
-          Pet Friendly ૮˶• ﻌ •˶ა
+          PetFriendly ૮˶• ﻌ •˶ა
         </Heading>
         <Text fontSize="md" color="gray.600" textAlign="left" width="100%">
-          Discover and contribute to a database of pet friendly places.
+          Discover and contribute to a database of pet friendly places. Live in
+          NYC now, more cities on the way!
         </Text>
 
         {/* Support section */}

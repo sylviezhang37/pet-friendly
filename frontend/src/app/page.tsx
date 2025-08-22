@@ -14,6 +14,7 @@ import { usePanelDrag } from "@/hooks/usePanelDrag";
 export default function Home() {
   const router = useRouter();
   const isMobile = useBreakpointValue({ base: true, md: false }) ?? true;
+
   const { places, selectedPlaceId, handlePlaceSelect, handleMarkerClick } =
     usePlacesManagement();
 
